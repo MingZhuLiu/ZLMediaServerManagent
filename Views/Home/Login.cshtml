@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>流媒体服务器-后台登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+
+    <!-- Bootstrap -->
+    <link href="/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/assets/css/minimal.css" rel="stylesheet">
+    <!-- <link type="text/css" rel="stylesheet" media="all" href="/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" /> -->
+    <link href="/lib/bootstrapvalidator/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/vendor/bootstrap-checkbox.css">
+    <style>
+        #content.full-page .inside-block h1 strong:before {
+            width: 130px !important;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="bg-1">
+
+    <div class="mask" id="mask" style="display: none;">
+        <div id="loader" style="width: max-content;">
+            <h4 style="text-align: center;color: #FFF;margin-top: 30px;" id="loaderTime"></h4>
+            <h1 style="color: #FFF;" id="loaderInfo"></h1>
+            <div style="color: #FFF;" id="loaderConsole">
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+        <!-- Make page fluid -->
+        <div class="row">
+            <!-- Page content -->
+            <div id="content" class="col-md-12 full-page login">
+
+
+                <div class="inside-block">
+                    <img src="/imgs/zlserver/ZLM_FISH_TRANSP.png" style="width: 230px; height: 230px;margin-top: 0px;"
+                        alt class="logo">
+                    <h1><strong>Welcome</strong> Dashboard</h1>
+                    <h5>ZLMediaKitServer</h5>
+
+
+
+                    <form class="form-horizontal tile color transparent-white" onsubmit="return false;" role="form"
+                        style="margin-top: 30px;color:#FFF;margin-bottom :0px;background-color: transparent;border: 0px;box-shadow: 0 0px 0 rgba(0, 0, 0, 0.05)  !important;-webkit-box-shadow:0 0px 0 rgba(0, 0, 0, 0.05) !important;"
+                        id="from_signon">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="username" id="username"
+                                        placeholder="请输入账号" value="@ViewData["lastAccount"]">
+                                    <div class="input-group-addon"><i class="fa fa-user"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    @if(String.IsNullOrWhiteSpace(ViewData["lastAccount"] as String))
+                                    {
+                                        <input type="password" class="form-control" name="password" id="password"
+                                                                                placeholder="请输入密码">
+                                    }
+                                    else
+                                    {
+                                        <input type="password" class="form-control" name="password" id="password"
+                                                                                placeholder="请输入密码" autofocus="autofocus">
+                                    }
+                                   
+                                    <div class="input-group-addon"><i class="fa fa-key"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <section class="controls">
+                                    <div class="checkbox check-transparent">
+                                        <input type="checkbox" id="remember" checked>
+                                        <label for="remember">记住我</label>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+
+                        <button class="btn btn-blue" type="button" onclick="login()"><i
+                                class="fa fa-hand-o-right"></i>&nbsp;&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录</button>
+                    </form>
+
+
+
+                </div>
+
+
+            </div>
+            <!-- /Page content -->
+        </div>
+    </div>
+    <!-- Wrap all page content end -->
+</body>
+
+<script src="/assets/js/jquery.js"></script>
+<!-- <script src="/assets/js/jquery.cookie.min.js"></script> -->
+<script src="/assets/js/vendor/bootstrap/bootstrap.min.js"></script>
+<!-- <script type="text/javascript" src="/assets/js/vendor/mmenu/js/jquery.mmenu.min.js"></script> -->
+<!-- <script type="text/javascript" src="/assets/js/vendor/sparkline/jquery.sparkline.min.js"></script> -->
+<!-- <script type="text/javascript" src="/assets/js/vendor/nicescroll/jquery.nicescroll.min.js"></script> -->
+<!-- <script src="/assets/js/minimal.min.js"></script> -->
+<script src="/lib/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+<script src="/lib/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
+
+<script src="/js/site.js"></script>
+
+
+<script>
+
+    $('#from_signon').bootstrapValidator({
+        message: '登录信息验证失败',
+        //提供输入验证图标提示
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            username: {
+                message: '账号验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '帐号不能为空'
+                    },
+                    regexp: {
+                        regexp: /^[A-Za-z0-9]/i,
+                        message: '帐号只能由字母数字组成。'
+                    }
+                }
+            },
+            password: {
+                message: '密码验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '密码不能为空'
+                    },
+                },
+
+            },
+        }
+    });
+
+    function login() {
+        $("#from_signon").data("bootstrapValidator").validate();//手动触发全部验证
+        if ($("#from_signon").data("bootstrapValidator").isValid()) {
+
+            showLoader('正在登录....', 60);
+            post('/Home/Login', {
+                Account: $('#username').val(),
+                Password: $('#password').val(),
+                RememberMe: $("#remember").prop("checked"),
+            }, function (data, status, xhr) {
+                if (data.Flag) {
+                    showGrowl('登录成功', 'success', 4000);
+                    window.location.replace("/Home/Index");
+                }
+                else {
+                    showGrowl(data.Msg, 'danger', 4000)
+
+                }
+            },
+                function () {
+                    showGrowl('POST请求异常。', 'danger', 3000)
+                }
+            );
+
+        }
+        else {
+            showGrowl('请填写用户名或密码!', 'danger', 3000);
+        }
+    }
+
+    document.onkeydown=function(event){
+    var code = event.keyCode;
+    if(code ==13){ //这是键盘的enter监听事件
+        //绑定焦点，有可能不成功，需要多试试一些标签 
+        login();
+    }
+}
+
+
+</script>
+
+</html>

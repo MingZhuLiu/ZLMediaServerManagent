@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>配置服务器-初始化系统</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+
+  <!-- Bootstrap -->
+  <link href="/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/assets/css/minimal.css" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" media="all" href="/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
+  <link href="/lib/bootstrapvalidator/css/bootstrapValidator.min.css" rel="stylesheet">
+
+
+
+  <style>
+    #content.full-page .inside-block h1 strong:before {
+      width: 76px !important;
+    }
+  </style>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="bg-1">
+
+  <div class="mask" id="mask" style="display: none;">
+    <div id="loader" style="width: max-content;">
+      <h4 style="text-align: center;color: #FFF;margin-top: 30px;" id="loaderTime"></h4>
+      <h1 style="color: #FFF;" id="loaderInfo"></h1>
+      <div style="color: #FFF;" id="loaderConsole">
+      </div>
+    </div>
+  </div>
+
+  <!-- Wrap all page content here -->
+  <div id="wrap">
+
+    <!-- Make page fluid -->
+    <div class="row">
+
+      <!-- Page content -->
+      <div id="content" class="col-md-12 full-page error">
+        <div class="inside-block">
+          <img src="/imgs/zlserver/ZLM_FISH_TRANSP.png" style="width: 230px; height: 230px;margin-top: 0px;" alt
+            class="logo">
+          <h1 style="text-align: left;"><strong>初始化</strong> 配置</h1>
+          <section class="tile color transparent-white" style="margin-top: 10px;">
+            <!-- tile header -->
+            <div class="tile-header">
+              <h1>登录信息</h1>
+            </div>
+            <!-- /tile header -->
+
+            <!-- tile body -->
+            <div class="tile-body">
+
+              <form class="form-horizontal" role="form" style="margin-top: 0px;margin-bottom :0px;" id="from_dashboard">
+                <div class="form-group">
+                  <label for="input04" class="col-sm-4 control-label">管理员帐号</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="account" name="account" class="form-control" id="input04"
+                      placeholder="请输入管理员帐号...">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="input04" class="col-sm-4 control-label">管理员密码</label>
+                  <div class="col-sm-8">
+                    <input type="password" id="password" name="password" class="form-control" id="input04"
+                      placeholder="请输入管理员密码...">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="input04" class="col-sm-4 control-label">管理员密码</label>
+                  <div class="col-sm-8">
+                    <input type="password" id="passwordAgain" name="passwordAgain" class="form-control" id="input04"
+                      placeholder="请重新输入管理员密码...">
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
+            <!-- /tile body -->
+          </section>
+          <!-- /tile -->
+
+          <section class="tile color transparent-white" style="margin-top: 10px;">
+            <!-- tile header -->
+            <div class="tile-header">
+              <h1>媒体服务器信息</h1>
+            </div>
+            <!-- /tile header -->
+
+            <!-- tile body -->
+            <div class="tile-body">
+
+              <form class="form-horizontal" role="form" style="margin-top: 0px;margin-bottom :0px;" id="form_server"
+                name="form_dashboard">
+                <div class="form-group">
+                  <label for="input04" class="col-sm-4 control-label">流媒体服务器IP</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="serverIp" name="serverIp" class="form-control" id="input04"
+                      placeholder="请输入流媒体服务器IP...">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="input04" class="col-sm-4 control-label">流媒体服务器端口</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="serverPort" name="serverPort" class="form-control" id="input04"
+                      placeholder="请输入流媒体服务器端口...">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="input04" class="col-sm-4 control-label">流媒体服务器密钥</label>
+                  <div class="col-sm-8">
+                    <input type="text" id="serverSecret" name="serverSecret" class="form-control" id="input04"
+                      placeholder="请输入流媒体服务器密钥,本机可不填">
+                  </div>
+                </div>
+
+
+              </form>
+
+            </div>
+            <!-- /tile body -->
+          </section>
+          <!-- /tile -->
+
+
+
+          <div class="tile-body color transparent-black">
+
+            <div class="controls form-group  form-footer">
+              <button class="btn btn-green" onclick="submitData()"><i
+                  class="fa fa-paper-plane"></i>&nbsp;&nbsp;提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+      </div>
+      <!-- /Page content -->
+
+    </div>
+
+  </div>
+  <!-- Wrap all page content end -->
+
+</body>
+<script src="/lib/signalr/dist/browser/signalr.min.js"></script>
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/jquery.cookie.min.js"></script>
+<script src="/assets/js/vendor/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/mmenu/js/jquery.mmenu.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/sparkline/jquery.sparkline.min.js"></script>
+<script type="text/javascript" src="/assets/js/vendor/nicescroll/jquery.nicescroll.min.js"></script>
+<script src="/assets/js/minimal.min.js"></script>
+<script src="/lib/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+<script src="/lib/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
+
+<script src="/js/site.js"></script>
+
+<script>
+  var signalrConnection;
+  var signalrNeedReConnection = true;
+  $(function () {
+    initSignalr();
+    $('#form_server').bootstrapValidator({
+      message: '媒体服务器信息验证失败',
+      //提供输入验证图标提示
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+        serverIp: {
+          message: '流媒体服务器IP验证失败',
+          validators: {
+            notEmpty: {
+              message: '流媒体服务器IP不能为空'
+            },
+          }
+        },
+        serverPort: {
+          message: '流媒体服务器端口验证失败',
+          validators: {
+            notEmpty: {
+              message: '流媒体服务器端口不能为空'
+            },
+            digits: {
+              message: '流媒体服务器端口只能是数字'
+            },
+            greaterThan: {
+              value: 1,
+              message: '流媒体服务器端口号不能小于1'
+            },
+            lessThan: {
+              value: 65535,
+              message: '流媒体服务器端口号不能大于65535'
+            }
+          }
+        },
+        serverSecret: {
+          message: '流媒体服务器密钥验证失败',
+          validators: {
+            callback: {
+              message: '仅服务器ip为127.0.0.1时密钥允许为空',
+              callback: function (value, validator, $field) {
+
+                if ($('#serverIp').val() === '127.0.0.1')
+                  return true;
+                else if ($('#serverSecret').val() === '')
+                  return false;
+                else
+                  return true;
+              }
+            },
+          }
+        },
+      }
+    });
+
+    $('#from_dashboard').bootstrapValidator({
+      message: '登录信息验证失败',
+      //提供输入验证图标提示
+      feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+        account: {
+          message: '管理员帐号验证失败',
+          validators: {
+            notEmpty: {
+              message: '管理员帐号不能为空'
+            },
+            regexp: {
+              regexp: /^[A-Za-z0-9]/i,
+              message: '帐号只能由字母数字组成。'
+            }
+          }
+        },
+        password: {
+          message: '管理员密码验证失败',
+          validators: {
+            notEmpty: {
+              message: '管理员密码不能为空'
+            },
+          },
+
+        },
+        passwordAgain: {
+          message: '管理员密码验证失败',
+          validators: {
+            notEmpty: {
+              message: '管理员密码不能为空'
+            },
+            callback: {
+              message: '管理员密码不一致',
+              callback: function (value, validator, $field) {
+                if ($('#password').val() != $('#passwordAgain').val())
+                  return false;
+                else
+                  return true;
+              }
+            }
+          }
+        },
+
+      }
+    });
+  });
+
+  function submitData() {
+
+
+    // showGrowl('遇到致命错误,啊是哒是哒四大皆空结婚的卷卡式带好看见哈撒大华石达开收到哈手机看的哈手机看的户撒刀好');
+    $("#from_dashboard").data("bootstrapValidator").validate();//手动触发全部验证
+    $("#form_server").data("bootstrapValidator").validate();//手动触发全部验证
+    if ($("#from_dashboard").data("bootstrapValidator").isValid() && $("#form_server").data("bootstrapValidator").isValid()) {
+      showLoader('正在配置服务器....', 60);
+      post('/Home/Init', {
+        Account: $('#account').val(),
+        Password: $('#password').val(),
+        ZLMediaServerIp: $('#serverIp').val(),
+        ZLMediaServerPort: $('#serverPort').val(),
+        ZLMediaServerSecret: $('#serverSecret').val(),
+      }, function (data, status, xhr) {
+        if (data.Flag) {
+          showGrowl('初始化成功', 'success', 4000);
+          setTimeout(() => {
+            window.location.replace("/Home/Login");
+          }, 1000);
+        }
+        else {
+          showGrowl(data.Msg, 'danger', 4000)
+
+        }
+      },
+        function () {
+          showGrowl('POST请求异常。', 'danger', 3000)
+        }
+      );
+    }
+    else {
+      showGrowl('字段验证失败，请检查后重试', 'danger', 3000)
+    }
+  }
+
+  function initSignalr() {
+    signalrConnection = new signalR.HubConnectionBuilder().withUrl("/Hubs/MessageHub").build();
+    //Disable send button until connection is established
+    signalrConnection.on("BrowserReceiveLoaderMessage", function (info, type) {
+      addLoaderInfo(info, type);
+    });
+
+    signalrConnection.on("CleanCookieAndExit", function (info, type) {
+      signalrNeedReConnection = false;
+      clearAllCookie();
+      alert('您已在另一地点打开页面,本页面已失效!');
+      // closeWindows();
+
+    });
+
+    signalrConnection.onclose(async () => {
+      if (signalrNeedReConnection) {
+        showGrowl('即时通讯连接已关闭,将重试连接!', 'danger', 2000);
+        await startConnectSignalr();
+      }
+    });
+    startConnectSignalr();
+  }
+
+  async function startConnectSignalr() {
+    try {
+      if (signalrNeedReConnection) {
+        await signalrConnection.start();
+      }
+    } catch (err) {
+      if (signalrNeedReConnection) {
+        showGrowl('连接即时通讯服务失败,将在5s后重试连接!', 'danger', 2000);
+        setTimeout(() => {
+          startConnectSignalr();
+        }, 5000);
+      }
+    }
+  };
+
+
+
+</script>
+
+</html>
