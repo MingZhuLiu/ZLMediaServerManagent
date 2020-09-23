@@ -1,9 +1,9 @@
 # ZLMediaKitServer 可视化后台管理系统
 
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/xia-chu/ZLMediaKit/blob/master/LICENSE)
-[![Language](https://img.shields.io/static/v1?label=Language&message=.NetCore&color=red)](https://travis-ci.org/xia-chu/ZLMediaKit)
-[![platform](https://img.shields.io/badge/platform-linux%20|%20macos%20|%20windows-green.svg)](https://github.com/xia-chu/ZLMediaKit)
-[![Build Status](https://img.shields.io/static/v1?label=Develop&message=building&color=yellow)](https://travis-ci.org/xia-chu/ZLMediaKit)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/MingZhuLiu/ZLMediaServerManagent/blob/master/LICENSE)
+[![Language](https://img.shields.io/static/v1?label=Language&message=.NetCore&color=red)](https://github.com/dotnet/core)
+[![platform](https://img.shields.io/badge/platform-linux%20|%20macos%20|%20windows-green.svg)](https://github.com/MingZhuLiu/ZLMediaServerManagent)
+[![Build Status](https://img.shields.io/static/v1?label=Develop&message=building&color=yellow)](https://github.com/MingZhuLiu/ZLMediaServerManagent)
 
 ## 项目特点
 * 基于.NetCore开发，可跨平台，可以打包编译出不依赖运行时的可执行程序。
