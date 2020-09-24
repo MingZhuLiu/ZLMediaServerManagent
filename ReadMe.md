@@ -30,6 +30,19 @@
   8. 您也可以将整个系统打包成单个可执行程序文件 发布命令加上参数 /p:PublishSingleFile=true
 ***
 
+
+## 运行效果
+
+  * 首次运行系统自动引导至初始化页面
+
+  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/初始化页面.jpg)
+
+
+  * 菜单管理页面
+
+  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/菜单模块.png)
+
+
   ## 问题反馈
   * QQ:583530128
   * Mail: starry_link@foxmail.com
@@ -37,3 +50,8 @@
 
   ## 致谢
   * 感谢作者[夏楚](https://github.com/xia-chu)开源出项目[ZLMediaKit](https://github.com/xia-chu/ZLMediaKit)
+
+
+
+
+  
