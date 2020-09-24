@@ -132,7 +132,6 @@ ViewData["Title"] = "编辑菜单";
             showLoader('保存中....',60);
             // var tip = layer.msg('保存中....', { icon: 16, shade: 0.3, time: 0 });
             $.post("/Menu/Edit", data.field, function (result) {
-                // layer.close(tip);
                 closeLoader();
                 if (result.Flag) {
                     showGrowl('保存成功!', 'success', 3000);
@@ -140,7 +139,7 @@ ViewData["Title"] = "编辑菜单";
                     layer.close( layuiWindow['editMenu'+menuId]); //再执行关闭
                 }
                 else {
-                    layer.msg(result.Msg, { icon: 5 }, function () { });
+                    showGrowl(result.Msg,'danger',4000);
                 }
             });
             return false;
