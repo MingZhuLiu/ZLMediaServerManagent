@@ -20,6 +20,9 @@ namespace ZLMediaServerManagent.Controllers
         protected IHubContext<MessageHub> messageHub;
         protected ZLDataBaseContext zLDataBase;
         protected IUserService userService;
+        protected IMenuService menuService;
+        protected IRoleService roleService;
+
         protected IMapper mapper;
         public BaseController()
         {

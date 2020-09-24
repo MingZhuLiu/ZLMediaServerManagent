@@ -1,0 +1,151 @@
+﻿@model ZLMediaServerManagent.Models.ViewDto.MenuEditDatasourceDto
+@{
+ViewData["Title"] = "编辑菜单";
+}
+
+
+
+<form class="layui-form" lay-filter="component-form-element" style="margin:30px;color:#FFF;">
+    <div class="layui-form-item" hidden="hidden">
+        <label class="layui-form-label" style="width: 110px;">菜单ID：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Id" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off"
+                class="layui-input" value="@Model.Menu.Id">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">菜单名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Name" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off"
+                class="layui-input" value="@Model.Menu.Name"
+                style="background-color: rgba(0, 0, 0, 0.7) !important;border: 0px;border-radius:4px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">父级菜单：</label>
+        <div class="layui-input-block">
+            <select name="ParentId" lay-search>
+                @if (!Model.Menu.ParentId.HasValue||Model.Menu.ParentId==0)
+                {
+                <option value="" selected="selected" )></option>
+                }
+                else
+                {
+                @foreach (var item in Model.Menus)
+                {
+                @if (item.Id == Model.Menu.ParentId)
+                {
+                <option value="@item.Id" selected="selected">@item.Name</option>
+                }
+                else
+                {
+                <option value="@item.Id">@item.Name</option>
+                }
+                }
+                }
+
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">菜单链接：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Url" placeholder="请输入菜单链接" class="layui-input" value="@Model.Menu.Url"
+                style="background-color: rgba(0, 0, 0, 0.7) !important;border: 0px;border-radius:4px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">菜单图标：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Icon" placeholder="请输入菜单图标" class="layui-input" value="@Model.Menu.Icon"
+                style="background-color: rgba(0, 0, 0, 0.7) !important;border: 0px;border-radius:4px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">菜单排序：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Order" placeholder="请输入菜单序号" class="layui-input" lay-verify="required"
+                value="@Model.Menu.Order"
+                style="background-color: rgba(0, 0, 0, 0.7) !important;border: 0px;border-radius:4px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">状态：</label>
+        <div class="layui-input-block">
+            <select name="State" lay-search>
+                @if (Model.Menu.State == 200)
+                {
+                <option value="200" selected="selected">正常</option>
+                <option value="500">停用</option>
+                }
+                else
+                {
+                <option value="200">正常</option>
+                <option value="500" selected="selected">停用</option>
+                }
+
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-layout-admin">
+        <div class="layui-input-block">
+            <div class="layui-input-block" style="left: 0;">
+                <button class="layui-btn" lay-submit="" lay-filter="submitEditForm">保存</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function () {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        form.render();
+
+        //监听提交
+        form.on('submit(submitEditForm)', function (data) {
+            //console.log($("#editForm").serializeJson());
+            //$.ajax({
+            //    url: "/Menu/Edit",
+            //    type: "POST",
+            //    contentType: "application/json;charset=utf-8",
+            //    data: data.field,
+            //    dataType: "json",
+            //    success: function (result) {
+            //        if (result.Flag) {
+            //            layer.msg('保存成功', { icon: 6 }, function () {
+            //                var index = parent.layer.getFrameIndex('editMenu'); //先得到当前iframe层的索引
+            //                parent.layer.close(index); //再执行关闭
+            //            });
+            //        }
+            //        else {
+            //            layer.msg(result.Msg, { icon: 5 }, function () { });
+            //        }
+            //    },
+            //    error: function (msg) {
+            //        layer.msg(result.Msg, { icon: 5 }, function () { });
+            //    }
+            //});
+
+            showLoader('保存中....',60);
+            // var tip = layer.msg('保存中....', { icon: 16, shade: 0.3, time: 0 });
+            $.post("/Menu/Edit", data.field, function (result) {
+                // layer.close(tip);
+                closeLoader();
+                if (result.Flag) {
+                    showGrowl('保存成功!', 'success', 3000);
+                    reload();
+                    layer.close( layuiWindow['editMenu'+menuId]); //再执行关闭
+                }
+                else {
+                    layer.msg(result.Msg, { icon: 5 }, function () { });
+                }
+            });
+            return false;
+        });
+    });
+
+
+</script>

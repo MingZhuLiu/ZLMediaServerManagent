@@ -193,7 +193,7 @@ namespace ZLMediaServerManagent.Controllers
 
         [SkipGlobalActionFilter]
         [HttpPost]
-        public BaseModel<String> Login(LoginReqDto reqDto)
+        public async Task<BaseModel<string>> LoginAsync(LoginReqDto reqDto)
         {
             BaseModel<String> result = new BaseModel<string>();
             var loginValidate = userService.LoginCheck(reqDto.Account, reqDto.Password, LoginPlatform.Web);
@@ -201,12 +201,12 @@ namespace ZLMediaServerManagent.Controllers
             {
                 //登录验证成功..
                 //如果登录成功要先看之前有没有同账号登录，如果有的话，让他下线
-                var lastLogin = GloableCache.OnlineClients.Values.Where(p => p.User != null && p.User.Id == loginValidate.Data.Id).FirstOrDefault();
+                var lastLogin = GloableCache.OnlineClients.Values.Where(p =>p.ClientId!=null&& p.User != null && p.User.Id == loginValidate.Data.Id).FirstOrDefault();
                 if (lastLogin != null)
                 {
 
                     //发消息让这个人下线.
-                    messageHub.Clients.Client(lastLogin.SignarlRId).SendAsync("CleanCookieAndExit");
+                    await messageHub.Clients.Client(lastLogin.SignarlRId).SendAsync("CleanCookieAndExit");
                     lastLogin.User = null;
                 }
 
@@ -233,6 +233,10 @@ namespace ZLMediaServerManagent.Controllers
         }
 
 
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
 
     }
 }

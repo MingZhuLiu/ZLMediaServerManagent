@@ -1,0 +1,275 @@
+﻿@model ZLMediaServerManagent.Models.ViewDto.PowerDto
+@{
+ViewData["Title"] = "菜单管理";
+}
+
+
+
+<section class="tile color transparent-black">
+    <!-- tile header -->
+    <div class="tile-header">
+        <h1><strong>菜单</strong> 管理</h1>
+    </div>
+    <!-- /tile header -->
+
+
+    <!-- tile body -->
+    <div class="tile-body no-vpadding">
+        <div class="table-responsive">
+
+
+            <div class="layui-fluid">
+                <div class="layui-card">
+                    <div class="layui-form layui-card-header layuiadmin-card-header-auto"
+                        style="border-bottom:1px solid rgba(0, 0, 0, 0.2)">
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline layui-col-md11" style="margin-right:10px !important;">
+                                <label class="layui-form-label" style="width: auto;">菜单名称:</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="txt_keyword" id="txt_keyword" placeholder="请输入菜单名称"
+                                        class="layui-input" style="height: 40px !important;">
+                                </div>
+                            </div>
+                            <div class="layui-inline" style="line-height: 0px;margin-bottom: 12px; ">
+                                <button class="layui-btn layui-btn-normal" data-type="reload" lay-submit
+                                    lay-filter="LAY-app-contlist-search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                                </button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="layui-card-body">
+                        <div style="padding-bottom: 10px;">
+
+                            @if (Model.Add)
+                            {
+                            <button class="layui-btn" data-type="add" onclick="addData()">添加</button>
+                            }
+                            @if (Model.Edit)
+                            {
+                            <button class="layui-btn layui-btn-normal" data-type="edit" onclick="editData()">编辑</button>
+                            }
+                            @if (Model.Delete)
+                            {
+                            <button class="layui-btn layui-btn-danger" data-type="batchdel"
+                                onclick="deleteData()">删除</button>
+                            }
+                        </div>
+                        <table class="layui-hide" id="menuList" lay-filter="menuList"></table>
+                    </div>
+                </div>
+            </div>
+
+            </table>
+        </div>
+    </div>
+</section>
+
+<script>
+    var menuId = '';
+    layui.use('table', function () {
+        var form = layui.form;
+        var table = layui.table;
+        table.render({
+            elem: '#menuList'
+            , url: '/Menu/Index/'
+            , method: 'post'
+            , cellMinWidth: 80
+            , autoSort: false
+            , cols: [[
+                { type: 'checkbox' }
+                , { field: 'Id', title: 'ID', hide: true, }
+                , { field: 'Name', title: '菜单名称', sort: true }
+                , { field: 'Icon', title: '菜单图标' }
+                , { field: 'Url', title: '菜单链接', sort: true }
+                , { field: 'Order', title: '排序', sort: true }
+                , { field: 'CreateTs', title: '创建时间', sort: true }
+                , { field: 'State', title: '状态', sort: true, templet: '#statusTemp' }
+            ]]
+            , where: { keyword: $('#txt_keyword').val() }
+            , page: true
+        });
+
+        //监听搜索
+        form.on('submit(LAY-app-contlist-search)', function (data) {
+            //执行重载
+            table.reload('menuList', {
+                where: { keyword: $('#txt_keyword').val() }
+            });
+        });
+
+
+        table.on('row(menuList)', function (obj) {
+            var data = obj.data;
+            $(obj.tr).siblings().css("background-color", "");
+            // obj.tr.css("background-color", "#a3cf62");
+            menuId = data.Id;
+        });
+
+        table.on('rowDouble(menuList)', function (obj) {
+            var data = obj.data;
+            $(obj.tr).siblings().css("background-color", "");
+            // obj.tr.css("background-color", "#a3cf62");
+            menuId = data.Id;
+            editData();
+
+        });
+
+        table.on('sort(menuList)', function (obj) { //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            //console.log(obj.field); //当前排序的字段名
+            //console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            //console.log(this); //当前排序的 th 对象
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('menuList', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                    , keyword: $('#txt_keyword').val()
+                }
+            });
+        });
+
+    });
+
+    function addData() {
+
+        get('/Menu/Add', function (data, status, xhr) {
+            if (xhr.status === 200) {
+                var index = layer.open({
+                    type: 1
+                    , title: '添加菜单'
+                    , closeBtn: false
+                    , shade: 0
+                    , area: ['590px', '500px']
+                    , id: 'addMenu'  //设定一个id，防止重复弹出
+                    , btnAlign: 'c'
+                    , closeBtn: 1
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: data
+                    , shadeClose: false //点击遮罩区域是否关闭页面
+                    , zIndex: 1000
+                });
+                layuiWindow['addMenu' ] = index;
+            }
+            else {
+                showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+            }
+        },
+            function () {
+                showGrowl('GET请求异常。', 'danger', 3000)
+            }
+        );
+
+ 
+    }
+
+    function reload() {
+        var table = layui.table;
+        table.reload('menuList', {
+            where: { keyword: $('#txt_keyword').val() }
+        });
+    }
+
+    function editData() {
+        //var table = layui.table;
+        //var checkStatus = table.checkStatus('menuList');
+        if (isEmpty(menuId)) {
+            layer.msg('请选择一行再编辑!', { icon: 3 });
+        }
+        else {
+            get('/Menu/Edit?id=' + menuId, function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    var index = layer.open({
+                        type: 1
+                        , title: '编辑菜单'
+                        , closeBtn: false
+                        , shade: 0
+                        , area: ['590px', '500px']
+                        , id: 'editMenu' + menuId //设定一个id，防止重复弹出
+                        , btnAlign: 'c'
+                        , closeBtn: 1
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: data
+                        , shadeClose: false //点击遮罩区域是否关闭页面
+                        , zIndex: 1000
+                    });
+                    layuiWindow['editMenu' + menuId] = index;
+                }
+                else {
+                    showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+                }
+            },
+                function () {
+                    showGrowl('GET请求异常。', 'danger', 3000)
+                }
+            );
+
+
+
+
+        }
+
+    }
+
+    function deleteData() {
+        var table = layui.table;
+        var checkStatus = table.checkStatus('menuList');
+        if (checkStatus.data.length == 0) {
+            showGrowl('请至少选择一行!','danger',3000);
+        }
+        else {
+
+            var ids = new Array();
+            for (var i = 0; i < checkStatus.data.length; i++) {
+                ids[i] = checkStatus.data[i].Id;
+            }
+            var index = layer.confirm('确定要删除' + ids.length + "条菜单吗?", {
+                title: '警告', btn: ['确定', '取消']
+            }
+                , function () {
+                    var tip = layer.msg('删除中....', { icon: 16, shade: 0.3, time: 0 });
+                    $.post("/Menu/Delete", { ids: ids }, function (result) {
+                        layer.close(tip);
+                        if (result.Flag) {
+                            reload();
+                            layer.msg('删除成功', { icon: 6 }, function () {
+                                layer.close(index); //再执行关闭
+                            });
+                        }
+                        else {
+                            layer.msg(result.Msg, { icon: 5 }, function () {
+                                layer.close(index);
+                            });
+                        }
+                    }, "json");
+
+                }, function () {
+                    layer.close(index);
+                });
+
+        }
+    }
+
+
+
+</script>
+
+
+<script type="text/html" id="statusTemp">
+
+    {{#  if(d.State==200){ }}
+    <font color="#abe879">正常</font>
+    {{#  } else if(d.State==500) { }}
+    <font color="red">停用</font>
+    {{#  } else if(d.State==400) {  }}
+    <font color="red">删除</font>
+    {{#  } }}
+</script>

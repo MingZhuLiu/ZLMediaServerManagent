@@ -54,7 +54,8 @@ namespace ZLMediaServerManagent
                 options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    // options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    options.SerializerSettings.ContractResolver = new CustomContractResolver();
                     options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 }

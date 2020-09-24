@@ -10,6 +10,10 @@
         "dist/browser/signalr.min.js",
         "dist/browser/signalr.min.js.map"
       ]
+    },
+    {
+      "library": "bootstrap-table@1.18.0",
+      "destination": "wwwroot/lib/bootstrap-table"
     }
   ]
 }

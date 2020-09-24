@@ -1,0 +1,236 @@
+﻿<!-- tile -->
+<section class="tile color transparent-black">
+    <!-- tile header -->
+    <div class="tile-header">
+        <h1><strong>菜单</strong> 管理</h1>
+        <div class="search">
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="controls">
+            <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
+            <a href="#" class="remove"><i class="fa fa-times"></i></a>
+        </div>
+    </div>
+    <!-- /tile header -->
+
+
+    <!-- tile body -->
+    <div class="tile-body no-vpadding">
+        <div class="table-responsive">
+            <table id="table" class="table table-custom table-sortable nomargin" style="">
+            </table>
+        </div>
+    </div>
+    <!-- /tile body -->
+
+
+    <!-- tile footer -->
+    <!-- <div class="tile-footer text-center">
+        <ul class="pagination pagination-sm nomargin pagination-custom">
+            <li class="disabled"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
+        </ul>
+    </div> -->
+    <!-- /tile footer -->
+
+
+
+</section>
+<!-- /tile -->
+
+<script>
+
+
+
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            //先销毁表格
+            // $('#table').bootstrapTable('destroy');
+            //初始化表格,动态从服务器加载数据
+            $('#table').bootstrapTable({
+                method: "POST",  //使用get请求到服务器获取数据
+                url: '/Menu/Index', //获取数据的Servlet地址
+                toolbar: '#toolbar',
+                locale: 'zh-CN',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',//这里我就加了个utf-8
+                dataType: 'json',
+                dataField: 'data',
+                pagination: true, //启动分页
+                pageSize: 10,  //每页显示的记录数
+                pageNumber: 1, //当前第几页
+                pageList: [1, 5, 10, 15, 20, 25],  //记录数可选列表
+                showColumns: true,  //显示下拉框勾选要显示的列
+                showRefresh: false,  //显示刷新按钮
+                hideLoading: true,
+                sidePagination: "server", //表示服务端请求
+                queryParamsType: "undefined",
+                detailView: false,//父子表
+                //idField: 'Id',
+                //treeShowField: 'Name',
+                //parentIdField: 'ParentId',
+                uniqueId: "Id",
+                columns: [
+                    {
+                        checkbox: true
+                    },
+                    {
+                        field: 'Name',
+                        title: '菜单名称',
+                        align: 'center'
+                    },
+                    {
+                        field: 'Url',
+                        title: '菜单链接',
+                        align: 'center'
+                    },
+                    {
+                        field: 'Icon',
+                        title: '菜单图标',
+                        align: 'center'
+                    },
+                    {
+                        field: 'Order',
+                        title: '排序',
+                        align: 'center'
+                    },
+
+                ],
+                queryParams: function queryParams(params) {   //设置查询参数
+                    showLoader('正在加载菜单数据...', 60);
+
+                    var param = {
+                        page: params.pageNumber,
+                        limit: params.pageSize,
+                    };
+                    return param;
+                },
+                onLoadSuccess: function () {  //加载成功时执行 
+                    showGrowl('加载数据成功!', 'success', 1000);
+
+                },
+                onLoadError: function () {  //加载失败时执行
+                    showGrowl('加载数据失败!', 'danger', 4000);
+                },
+                onRefresh: function (text) {
+                    // debugger
+                    // showLoader('正在刷新菜单...', 60);
+                },
+                onAll: function (name, args) {
+                    // debugger
+                    // if(name==)
+
+                    // console.log(name, '<<<<<=======>>>>>', args);
+                },
+                onPostBody: function (e) {
+                    // debugger
+                    // console.log('onPostBody');
+                    // debugger
+                    closeLoader();
+                    // return false;
+                },
+                onPreBody: function (e) {
+                    // showLoader('正在加载菜单数据...',60);
+                    // debugger
+                },
+                onExpandRow: function (index, row, $detail) {
+                    // oTableInit.InitSubTable(index, row, $detail);
+                }
+
+            });
+        };
+        //初始化子表格(无线循环)
+        oTableInit.InitSubTable = function (index, row, $detail) {
+            // var parentid = row.Id;
+            // var cur_table = $detail.html('<table></table>').find('table');
+            // $(cur_table).bootstrapTable({
+            //     method: "POST",  //使用get请求到服务器获取数据
+            //     url: '/Menu/Index',
+            //     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',//这里我就加了个utf-8
+            //     dataType: 'json',
+            //     dataField: 'data',
+            //     queryParams: function queryParams(params) {   //设置查询参数
+            //         var param = {
+            //             page: 1,
+            //             limit: 100,
+            //             parentId: parentid,
+            //         };
+            //         return param;
+            //     },
+            //     clickToSelect: true,
+            //     detailView: false,//父子表
+            //     uniqueId: "id",
+            //     pageSize: 1000,
+            //     pageList: [100],
+            //     columns: [{
+            //         field: 'Name',
+            //         title: '菜单名称',
+            //         align: 'center'
+            //     },
+            //     {
+            //         field: 'Url',
+            //         title: '菜单链接',
+            //         align: 'center'
+            //     },
+            //     {
+            //         field: 'Icon',
+            //         title: '菜单图标',
+            //         align: 'center'
+            //     },
+            //     {
+            //         field: 'Order',
+            //         title: '排序',
+            //         align: 'center'
+            //     },],
+            //     //无线循环取子表，直到子表里面没有记录
+            //     onExpandRow: function (index, row, $Subdetail) {
+            //         oInit.InitSubTable(index, row, $Subdetail);
+            //     }
+            // });
+        };
+        //得到查询的参数
+        /*     oTableInit.queryParams = function (params) {
+                var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                    limit: params.limit,   //页面大小
+                    offset: params.offset,  //页码
+                    departmentname: $("#txt_search_departmentname").val(),
+                    statu: $("#txt_search_statu").val()
+                };
+                return temp;
+            }; */
+        return oTableInit;
+    };
+
+
+
+    // var ButtonInit = function () {
+    //     var oInit = new Object();
+    //     var postdata = {};
+
+    //     oInit.Init = function () {
+    //         //初始化页面上面的按钮事件
+    //     };
+
+    //     return oInit;
+    // };
+
+    $(function () {
+
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+
+        //2.初始化Button的点击事件
+        // var oButtonInit = new ButtonInit();
+        // oButtonInit.Init();
+
+    });
+
+
+</script>

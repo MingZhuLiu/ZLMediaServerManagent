@@ -35,7 +35,7 @@ namespace ZLMediaServerManagent.Commons
             }
         }
 
-        public static long NewID { get => DateTime.Now.ToTimestamp(true) * 1000 + GeneratteRandom(3); }
+        public static long NewID { get => DateTime.Now.ToTimestamp(true) * 100000 + GeneratteRandom(3); }
         //public static string NewID { get => DateTime.Now.ToTimestamp(true); }
 
         /// <summary>

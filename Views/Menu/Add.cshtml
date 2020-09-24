@@ -1,0 +1,93 @@
+﻿@model ZLMediaServerManagent.Models.ViewDto.MenuEditDatasourceDto
+@{
+ViewData["Title"] = "添加菜单";
+}
+
+
+<form class="layui-form" action="" lay-filter="component-form-element" style="margin:30px;color:#FFF;" id="form1"
+    name="form1">
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">菜单名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Name" lay-verify="required" placeholder="请输入菜单名称" autocomplete="off"
+                class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">父级菜单：</label>
+        <div class="layui-input-block">
+            <select name="ParentId" lay-search>
+                <option value=""></option>
+                @foreach (var item in Model.Menus)
+                {
+                <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">菜单链接：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Url" placeholder="请输入菜单链接" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">菜单图标：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Icon" placeholder="请输入菜单图标" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">菜单排序：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Order" placeholder="请输入菜单序号" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;">状态：</label>
+        <div class="layui-input-block">
+            <select name="State" lay-search>
+                <option value="200" selected="selected">正常</option>
+                <option value="500">停用</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-layout-admin">
+        <div class="layui-input-block">
+            <div class="layui-input-block" style="left: 0;">
+                <button class="layui-btn" lay-submit="" lay-filter="submitForm">保存</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function () {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        form.render();
+        //监听提交
+        form.on('submit(submitForm)', function (data) {
+            showLoader('保存中....',60);
+            $.post("/Menu/Add", data.field, function (result) {
+                closeLoader();
+                if (result.Flag) {
+                    showGrowl('保存成功!', 'success', 3000);
+                    reload();
+                    layer.close(layuiWindow['editMenu' + menuId]); //再执行关闭
+                }
+                else {
+                    showGrowl(result.Msg,'danger',4000);
+
+                }
+            });
+            return false;
+
+        });
+    });
+
+
+</script>

@@ -8,7 +8,6 @@ namespace ZLMediaServerManagent.Commons
 {
     public static class InitTableData
     {
-        public static DateTime dateTime = DateTime.Now;
 
         /// <summary>
         /// 生成菜单数据
@@ -30,8 +29,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = null,
                 Order = 1,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -47,8 +46,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/Home/Dashboard",
                 Order = 1,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -68,8 +67,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/Menu/Index",
                 Order = 2,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -84,8 +83,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/Menu/Add",
                 Order = 1,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -100,8 +99,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/Menu/Edit",
                 Order = 2,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -116,8 +115,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/Menu/Delete",
                 Order = 3,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -139,8 +138,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/Role/Index",
                 Order = 3,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -155,8 +154,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/Role/Add",
                 Order = 1,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -171,8 +170,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/Role/Edit",
                 Order = 2,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -187,8 +186,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/Role/Delete",
                 Order = 3,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -210,8 +209,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/User/Index",
                 Order = 4,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -226,8 +225,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/User/Add",
                 Order = 1,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -242,8 +241,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/User/Edit",
                 Order = 2,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -258,8 +257,8 @@ namespace ZLMediaServerManagent.Commons
                 Url = "/User/Delete",
                 Order = 3,
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };
@@ -284,8 +283,8 @@ namespace ZLMediaServerManagent.Commons
                 Name = "超级管理员",
                 Description = "拥有系统最高权限!",
                 State = (int)Models.Enums.BaseStatus.Normal,
-                CreateTs = dateTime,
-                UpdateTs = dateTime,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
                 CreateBy = userId,
                 UpdateBy = userId,
             };

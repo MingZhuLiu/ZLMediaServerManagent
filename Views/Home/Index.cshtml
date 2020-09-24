@@ -9,6 +9,7 @@
     <meta charset="UTF-8" />
 
     <!-- Bootstrap -->
+
     <link href="/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -25,7 +26,17 @@
     <link rel="stylesheet" href="/assets/js/vendor/chosen/css/chosen.min.css">
     <link rel="stylesheet" href="/assets/js/vendor/chosen/css/chosen-bootstrap.css">
 
+    <link rel="stylesheet" href="/lib/bootstrap-table/dist/bootstrap-table.min.css">
+
+
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/css/jquery.treegrid.min.css"> -->
+
     <link href="/assets/css/minimal.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+    <script src="/layuiadmin/layui/layui.all.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,6 +44,187 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+
+    <style>
+        body #content .tile.color .tile-header,
+        body #content .tile.color .tile-widget,
+        body #content .tile.color .tile-body,
+        body #content .tile.color .tile-footer,
+        body #content .tile.color .tile-left-side,
+        body #content .tile.color .tile-right-side {
+            color: #000;
+        }
+
+        /* Layui Table  背景透明 字体黑色*/
+        .layui-table {
+            background-color: transparent !important;
+            color: #000 !important;
+        }
+
+
+        /* 鼠标指向表格时,奇数行背景颜色 */
+        .layui-table tbody tr:hover,
+        .layui-table-hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+
+        /* 表格头部背景色 */
+
+        .layui-table th {
+            background-color: transparent !important;
+            background: transparent !important;
+
+            color: #FFF;
+            font-weight: 900;
+            font-size: 15px !important;
+        }
+
+
+        .layui-table-header,
+        .transparentDataTable .layui-table-cell,
+        .layui-table-header thead tr {
+            background-color: transparent !important;
+        }
+
+
+        /* Layui Table 表格底部分页 文字颜色 */
+        .layui-laypage .layui-laypage-skip {
+            color: #000 !important;
+        }
+
+        /* Layui Table 表格底部分页  页码文本框 */
+        .layui-laypage-btn {
+            background-color: rgba(0, 0, 0, 0.2) !important;
+            border: 0px;
+            color: #FFF;
+
+        }
+
+        /* Layui Table 表格底部分页 确定按钮 */
+        .layui-laypage a,
+        .layui-laypage button,
+        .layui-laypage input,
+        .layui-laypage select,
+        .layui-laypage span {
+            border: 1px rgba(0, 0, 0, 0.2);
+
+        }
+
+        /* Layui Table 表格底部分页 页码列表 */
+        .layui-laypage select {
+            background-color: rgba(0, 0, 0, 0.2) !important;
+            color: #FFF;
+        }
+
+        .layui-table td,
+        .layui-table th,
+        .layui-table-col-set,
+        .layui-table-fixed-r,
+        .layui-table-grid-down,
+        .layui-table-header,
+        .layui-table-page,
+        .layui-table-tips-main,
+        .layui-table-tool,
+        .layui-table-total,
+        .layui-table-view,
+        .layui-table[lay-skin="line"],
+        .layui-table[lay-skin="row"] {
+            border-color: rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* .layui-form-checkbox[lay-skin="primary"] i{
+            background-color: transparent;
+        } */
+
+        /* 选择框效果  透明 */
+        .layui-form-checkbox[lay-skin="primary"] i {
+            background-color: transparent;
+        }
+
+        .layui-form-checked[lay-skin="primary"] i {
+
+            border-color: #5fb878 !important;
+            background-color: #5fb878;
+            color: #FFF;
+
+        }
+
+        /* 弹窗背景颜色 */
+        .layui-layer {
+            background-color: rgba(0, 0, 0, 0.6) !important;
+        }
+
+        /* 下拉框样式 */
+        .layui-input,
+        .layui-select,
+        .layui-textarea {
+            background-color: rgba(0, 0, 0, 0.7) !important;
+            border: 0px;
+            border-radius: 4px;
+        }
+
+        .layui-form-select dl {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            color: #FFF;
+            border: 0px;
+            border-radius: 4px;
+        }
+
+        /* 弹出层标题 */
+        .layui-layer-title {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            color: #FFF;
+            border: 0px;
+            border-radius: 4px;
+        }
+
+        /* 讯问框字体颜色 */
+        .layui-layer-dialog .layui-layer-content {
+            color: #FFF;
+        }
+
+        /* .layui-layer-shade{
+            z-index: -1 !important;
+        } */
+        /* .layui-table td,
+        .layui-table th,
+        .layui-table-col-set,
+        .layui-table-fixed-r,
+        .layui-table-grid-down,
+        .layui-table-header,
+        .layui-table-page,
+        .layui-table-tips-main,
+        .layui-table-tool,
+        .layui-table-total,
+        .layui-table-view,
+        .layui-table,
+        .layui-table {
+            border-color: rgba(0, 0, 0, 0.2) !important;
+        } */
+
+
+
+
+
+
+
+        /* .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading.open {
+            visibility: hidden;
+        }
+       body #content .tile.color table.table-custom > thead > tr > th, body #content .tile.color table.table-custom > thead > tr > td, body #content .tile.transparent-black table.table-custom > thead > tr > th, body #content .tile.transparent-black table.table-custom > thead > tr > td, body #content .tile.transparent-white table.table-custom > thead > tr > th, body #content .tile.transparent-white table.table-custom > thead > tr > td, body #content .tile-header.color table.table-custom > thead > tr > th, body #content .tile-header.color table.table-custom > thead > tr > td, body #content .tile-header.transparent-black table.table-custom > thead > tr > th, body #content .tile-header.transparent-black table.table-custom > thead > tr > td, body #content .tile-header.transparent-white table.table-custom > thead > tr > th, body #content .tile-header.transparent-white table.table-custom > thead > tr > td, body #content .tile-widget.color table.table-custom > thead > tr > th, body #content .tile-widget.color table.table-custom > thead > tr > td, body #content .tile-widget.transparent-black table.table-custom > thead > tr > th, body #content .tile-widget.transparent-black table.table-custom > thead > tr > td, body #content .tile-widget.transparent-white table.table-custom > thead > tr > th, body #content .tile-widget.transparent-white table.table-custom > thead > tr > td, body #content .tile-body.color table.table-custom > thead > tr > th, body #content .tile-body.color table.table-custom > thead > tr > td, body #content .tile-body.transparent-black table.table-custom > thead > tr > th, body #content .tile-body.transparent-black table.table-custom > thead > tr > td, body #content .tile-body.transparent-white table.table-custom > thead > tr > th, body #content .tile-body.transparent-white table.table-custom > thead > tr > td, body #content .tile-footer.color table.table-custom > thead > tr > th, body #content .tile-footer.color table.table-custom > thead > tr > td, body #content .tile-footer.transparent-black table.table-custom > thead > tr > th, body #content .tile-footer.transparent-black table.table-custom > thead > tr > td, body #content .tile-footer.transparent-white table.table-custom > thead > tr > th, body #content .tile-footer.transparent-white table.table-custom > thead > tr > td, body #content .tile-left-side.color table.table-custom > thead > tr > th, body #content .tile-left-side.color table.table-custom > thead > tr > td, body #content .tile-left-side.transparent-black table.table-custom > thead > tr > th, body #content .tile-left-side.transparent-black table.table-custom > thead > tr > td, body #content .tile-left-side.transparent-white table.table-custom > thead > tr > th, body #content .tile-left-side.transparent-white table.table-custom > thead > tr > td, body #content .tile-right-side.color table.table-custom > thead > tr > th, body #content .tile-right-side.color table.table-custom > thead > tr > td, body #content .tile-right-side.transparent-black table.table-custom > thead > tr > th, body #content .tile-right-side.transparent-black table.table-custom > thead > tr > td, body #content .tile-right-side.transparent-white table.table-custom > thead > tr > th, body #content .tile-right-side.transparent-white table.table-custom > thead > tr > td
+       {
+           color: #FFF;
+       }
+       body #content .tile table.table-custom > thead > tr > th:after, body #content .tile table.table-custom > thead > tr > td:after, body #content .inbox table.table-custom > thead > tr > th:after, body #content .inbox table.table-custom > thead > tr > td:after{
+           height: 0px;
+       }
+       body #content .tile table.table-custom > thead > tr > th, body #content .tile table.table-custom > thead > tr > td, body #content .inbox table.table-custom > thead > tr > th, body #content .inbox table.table-custom > thead > tr > td{
+           font-size: 15px;
+           font-weight:bold;
+       }
+      */
+    </style>
 </head>
 
 <body class="bg-1">
@@ -41,7 +233,7 @@
 
     <!-- Preloader -->
 
-    <div class="mask" id="mask" style="display: none;">
+    <div class="mask" id="mask" style="display: none;" style="z-index:2147483647;">
         <div id="loader" style="width: max-content;">
             <h4 style="text-align: center;color: #FFF;margin-top: 30px;" id="loaderTime"></h4>
             <h1 style="color: #FFF;" id="loaderInfo"></h1>
@@ -88,7 +280,7 @@
                     <!-- Page refresh -->
                     <ul class="nav navbar-nav refresh">
                         <li class="divided">
-                            <a href="/Home/Index" class="page-refresh"><i class="fa fa-refresh"></i></a>
+                            <a onclick="refershPage()"><i class="fa fa-refresh"></i></a>
                         </li>
                     </ul>
                     <!-- /Page refresh -->
@@ -396,7 +588,7 @@
                                 <li class="divider"></li>
 
                                 <li>
-                                    <a href="#"><i class="fa fa-power-off"></i> Logout</a>
+                                    <a href="/Home/Loginout"><i class="fa fa-power-off"></i> Logout</a>
                                 </li>
                             </ul>
                         </li>
@@ -425,14 +617,14 @@
                             <a href="#" class="sidebar-toggle" data-toggle="#navigation">@item.Name <i
                                     class="fa fa-angle-up"></i></a>
                             <ul class="menu">
-                                @foreach (var chid in item.Children)
+                                @foreach (var chid in item.Children.OrderBy(p=>p.Order).ToList())
                                 {
-                                    <li>
-                                        <a  ajaxDown="@chid.Url">
-                                            <i class="@chid.Icon"></i> @chid.Name
-                                            <!--<span class="badge badge-red">1</span>-->
-                                        </a>
-                                    </li>
+                                <li>
+                                    <a ajaxDown="@chid.Url">
+                                        <i class="@chid.Icon"></i> @chid.Name
+                                        <!--<span class="badge badge-red">1</span>-->
+                                    </a>
+                                </li>
                                 }
 
                             </ul>
@@ -721,12 +913,16 @@
 
 
                 <!-- content main container -->
-                <div class="main" id="main" >
+                <div class="main" id="mainContainer" name="mainContainer">
+                    <!-- <iframe style="width:100%;height:100%;background-color:transparent;border: 0px;" id="main"
+                        name="main" src="/Menu/Index">
+                    </iframe> -->
+                    <!-- 
+                    <iframe style="width:100%;height:800px;background-color:#FFF;border: 0px;" id="main"
+                    name="main" src="/Home/Privacy">
+                </iframe> -->
 
 
-
-
-                    @* @RenderBody() *@
 
 
 
@@ -1201,18 +1397,25 @@
     <script src="/assets/js/vendor/morris/morris.min.js"></script>
 
     <script src="/assets/js/vendor/tabdrop/bootstrap-tabdrop.min.js"></script>
-<script src="/lib/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
+    <script src="/lib/bootstrap-growl/jquery.bootstrap-growl.min.js"></script>
 
     <script src="/assets/js/vendor/summernote/summernote.min.js"></script>
 
     <script src="/assets/js/vendor/chosen/chosen.jquery.min.js"></script>
+    <script src="/lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
 
     <script src="/assets/js/minimal.min.js"></script>
     <script src="/js/site.js"></script>
 
+
+    <script src="/lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.min.js"></script> -->
+
     <script>
         var signalrConnection;
         var signalrNeedReConnection = true;
+        var nowDivUrl = null;
+        var layuiWindow = new Array();
 
 
         initSignalr();
@@ -1257,18 +1460,28 @@
         };
 
 
-         $('a').click(function(){
-                var url=$(this).attr('ajaxDown');
-                if(url!=undefined&&url!=null&&!isEmpty(url))
-                {
-                    $.get(url,{},function (data, status, xhr) {
-                            $('#main').html(data);
-                            }).fail(function (err) {
-                                console.log(err);
-                                showGrowl(err.status+' '+err.statusText,'danger',4000);
-                            });             
-                 }
-            });
+        $('a').click(function () {
+            var url = $(this).attr('ajaxDown');
+            if (url != undefined && url != null && !isEmpty(url)) {
+                nowDivUrl = url;
+                $('#mainContainer').load(nowDivUrl);
+                // $.get(url, {}, function (data, status, xhr) {
+                //     $('#main').html(data);
+                // }).fail(function (err) {
+                //     console.log(err);
+                //     showGrowl(err.status + ' ' + err.statusText, 'danger', 4000);
+                // });
+            }
+        });
+
+        $(function () {
+            nowDivUrl = '/Home/Dashboard';
+            $('#mainContainer').load(nowDivUrl);
+        });
+
+        function refershPage() {
+            $('#mainContainer').load(nowDivUrl);
+        }
     </script>
 </body>
 

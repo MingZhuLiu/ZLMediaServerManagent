@@ -1446,7 +1446,7 @@ body #content .tile-right-side {
     body #content .tile-right-side.color table.table-bordered,
     body #content .tile-right-side.transparent-black table.table-bordered {
       border-collapse: separate;
-      border: 0; }
+      border: 1; }
       body #content .tile.color table.table-bordered > thead > tr td,
       body #content .tile.color table.table-bordered > thead > tr th,
       body #content .tile.color table.table-bordered > tbody > tr td,
@@ -7081,7 +7081,7 @@ body #content .modal .modal-dialog .modal-content input[type="color"] {
   font-size: 13px;
   vertical-align: top;
   background-color: #fff;
-  min-height: 37px;
+  min-height: 28px;
   filter: none !important;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;

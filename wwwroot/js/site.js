@@ -15,6 +15,7 @@ var time_loader;
 var reqDateTime = new Date();
 function showLoader(msg, maxSec) {
 
+
     reqDateTime = new Date();
     $("#loaderConsole").empty();
     $('#loaderInfo').text(msg);
@@ -86,6 +87,9 @@ function showGrowl(msg, type, delay, align) {
 function post(url, data, funcSucc, funcFail) {
     $.post(url, data === undefined || data === null ? {} : data, function (res, status, xhr) { closeLoader(); funcSucc(res, status, xhr); }).error(function () { closeLoader(); funcFail(); });
 }
+function get(url, funcSucc, funcFail) {
+    $.get(url, {} , function (res, status, xhr) { closeLoader(); funcSucc(res, status, xhr); }).error(function () { closeLoader(); funcFail(); });
+}
 
 function clearAllCookie() {
 
@@ -145,3 +149,32 @@ function closeWindows() {
         }
     }
 }
+
+
+
+function showBlock(target) {
+    $(target).block({
+        message: '<div class="el-reloader"></div>',
+        overlayCSS: {
+            opacity: 0.6,
+            cursor: "wait",
+            backgroundColor: "#000000"
+        },
+        css: {
+            padding: "5px",
+            border: "0",
+            backgroundColor: "transparent"
+        }
+    });
+}
+function unShowBlock(target) {
+    $(target).unblock()
+}
+
+
+// $(document).on("click",".tile .controls .refresh",function(event){
+//     // debugger
+//    var sec= event.toElement.parentNode.parentElement.parentElement.parentElement
+//     showBlock(sec);
+// // alert('xxx');
+// });

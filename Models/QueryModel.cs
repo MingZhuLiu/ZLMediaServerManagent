@@ -36,7 +36,7 @@ namespace  ZLMediaServerManagent.Models
         /// <summary>
         /// 父级id
         /// </summary>
-        public string parentId { get; set; }
+        public long parentId { get; set; }
 
         /// <summary>
         /// 状态
@@ -44,7 +44,7 @@ namespace  ZLMediaServerManagent.Models
         public int State { get; set; }
 
         /// <summary>
-        /// 不知道干嘛的 没用
+        /// 
         /// </summary>
         public bool Flag { get; set; }
 

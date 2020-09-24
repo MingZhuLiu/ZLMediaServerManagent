@@ -37,6 +37,20 @@ namespace ZLMediaServerManagent.Implements
             {
                 List<MenuDto> menus = new List<MenuDto>();
                 var query = DataBaseCache.Menus.Where(p => p.State != (int)MenuStatus.Deleted).AsQueryable();
+                // if (queryModel.Flag == false)
+                // {
+                //     // queryModel.Flag==false 前台根据需要查询对应表格.
+                //     // queryModel.Flag==true 其他业务逻辑要查询所有表格
+                //     if (queryModel.parentId != 0)
+                //     {
+                //         query = query.Where(p => p.ParentId == queryModel.parentId);
+                //     }
+                //     else
+                //     {
+                //         query = query.Where(p => p.ParentId == null);
+                //     }
+                // }
+
                 if (!String.IsNullOrWhiteSpace(queryModel.keyword))
                 {
                     query = query.Where(p => p.Name.Contains(queryModel.keyword)).AsQueryable();
@@ -46,13 +60,28 @@ namespace ZLMediaServerManagent.Implements
                 if (!String.IsNullOrWhiteSpace(queryModel.field) && !String.IsNullOrWhiteSpace(queryModel.order))
                 {
                     query = query.SortBy(queryModel.field + " " + queryModel.order.ToUpper());
-
+                }
+                else
+                {
+                    query=query.SortBy("CreateTs ASC");
                 }
                 query = query.Take(queryModel.limit);
                 var list = query.ToList();
                 list.ForEach(p => menus.Add(mapper.Map<MenuDto>(p)));
 
                 tableQueryModel.code = 0;
+                // tableQueryModel.data = menus.ToTree<MenuDto>(
+                //     (r, c) => { return c.ParentId == 0 || !c.ParentId.HasValue; },
+                //     (r, c) =>
+                //     {
+                //         return r.Id == c.ParentId;
+                //     },
+                //     (r, datalist) =>
+                //     {
+                //         r.Children.AddRange(datalist);
+                //     }
+                //     );
+
                 tableQueryModel.data = menus;
             }
             catch (Exception ex)
@@ -112,8 +141,8 @@ namespace ZLMediaServerManagent.Implements
             var flag = dbContext.SaveChanges() > 0 ? true : false;
             if (flag)
             {
-                var cacheItem = DataBaseCache.Menus.Where(p => p.Id == dto.Id).First();
-                cacheItem = dbModel;
+                DataBaseCache.Menus.Remove( DataBaseCache.Menus.Where(p => p.Id == dto.Id).First());
+                DataBaseCache.Menus.Add(dbModel);
             }
             return flag;
         }
@@ -126,13 +155,13 @@ namespace ZLMediaServerManagent.Implements
             foreach (var item in menus)
             {
                 item.State = (int)MenuStatus.Deleted;
-                item.UpdateBy=owner.Id;
-                item.UpdateTs=DateTime.Now;
+                item.UpdateBy = owner.Id;
+                item.UpdateTs = DateTime.Now;
             }
             var flag = dbContext.SaveChanges() > 0 ? true : false;
             if (flag)
             {
-                DataBaseCache.Menus=dbContext.Menus.ToList();
+                DataBaseCache.Menus = dbContext.Menus.ToList();
             }
             return flag;
         }
