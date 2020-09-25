@@ -12,7 +12,7 @@ namespace ZLMediaServerManagent.Models
         public int count { get; set; }
         public List<T> data { get; set; }
 
-        public int total => count;
+        // public int total => count;
 
 
         public TableQueryModel<T> Success(List<T> data)

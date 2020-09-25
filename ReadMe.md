@@ -40,11 +40,14 @@
 
   * 菜单管理页面
 
-  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/菜单模块.png)
+  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/菜单模块.jpg)
 
   * 角色管理页面
 
-  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/角色管理.png)
+  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/角色管理.jpg)
+
+  * 服务器配置
+  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/服务器配置修改.jpg)
 
   ## 问题反馈
   * QQ:583530128

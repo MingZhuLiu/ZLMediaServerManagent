@@ -193,7 +193,7 @@ namespace ZLMediaServerManagent.Commons
             };
             menus.Add(system_role_delete);
 
-            var system_role_menus=new TbMenu()
+            var system_role_menus = new TbMenu()
             {
                 Id = Tools.NewID,
                 ParentId = system_role.Id,
@@ -209,7 +209,7 @@ namespace ZLMediaServerManagent.Commons
             };
             menus.Add(system_role_menus);
 
-             var system_role_power=new TbMenu()
+            var system_role_power = new TbMenu()
             {
                 Id = Tools.NewID,
                 ParentId = system_role.Id,
@@ -296,6 +296,59 @@ namespace ZLMediaServerManagent.Commons
             menus.Add(system_user_delete);
 
             #endregion
+
+
+            var zlserver = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = null,
+                Name = "媒体服务器",
+                Icon = null,
+                Url = null,
+                Order = 2,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(zlserver);
+
+
+            var zlserver_config = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = zlserver.Id,
+                Name = "服务器配置",
+                Icon = "fa fa-cogs",
+                Url = "/ZLServer/Config",
+                Order = 1,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(zlserver_config);
+
+            var zlserver_editConfig = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = zlserver_config.Id,
+                Name = "修改配置",
+                Icon = "fa fa-cogs",
+                Url = "/ZLServer/EditConfig",
+                Order = 1,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(zlserver_editConfig);
+
+
+
 
 
             return menus;

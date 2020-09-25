@@ -137,7 +137,7 @@ ViewData["Title"] = "用户管理";
         table.on('row(userList)', function (obj) {
             var data = obj.data;
             $(obj.tr).siblings().css("background-color", "");
-            obj.tr.css("background-color", "#a3cf62");
+            obj.tr.css("background-color", "rgba(0, 0, 0, 0.2)");
             userId = data.Id;
         });
 
@@ -146,7 +146,7 @@ ViewData["Title"] = "用户管理";
         table.on('rowDouble(userList)', function (obj) {
             var data = obj.data;
             $(obj.tr).siblings().css("background-color", "");
-            obj.tr.css("background-color", "#a3cf62");
+            obj.tr.css("background-color", "rgba(0, 0, 0, 0.2)");
             userId = data.Id;
             editData();
         });

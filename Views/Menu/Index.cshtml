@@ -238,19 +238,15 @@ ViewData["Title"] = "菜单管理";
                 title: '警告', btn: ['确定', '取消']
             }
                 , function () {
-                    var tip = layer.msg('删除中....', { icon: 16, shade: 0.3, time: 0 });
+                    showLoader('删除中....', 60);
                     $.post("/Menu/Delete", { ids: ids }, function (result) {
-                        layer.close(tip);
+                        closeLoader();
                         if (result.Flag) {
                             reload();
-                            layer.msg('删除成功', { icon: 6 }, function () {
-                                layer.close(index); //再执行关闭
-                            });
+                            showGrowl('删除成功!', 'success', 3000);
                         }
                         else {
-                            layer.msg(result.Msg, { icon: 5 }, function () {
-                                layer.close(index);
-                            });
+                            showGrowl(result.Msg, 'danger', 4000);
                         }
                     }, "json");
 

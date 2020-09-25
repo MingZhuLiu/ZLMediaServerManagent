@@ -265,7 +265,6 @@ ViewData["Title"] = "角色管理";
                     $.post("/Role/Delete", { ids: ids }, function (result) {
                         closeLoader();
                         layer.close(layuiWindow['deleteRole']);
-
                         if (result.Flag) {
                             reload();
                             layer.close(layuiWindow['deleteRole']);
@@ -275,8 +274,6 @@ ViewData["Title"] = "角色管理";
                         }
                         else {
                             showGrowl(result.Msg, 'danger', 4000);
-
-
                         }
                     }, "json");
                 }, function () {

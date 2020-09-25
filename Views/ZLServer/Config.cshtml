@@ -1,0 +1,129 @@
+@model ZLMediaServerManagent.Models.ViewDto.PowerDto
+@{
+ViewData["Title"] = "菜单管理";
+}
+
+
+
+<section class="tile color transparent-black">
+    <!-- tile header -->
+    <div class="tile-header">
+        <h1><strong>服务器参数</strong> 配置</h1>
+    </div>
+    <!-- /tile header -->
+
+
+    <!-- tile body -->
+    <div class="tile-body no-vpadding">
+        <div class="table-responsive">
+
+
+            <div class="layui-fluid">
+                <div class="layui-card">
+                    <div class="layui-form layui-card-header layuiadmin-card-header-auto"
+                        style="border-bottom:1px solid rgba(0, 0, 0, 0.2)">
+                    </div>
+
+                    <div class="layui-card-body">
+                        <table class="layui-hide" id="menuList" lay-filter="menuList"></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    layui.use('table', function () {
+        var form = layui.form;
+        var table = layui.table;
+        table.render({
+            elem: '#menuList'
+            , url: '/ZLServer/Config/'
+            , method: 'post'
+            , cellMinWidth: 80
+            , autoSort: true
+            , cols: [[
+                { type: 'numbers' }
+                , { field: 'ConfigKey', title: '配置名称', sort: true }
+                , { field: 'ConfigValue', title: '配置值', edit: 'text' }
+            ]]
+            , page: false
+        });
+
+        //监听搜索
+        form.on('submit(LAY-app-contlist-search)', function (data) {
+            //执行重载
+            table.reload('menuList', {
+            });
+        });
+
+        //监听单元格编辑
+        table.on('edit(menuList)', function (obj) {
+            var value = obj.value //得到修改后的值
+                // , data = obj.data //得到所在行所有键值
+                , field = obj.data.ConfigKey; //得到字段
+
+
+
+            var index = layer.confirm('是否要将配置[' + field + ']的值修改为[' + value + ']?', {
+                title: '警告', btn: ['确定', '取消']
+            }
+                , function () {
+
+                    showLoader('正在提交配置', 60);
+                    $.post("/ZLServer/EditConfig", { ConfigKey: field, ConfigValue: value }, function (result) {
+                        closeLoader();
+                        layer.close(index);
+                        if (result.Flag) {
+                            showGrowl('修改成功，重启ZLMediaKitServer后生效!', 'success', 3000);
+                            reload();
+                        }
+                        else {
+                            showGrowl(result.Msg, 'danger', 4000);
+                            reload();
+                        }
+                    }, "json");
+                }, function () {
+                    layer.close(index);
+                    reload();
+                });
+
+
+        });
+
+        table.on('row(menuList)', function (obj) {
+            var data = obj.data;
+            $(obj.tr).siblings().css("background-color", "");
+            obj.tr.css("background-color", "rgba(0, 0, 0, 0.2)");
+        });
+
+        table.on('rowDouble(menuList)', function (obj) {
+            var data = obj.data;
+            $(obj.tr).siblings().css("background-color", "");
+            obj.tr.css("background-color", "rgba(0, 0, 0, 0.2)");
+
+            // obj.tr.css("background-color", "#a3cf62");
+
+        });
+
+        table.on('sort(menuList)', function (obj) { //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+
+        });
+
+    });
+
+
+
+    function reload() {
+        var table = layui.table;
+        table.reload('menuList', {
+        });
+    }
+
+
+
+
+
+</script>
