@@ -55,16 +55,17 @@ namespace ZLMediaServerManagent.Implements
                 {
                     query = query.Where(p => p.Name.Contains(queryModel.keyword)).AsQueryable();
                 }
-                tableQueryModel.count = query.Count();
-                query = query.Skip((queryModel.page - 1) * queryModel.limit);
+
                 if (!String.IsNullOrWhiteSpace(queryModel.field) && !String.IsNullOrWhiteSpace(queryModel.order))
                 {
                     query = query.SortBy(queryModel.field + " " + queryModel.order.ToUpper());
                 }
                 else
                 {
-                    query=query.SortBy("CreateTs ASC");
+                    query = query.SortBy("CreateTs ASC");
                 }
+                tableQueryModel.count = query.Count();
+                query = query.Skip((queryModel.page - 1) * queryModel.limit);
                 query = query.Take(queryModel.limit);
                 var list = query.ToList();
                 list.ForEach(p => menus.Add(mapper.Map<MenuDto>(p)));
@@ -141,7 +142,7 @@ namespace ZLMediaServerManagent.Implements
             var flag = dbContext.SaveChanges() > 0 ? true : false;
             if (flag)
             {
-                DataBaseCache.Menus.Remove( DataBaseCache.Menus.Where(p => p.Id == dto.Id).First());
+                DataBaseCache.Menus.Remove(DataBaseCache.Menus.Where(p => p.Id == dto.Id).First());
                 DataBaseCache.Menus.Add(dbModel);
             }
             return flag;

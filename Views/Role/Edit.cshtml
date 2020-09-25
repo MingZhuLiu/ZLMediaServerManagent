@@ -1,0 +1,86 @@
+﻿@model ZLMediaServerManagent.Models.Dto.RoleDto
+@{
+    ViewData["Title"] = "编辑角色";
+    @* Layout = "~/Views/Shared/_AdminLayout.cshtml"; *@
+}
+
+
+<form class="layui-form" action="" lay-filter="component-form-element" style="margin:30px" id="form1" name="form1">
+    <div class="layui-form-item" hidden="hidden">
+        <label class="layui-form-label">角色ID：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Id" lay-verify="required" placeholder="请输入角色ID" autocomplete="off" class="layui-input" value="@Model.Id">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;color:#FFF;">角色名称：</label>
+        <div class="layui-input-block">
+            <input type="text" name="Name" lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input" value="@Model.Name" style="color: #FFF;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"  style="width: 110px;color:#FFF;">状态：</label>
+        <div class="layui-input-block">
+            <select name="State" lay-search style="color: #FFF !important;">
+                @if (Model.State == ZLMediaServerManagent.Models.Enums.RoleStatus.Normal)
+                {
+                    <option value="200" selected="selected">正常</option>
+                    <option value="500">停用</option>
+                }
+                else
+                {
+                    <option value="200">正常</option>
+                    <option value="500" selected="selected">停用</option>
+                }
+
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"  style="width: 110px;color:#FFF;">角色描述：</label>
+        <div class="layui-input-block">
+            <textarea name="Description" placeholder="请输入角色描述" class="layui-textarea" lay-verify="required"  style="color: #FFF;">@Model.Description</textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-layout-admin">
+        <div class="layui-input-block">
+            <div class="layui-input-block" style="left: 0;">
+                <button class="layui-btn" lay-submit="" lay-filter="submitForm">保存</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function () {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+
+        //监听提交
+        form.on('submit(submitForm)', function (data) {
+            showLoader('保存中....',60);
+            $.post("/Role/Edit", data.field, function (result) {
+                closeLoader();
+                if (result.Flag) {
+                    showGrowl('保存成功!', 'success', 3000);
+                    reload();
+                    layer.close( layuiWindow['editRole'+data.field.Id]); //再执行关闭
+                }
+                else {
+                    showGrowl(result.Msg,'danger',4000);
+                }
+            });
+            return false;
+
+        });
+
+        
+    form.render();
+    });
+
+
+</script>

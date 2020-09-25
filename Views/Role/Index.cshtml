@@ -1,0 +1,356 @@
+﻿@model ZLMediaServerManagent.Models.ViewDto.PowerDto
+@{
+ViewData["Title"] = "角色管理";
+@* Layout = "~/Views/Shared/_AdminLayout.cshtml"; *@
+}
+
+
+<section class="tile color transparent-black">
+    <!-- tile header -->
+    <div class="tile-header">
+        <h1><strong>角色</strong> 管理</h1>
+    </div>
+    <!-- /tile header -->
+
+
+    <!-- tile body -->
+    <div class="tile-body no-vpadding">
+        <div class="table-responsive">
+
+
+            <div class="layui-fluid" style="height:100%">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md8">
+                        <div class="layui-card">
+                            <div class="layui-card-header"
+                                style="border-bottom:1px solid rgba(0, 0, 0, 0.2);color: #FFF;"></div>
+                            <div class="layui-card-body">
+
+                                <div class="layui-card-body">
+                                    <div style="padding-bottom: 10px;">
+
+                                        @if (Model.Add)
+                                        {
+                                        <button class="layui-btn" data-type="add" onclick="addData()">添加</button>
+                                        }
+                                        @if (Model.Edit)
+                                        {
+                                        <button class="layui-btn layui-btn-normal" data-type="edit"
+                                            onclick="editData()">编辑</button>
+                                        }
+                                        @if (Model.Delete)
+                                        {
+                                        <button class="layui-btn layui-btn-danger" data-type="batchdel"
+                                            onclick="deleteData()">删除</button>
+                                        }
+
+                                    </div>
+                                    <table class="layui-hide" id="roleList" lay-filter="roleList"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md4">
+                        <div class="layui-card">
+                            <div class="layui-card-header" style="border-bottom:1px solid rgba(0, 0, 0, 0.2);color:#FFF;">角色授权
+                            </div>
+                            <div class="layui-card-body">
+                                <div style="padding-bottom: 10px;">
+                                    @if (Model.RolePower)
+                                    {
+                                    <button class="layui-btn layui-btn-normal" data-type="save"
+                                        onclick="saveRoleMenus()">保存</button>
+                                    }
+                                </div>
+                                <div id="tree_roleMenus" class="demo-tree-more" style="color: #FFF !important;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<script>
+    var roleId = '';
+
+    layui.use(['table', 'tree', 'util'], function () {
+        var form = layui.form;
+        var table = layui.table;
+        var tree = layui.tree;
+        table.render({
+            elem: '#roleList'
+            , url: '/Role/Index/'
+            , method: 'post'
+            , autoSort: false
+            , cols: [[
+                { type: 'checkbox' }
+                , { field: 'Id', title: 'ID', hide: true }
+                , { field: 'Name', title: '名称', sort: true }
+                , { field: 'State', title: '状态', sort: true, templet: '#statusTemp' }
+                , { field: 'Description', title: '描述' }
+                , { field: 'CreateTs', title: '创建时间', sort: true }
+            ]]
+        });
+
+        //监听行单击事件（单击事件为：rowDouble）
+        table.on('row(roleList)', function (obj) {
+            var data = obj.data;
+            roleId = data.Id;
+            var tip = layer.msg('加载中....', { icon: 16, shade: 0.3, time: 0 });
+            $.get("/Role/GetMenuTreeByRole?roleId=" + data.Id, function (result) {
+                layer.close(tip);
+
+
+                //基本演示
+                tree.render({
+                    elem: '#tree_roleMenus'
+                    , data: result
+                    , showCheckbox: true  //是否显示复选框
+                    , id: 'tree_roleMenus'
+                    , isJump: false //是否允许点击节点时弹出新窗口跳转
+                    , click: function (obj) {
+                    }
+                });
+
+
+            });
+
+
+            //标注选中样式
+            //  obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+
+            $(obj.tr).siblings().css("background-color", "");
+            obj.tr.css("background-color", "rgba(0, 0, 0, 0.2)");
+            // obj.tr.css("background-color", "#a3cf62");
+
+        });
+
+
+        table.on('sort(roleList)', function (obj) { //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            //console.log(obj.field); //当前排序的字段名
+            //console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            //console.log(this); //当前排序的 th 对象
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('roleList', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+    });
+
+
+    function addData() {
+
+
+        get('/Role/Add', function (data, status, xhr) {
+            if (xhr.status === 200) {
+                var index = layer.open({
+                    type: 1
+                    , title: '添加角色'
+                    , closeBtn: false
+                    , shade: 0
+                    , area: ['590px', '500px']
+                    , id: 'addRole'  //设定一个id，防止重复弹出
+                    , btnAlign: 'c'
+                    , closeBtn: 1
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: data
+                    , shadeClose: false //点击遮罩区域是否关闭页面
+                    , zIndex: 1000
+                });
+                layuiWindow['addRole'] = index;
+            }
+            else {
+                showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+            }
+        },
+            function () {
+                showGrowl('GET请求异常。', 'danger', 3000)
+            }
+        );
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+    function editData() {
+        if (isEmpty(roleId)) {
+            showGrowl('请选择一行再编辑!', 'danger', 3000)
+            return;
+        }
+
+        else {
+
+
+
+            get('/Role/Edit?id=' + roleId, function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    var index = layer.open({
+                        type: 1
+                        , title: '编辑角色'
+                        , closeBtn: false
+                        , shade: 0
+                        , area: ['590px', '500px']
+                        , id: 'editRole' + roleId //设定一个id，防止重复弹出
+                        , btnAlign: 'c'
+                        , closeBtn: 1
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: data
+                        , shadeClose: false //点击遮罩区域是否关闭页面
+                        , zIndex: 1000
+                    });
+                    layuiWindow['editRole' + roleId] = index;
+                }
+                else {
+                    showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+                }
+            },
+                function () {
+                    showGrowl('GET请求异常。', 'danger', 3000)
+                }
+            );
+
+
+        }
+
+    }
+
+
+
+    function deleteData() {
+        var table = layui.table;
+        var checkStatus = table.checkStatus('roleList');
+        if (checkStatus.data.length == 0) {
+            showGrowl('请至少选择一行', 'danger', 3000);
+        }
+        else {
+
+            var ids = new Array();
+            for (var i = 0; i < checkStatus.data.length; i++) {
+                ids[i] = checkStatus.data[i].Id;
+            }
+
+            var index = layer.confirm('确定要删除' + ids.length + "条角色吗?", {
+                 title: '警告', btn: ['确定', '取消']
+            }
+                , function () {
+                    showLoader('删除中....', 60);
+
+                    $.post("/Role/Delete", { ids: ids }, function (result) {
+                        closeLoader();
+                        layer.close(layuiWindow['deleteRole']);
+
+                        if (result.Flag) {
+                            reload();
+                            layer.close(layuiWindow['deleteRole']);
+                            showGrowl('删除成功!', 'success', 3000);
+
+
+                        }
+                        else {
+                            showGrowl(result.Msg, 'danger', 4000);
+
+
+                        }
+                    }, "json");
+                }, function () {
+                    layer.close(layuiWindow['deleteRole']);
+                });
+
+
+            layuiWindow['deleteRole'] = index;
+
+        }
+    }
+
+
+
+
+    function reload() {
+        var table = layui.table;
+        var tree = layui.tree;
+        table.reload('roleList', {
+        });
+
+        tree.render({
+            elem: '#tree_roleMenus'
+            , data: {}
+            , showCheckbox: true  //是否显示复选框
+            , id: 'tree_roleMenus'
+            , isJump: false //是否允许点击节点时弹出新窗口跳转
+            , click: function (obj) {
+            }
+        });
+    }
+
+
+    function saveRoleMenus() {
+        var table = layui.table;
+        var tree = layui.tree;
+        //var checkRole = table.checkStatus('roleList');
+        if (isEmpty(roleId)) {
+            showGrowl('请选择一行角色再进行操作!', 'danger', 3000);
+            return;
+        }
+
+        var checkMenus = tree.getChecked('tree_roleMenus');
+
+        showLoader('保存中....', 60);
+
+        $.post("/Role/RolePower", { RoleId: roleId, Menus: checkMenus }, function (result) {
+            closeLoader();
+            if (result.Flag) {
+                showGrowl('保存成功!', 'success', 3000);
+
+
+            }
+            else {
+                showGrowl(result.Msg, 'danger', 3000);
+            }
+        }, "json");
+
+    }
+
+
+
+
+
+
+</script>
+
+
+<script type="text/html" id="statusTemp">
+
+    {{#  if(d.State==200){ }}
+    <font color="#abe879">正常</font>
+    {{#  } else if(d.State==500) { }}
+    <font color="red">停用</font>
+    {{#  } }}
+
+
+</script>

@@ -12,7 +12,7 @@ namespace ZLMediaServerManagent.Models.Dto
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreateTs { get; set; }
-        public RoleStatus Status { get; set; }
+        public RoleStatus State { get; set; }
         public List<MenuDto> Menus { get; set; }
     }
 }

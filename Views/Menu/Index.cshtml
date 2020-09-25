@@ -66,7 +66,6 @@ ViewData["Title"] = "菜单管理";
                 </div>
             </div>
 
-            </table>
         </div>
     </div>
 </section>
@@ -108,6 +107,8 @@ ViewData["Title"] = "菜单管理";
         table.on('row(menuList)', function (obj) {
             var data = obj.data;
             $(obj.tr).siblings().css("background-color", "");
+            obj.tr.css("background-color", "rgba(0, 0, 0, 0.2)");
+
             // obj.tr.css("background-color", "#a3cf62");
             menuId = data.Id;
         });
@@ -115,6 +116,8 @@ ViewData["Title"] = "菜单管理";
         table.on('rowDouble(menuList)', function (obj) {
             var data = obj.data;
             $(obj.tr).siblings().css("background-color", "");
+            obj.tr.css("background-color", "rgba(0, 0, 0, 0.2)");
+
             // obj.tr.css("background-color", "#a3cf62");
             menuId = data.Id;
             editData();
@@ -157,7 +160,7 @@ ViewData["Title"] = "菜单管理";
                     , shadeClose: false //点击遮罩区域是否关闭页面
                     , zIndex: 1000
                 });
-                layuiWindow['addMenu' ] = index;
+                layuiWindow['addMenu'] = index;
             }
             else {
                 showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
@@ -168,7 +171,7 @@ ViewData["Title"] = "菜单管理";
             }
         );
 
- 
+
     }
 
     function reload() {
@@ -182,7 +185,7 @@ ViewData["Title"] = "菜单管理";
         //var table = layui.table;
         //var checkStatus = table.checkStatus('menuList');
         if (isEmpty(menuId)) {
-            layer.msg('请选择一行再编辑!', { icon: 3 });
+              showGrowl('请选择一行再编辑!', 'danger', 3000);
         }
         else {
             get('/Menu/Edit?id=' + menuId, function (data, status, xhr) {
@@ -223,7 +226,7 @@ ViewData["Title"] = "菜单管理";
         var table = layui.table;
         var checkStatus = table.checkStatus('menuList');
         if (checkStatus.data.length == 0) {
-            showGrowl('请至少选择一行!','danger',3000);
+            showGrowl('请至少选择一行!', 'danger', 3000);
         }
         else {
 

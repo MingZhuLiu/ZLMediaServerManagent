@@ -193,6 +193,37 @@ namespace ZLMediaServerManagent.Commons
             };
             menus.Add(system_role_delete);
 
+            var system_role_menus=new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = system_role.Id,
+                Name = "角色权限列表",
+                Icon = null,
+                Url = "/Role/GetMenuTreeByRole",
+                Order = 4,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(system_role_menus);
+
+             var system_role_power=new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = system_role.Id,
+                Name = "角色授权",
+                Icon = null,
+                Url = "/Role/RolePower",
+                Order = 5,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(system_role_power);
             #endregion
 
 

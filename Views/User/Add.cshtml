@@ -1,0 +1,139 @@
+﻿@model ZLMediaServerManagent.Models.ViewDto.UserEditDataSourceDto
+
+@{
+    ViewData["Title"] = "添加用户";
+}
+
+
+    <form class="layui-form" action="" lay-filter="component-form-element" style="margin:30px" id="form1" name="form1">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">用户姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Name" lay-verify="required" placeholder="请输用户姓名" autocomplete="off" class="layui-input" style="color: #FFF;">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">性别：</label>
+            <div class="layui-input-block">
+                <select name="Sex" lay-search>
+                    <option value="1" selected="selected">男</option>
+                    <option value="0">女</option>
+                </select>
+            </div>
+        </div>
+        <input type="hidden" name="Sculpture" value="" />
+
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">账号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="LoginName" placeholder="请输入账号" autocomplete="off" class="layui-input" lay-verify="required" style="color: #FFF;">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">密码：</label>
+            <div class="layui-input-block">
+                <input type="password" name="LoginPasswd" placeholder="请输入密码" autocomplete="off" class="layui-input" lay-verify="required" style="color: #FFF;">
+            </div>
+        </div>
+
+     
+
+        @if (Model.AllRoles != null)
+        {
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">用户角色：</label>
+            <div class="layui-input-block">
+
+                <select name="TempRoleId" lay-search>
+                    @{
+                            bool flag_role = false;
+                            foreach (var item in Model.AllRoles)
+                            {
+                                if (!flag_role)
+                                {
+                        <option value="@item.Id" selected="selected">@item.Name</option>
+                                    flag_role = true;
+                                }
+                                else
+                                {
+                        <option value="@item.Id">@item.Name</option>
+
+                                }
+                            }
+                    }
+                </select>
+            </div>
+        </div>
+        }
+ 
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">状态：</label>
+            <div class="layui-input-block">
+                <select name="State" lay-search>
+                    <option value="200" selected="selected">正常</option>
+                    <option value="500">停用</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">电话：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Tel" placeholder="请输入电话" class="layui-input" style="color: #FFF;">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">地址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Address" placeholder="请输入地址" class="layui-input" lay-verify="required" style="color: #FFF;">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+                <div class="layui-input-block" style="left: 0;">
+                    <button class="layui-btn" lay-submit="" lay-filter="submitForm">保存</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+<script>
+
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate
+           , upload = layui.upload;
+        layui.form.render();
+
+
+
+        //监听提交
+        form.on('submit(submitForm)', function (data) {
+            showLoader('保存中....',60);
+            $.post("/User/Add", data.field, function (result) {
+                closeLoader();
+                if (result.Flag) {
+                    showGrowl('保存成功!', 'success', 3000);
+                    reload();
+                    layer.close(layuiWindow['addUser']); //再执行关闭
+                }
+                else {
+                    showGrowl(result.Msg,'danger',4000);
+
+                }
+            });
+            return false;
+
+        });
+    });
+
+
+
+</script>

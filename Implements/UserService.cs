@@ -74,7 +74,7 @@ namespace ZLMediaServerManagent.Implements
                 }
 
                 result.Success("登录成功!");
-                result.Data=user;
+                result.Data = user;
                 //走到这里说明验证通过
 
             }
@@ -142,10 +142,10 @@ namespace ZLMediaServerManagent.Implements
                 var query = DataBaseCache.Users.Where(p => p.State != (int)BaseStatus.Deleted).AsQueryable();
                 if (!String.IsNullOrWhiteSpace(queryModel.keyword))
                 {
-                    query = query.Where(p => p.Name.Contains(queryModel.keyword)
-                    || p.Address.Contains(queryModel.keyword)
-                    || p.Tel.Contains(queryModel.keyword)
-                    || p.LoginName.Contains(queryModel.keyword)
+                    query = query.Where(p => (p.Name != null && p.Name.Contains(queryModel.keyword))
+                    ||(p.Address != null &&  p.Address.Contains(queryModel.keyword))
+                    ||(p.Tel != null &&  p.Tel.Contains(queryModel.keyword))
+                    ||(p.LoginName != null &&  p.LoginName.Contains(queryModel.keyword))
                     ).AsQueryable();
                 }
 
@@ -190,7 +190,7 @@ namespace ZLMediaServerManagent.Implements
             }
 
 
-            if (DataBaseCache.Users.Where(p => p.LoginName == dto.LoginName).Any())
+            if (DataBaseCache.Users.Where(p => p.LoginName == dto.LoginName && p.State != (int)BaseStatus.Deleted).Any())
                 return result.Failed("用户名已存在!");
 
             if (dto.TempRoleId == 0)
@@ -274,8 +274,8 @@ namespace ZLMediaServerManagent.Implements
             dbModel.Sex = dto.Sex;
             dbModel.State = (int)dto.State;
             dbModel.Tel = dto.Tel;
-            dbModel.UpdateBy=operaUser.Id;
-            dbModel.UpdateTs=DateTime.Now;
+            dbModel.UpdateBy = operaUser.Id;
+            dbModel.UpdateTs = DateTime.Now;
 
             var flag = dbContext.SaveChanges() > 0 ? true : false;
             var flag1 = roleService.SetUserRole(dbModel.Id, new long[] { dto.TempRoleId.Value });
@@ -312,13 +312,13 @@ namespace ZLMediaServerManagent.Implements
             foreach (var item in users)
             {
                 item.State = (int)UserStatus.Deleted;
-                item.UpdateBy=operaUser.Id;
-                item.UpdateTs=DateTime.Now;
+                item.UpdateBy = operaUser.Id;
+                item.UpdateTs = DateTime.Now;
             }
             var flag = dbContext.SaveChanges() > 0 ? true : false;
             if (flag)
             {
-                DataBaseCache.Users=dbContext.Users.ToList();
+                DataBaseCache.Users = dbContext.Users.ToList();
                 result.Success("删除成功!");
             }
             else

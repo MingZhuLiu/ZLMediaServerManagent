@@ -1,0 +1,185 @@
+﻿@model ZLMediaServerManagent.Models.ViewDto.UserEditDataSourceDto
+
+@{
+    ViewData["Title"] = "编辑用户";
+}
+
+    <form class="layui-form" action="" lay-filter="component-form-element" style="margin:30px" id="form1" name="form1">
+        <div class="layui-form-item" hidden="hidden">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">用户Id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Id" lay-verify="required" placeholder="请输用户姓名" autocomplete="off" class="layui-input" value="@Model.User.Id">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">用户姓名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Name" lay-verify="required" placeholder="请输用户姓名" autocomplete="off" class="layui-input" value="@Model.User.Name" style="color: #FFF;">
+            </div>
+        </div>
+
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">性别：</label>
+            <div class="layui-input-block">
+                <select name="Sex" lay-search>
+                    @if (Model.User.Sex == ZLMediaServerManagent.Models.Enums.SexEnum.Man)
+                    {
+                        <option value="1" selected="selected">男</option>
+                        <option value="0">女</option>
+                    }
+                    else
+                    {
+                        <option value="1">男</option>
+                        <option value="0" selected="selected">女</option>
+                    }
+
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">账号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="LoginName" placeholder="请输入账号" autocomplete="off" class="layui-input" lay-verify="required" value="@Model.User.LoginName" style="color: #FFF;">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">密码：</label>
+            <div class="layui-input-block">
+                <input type="password" name="LoginPasswd" placeholder="不修改密码则保持为空!" autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" class="layui-input" style="color: #FFF;">
+            </div>
+        </div>
+    
+
+        @if (Model.AllRoles != null)
+        {
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 110px;color:#FFF;">用户角色：</label>
+                <div class="layui-input-block">
+
+                    <select name="TempRoleId" lay-search>
+                        @{
+                            foreach (var item in Model.AllRoles)
+                            {
+                                if (item.Id == Model.User.TempRoleId)
+                                {
+                                    <option value="@item.Id" selected="selected">@item.Name</option>
+
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        }
+
+
+        
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">状态：</label>
+            <div class="layui-input-block">
+                <select name="State" lay-search>
+
+                    @if (Model.User.State == ZLMediaServerManagent.Models.Enums.UserStatus.Normal)
+                    {
+                        <option value="200" selected="selected">正常</option>
+                        <option value="500">停用</option>
+                    }
+                    else
+                    {
+                        <option value="200">正常</option>
+                        <option value="500" selected="selected">停用</option>
+                    }
+
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">电话：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Tel" placeholder="请输入电话" class="layui-input" value="@Model.User.Tel" style="color: #FFF;">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">地址：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Address" placeholder="请输入地址" class="layui-input" lay-verify="required" value="@Model.User.Address" style="color: #FFF;">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-layout-admin">
+            <div class="layui-input-block">
+                <div class="layui-input-block" style="left: 0;">
+                    <button class="layui-btn" lay-submit="" lay-filter="submitForm">保存</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+<script>
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate
+          , upload = layui.upload;
+        layui.form.render();
+
+
+        
+        //logo上传
+        upload.render({
+            elem: '#upload_logo'
+            , url: '/Public/upload'
+            , multiple: true
+            , before: function (obj) {
+                $('#showLogo').show();
+                obj.preview(function (index, file, result) {
+                    $("#img1").remove();
+                 
+                    $('#logoImg').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img" style="width:50%;">')
+                });
+            }
+            , done: function (res) {
+
+                $('input[name="Sculpture"]').val("https://viewer.drugcloud.net"+res.data.src);
+              
+                //上传完毕
+            }
+
+        });
+
+        //监听提交
+        form.on('submit(submitForm)', function (data) {
+            var tip = layer.msg('保存中....', { icon: 16, shade: 0.3, time: 0 });
+            $.post("/User/Edit", data.field, function (result) {
+                layer.close(tip);
+                if (result.Flag) {
+                    parent.successMsg('保存成功');
+                    parent.reload();
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }
+                else {
+                    layer.msg(result.Msg, { icon: 5 }, function () {
+
+                    });
+                }
+            });
+            return false;
+
+        });
+    });
+
+
+
+</script>

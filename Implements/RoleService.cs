@@ -78,7 +78,7 @@ namespace ZLMediaServerManagent.Implements
             role.CreateTs = DateTime.Now;
             role.Description = dto.Description;
             role.Name = dto.Name;
-            role.State = (int)dto.Status;
+            role.State = (int)dto.State;
             role.UpdateBy = user.Id;
             role.UpdateTs = role.CreateTs;
 
@@ -104,8 +104,6 @@ namespace ZLMediaServerManagent.Implements
         {
             if (dto == null || String.IsNullOrWhiteSpace(dto.Name))
                 return false;
-            if (dto.Name.Contains("管理员"))
-                return false;
             var dbModel = dbContext.Roles.Where(p => p.Id == dto.Id).FirstOrDefault();
             if (dbModel == null)
                 return false;
@@ -114,7 +112,7 @@ namespace ZLMediaServerManagent.Implements
 
             dbModel.Name = dto.Name;
             dbModel.Description = dto.Description;
-            dbModel.State = (int)dto.Status;
+            dbModel.State = (int)dto.State;
             dbModel.UpdateBy = user.Id;
             dbModel.UpdateTs = DateTime.Now;
 
@@ -122,8 +120,8 @@ namespace ZLMediaServerManagent.Implements
             if (flag)
             {
                 //更新缓存
-                var cacheItem = DataBaseCache.Roles.Where(p => p.Id == dbModel.Id).First();
-                cacheItem = dbModel;
+                DataBaseCache.Roles.Remove(DataBaseCache.Roles.Where(p => p.Id == dbModel.Id).First());
+                DataBaseCache.Roles.Add(dbModel);
             }
             return flag;
         }

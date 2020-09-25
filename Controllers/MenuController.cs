@@ -55,7 +55,7 @@ namespace ZLMediaServerManagent.Controllers
         public IActionResult Add()
         {
             MenuEditDatasourceDto dto = new MenuEditDatasourceDto();
-            var data = menuService.GetMenuList(new QueryModel() { limit = 99999999, page = 1, Flag = true, });
+            var data = menuService.GetMenuList(new QueryModel() { limit = 99999999, page = 1,  });
             dto.Menus = (List<MenuDto>)data.data;
             return View(dto);
         }
@@ -91,7 +91,7 @@ namespace ZLMediaServerManagent.Controllers
         {
             MenuEditDatasourceDto dto = new MenuEditDatasourceDto();
             dto.Menu = menuService.FindMenu(id);
-            var data = menuService.GetMenuList(new QueryModel() { limit = 99999999, page = 1, Flag = true });
+            var data = menuService.GetMenuList(new QueryModel() { limit = 99999999, page = 1,});
             dto.Menus = (List<MenuDto>)data.data;
             return View(dto);
         }
