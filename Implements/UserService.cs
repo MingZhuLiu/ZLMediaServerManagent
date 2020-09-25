@@ -126,7 +126,7 @@ namespace ZLMediaServerManagent.Implements
                     {
                         r.Children.AddRange(datalist);
                     }
-                    );
+                    ).OrderBy(p=>p.Order).ToList();
             return menus;
 
         }

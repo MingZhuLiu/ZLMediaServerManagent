@@ -14,6 +14,8 @@ namespace ZLMediaServerManagent.Commons
             CreateMap<TbUserRole, UserRoleDto>().ReverseMap();
             CreateMap<TbMenuRole, MenuRoleDto>().ReverseMap();
             CreateMap<TbConfig, ConfigDto>().ReverseMap();
+            CreateMap<TbDomain, DomainDto>().ReverseMap();
+            CreateMap<TbApplication, ApplicationDto>().ReverseMap();
 
         }
     }

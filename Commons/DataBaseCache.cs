@@ -11,5 +11,7 @@ namespace ZLMediaServerManagent.Commons
         public static List<TbRole> Roles = new List<TbRole>();
         public static List<TbUser> Users = new List<TbUser>();
         public static List<TbUserRole> UserRoles = new List<TbUserRole>();
+        public static List<TbApplication> Applications = new List<TbApplication>();
+        public static List<TbDomain> Domains = new List<TbDomain>();
     }
 }

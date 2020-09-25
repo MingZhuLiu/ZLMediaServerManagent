@@ -48,6 +48,9 @@
 
   * 服务器配置
   ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/服务器配置修改.jpg)
+  
+  * 域名和应用(对应拉流中的参数vHost和app)
+  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/域名和应用管理.jpg)
 
   ## 问题反馈
   * QQ:583530128

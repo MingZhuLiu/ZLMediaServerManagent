@@ -75,6 +75,7 @@ namespace ZLMediaServerManagent
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IMenuService, MenuService>();
+            services.AddScoped<IDomainAndAppService, DomainAndAppService>();
 
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddSignalR();
@@ -186,6 +187,8 @@ namespace ZLMediaServerManagent
             DataBaseCache.Roles = dataBaseContext.Roles.ToList();
             DataBaseCache.UserRoles = dataBaseContext.UserRoles.ToList();
             DataBaseCache.Users = dataBaseContext.Users.ToList();
+            DataBaseCache.Domains = dataBaseContext.Domains.ToList();
+            DataBaseCache.Applications = dataBaseContext.Applications.ToList();
 
             if (GloableCache.IsInitServer)
             {

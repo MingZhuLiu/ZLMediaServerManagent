@@ -38,5 +38,13 @@ namespace ZLMediaServerManagent.Models.ViewDto
         /// 审核操作
         /// </summary>
         public bool Audit { get; set; }
+
+
+        public bool AddDomain{get;set;}
+        public bool EditDomain{get;set;}
+        public bool DeleteDomain{get;set;}
+        public bool AddApplication{get;set;}
+        public bool EditApplication{get;set;}
+        public bool DeleteApplication{get;set;}
     }
 }

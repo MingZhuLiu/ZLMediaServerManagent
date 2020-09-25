@@ -1,0 +1,441 @@
+@model ZLMediaServerManagent.Models.ViewDto.PowerDto
+@{
+ViewData["Title"] = "域名和应用";
+}
+
+
+<section class="tile color transparent-black">
+    <!-- tile header -->
+    <div class="tile-header">
+        <h1><strong>域名和应用</strong>管理</h1>
+    </div>
+    <!-- /tile header -->
+
+
+    <!-- tile body -->
+    <div class="tile-body no-vpadding">
+        <div class="table-responsive">
+
+
+            <div class="layui-fluid" style="height:100%">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header"
+                                style="border-bottom:1px solid rgba(0, 0, 0, 0.2);color: #FFF;">域名列表</div>
+                            <div class="layui-card-body">
+
+                                <div class="layui-card-body">
+                                    <div style="padding-bottom: 10px;">
+
+                                        @if (Model.AddDomain)
+                                        {
+                                        <button class="layui-btn" data-type="add"
+                                            onclick="addData('AddDomain','域名')">添加</button>
+                                        }
+                                        @if (Model.EditDomain)
+                                        {
+                                        <button class="layui-btn layui-btn-normal" data-type="edit"
+                                            onclick="editDomainData()">编辑</button>
+                                        }
+                                        @if (Model.DeleteDomain)
+                                        {
+                                        <button class="layui-btn layui-btn-danger" data-type="batchdel"
+                                            onclick="deleteDomainData()">删除</button>
+                                        }
+
+                                    </div>
+                                    <table class="layui-hide" id="domainList" lay-filter="domainList"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header"
+                                style="border-bottom:1px solid rgba(0, 0, 0, 0.2);color:#FFF;">应用列表
+                            </div>
+                            <div class="layui-card-body">
+                                <div style="padding-bottom: 10px;">
+                                    @if (Model.AddApplication)
+                                    {
+                                    <button class="layui-btn" data-type="add"
+                                        onclick="addData('AddApplication','应用')">添加</button>
+                                    }
+                                    @if (Model.EditApplication)
+                                    {
+                                    <button class="layui-btn layui-btn-normal" data-type="edit"
+                                        onclick="editApplicationData()">编辑</button>
+                                    }
+                                    @if (Model.DeleteApplication)
+                                    {
+                                    <button class="layui-btn layui-btn-danger" data-type="batchdel"
+                                        onclick="deleteApplicationData()">删除</button>
+                                    }
+                                </div>
+                                <table class="layui-hide" id="applicationList" lay-filter="applicationList"></table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<script>
+    var domainId = '';
+    var applicationId = '';
+
+    layui.use(['table', 'tree', 'util'], function () {
+        var form = layui.form;
+        var table = layui.table;
+        var tree = layui.tree;
+        table.render({
+            elem: '#domainList'
+            , url: '/DomainAndApp/DomainAndApp/'
+            , method: 'post'
+            , autoSort: false
+            , cols: [[
+                { type: 'checkbox' }
+                , { field: 'Id', title: 'ID', hide: true }
+                , { field: 'DomainName', title: '域名', sort: true }
+                , { field: 'State', title: '状态', sort: true, templet: '#statusTemp' }
+                , { field: 'Description', title: '描述' }
+                , { field: 'CreateTs', title: '创建时间', sort: true }
+            ]]
+            , where: {
+                Flag: true
+            }
+        });
+
+        table.render({
+            elem: '#applicationList'
+            , url: '/DomainAndApp/DomainAndApp/'
+            , method: 'post'
+            , autoSort: false
+            , cols: [[
+                { type: 'checkbox' }
+                , { field: 'Id', title: 'ID', hide: true }
+                , { field: 'AppName', title: '应用', sort: true }
+                , { field: 'State', title: '状态', sort: true, templet: '#statusTemp' }
+                , { field: 'Description', title: '描述' }
+                , { field: 'CreateTs', title: '创建时间', sort: true }
+            ]]
+            , where: {
+                Flag: false
+            }
+        });
+
+        //监听行单击事件（双击事件为：rowDouble）
+        table.on('row(domainList)', function (obj) {
+            var data = obj.data;
+            domainId = data.Id;
+
+            reloadApplication();
+
+
+            $(obj.tr).siblings().css("background-color", "");
+            obj.tr.css("background-color", "rgba(0, 0, 0, 0.2)");
+
+
+        });
+
+
+        table.on('row(applicationList)', function (obj) {
+            var data = obj.data;
+            applicationId = data.Id;
+            $(obj.tr).siblings().css("background-color", "");
+            obj.tr.css("background-color", "rgba(0, 0, 0, 0.2)");
+
+
+        });
+
+
+
+
+        table.on('sort(domainList)', function (obj) { //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            //console.log(obj.field); //当前排序的字段名
+            //console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            //console.log(this); //当前排序的 th 对象
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('domainList', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                    ,Flag:true
+
+                }
+            });
+        });
+
+        table.on('sort(applicationList)', function (obj) { //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            //console.log(obj.field); //当前排序的字段名
+            //console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            //console.log(this); //当前排序的 th 对象
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('applicationList', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                , where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                    , parentId: domainId
+                    ,Flag:false
+
+                }
+            });
+        });
+
+
+
+
+
+
+
+
+    });
+
+
+    function addData(type, name) {
+
+        if (name === "应用" && isEmpty(domainId)) {
+            showGrowl('请先选择域名', 'danger', 3000);
+            return;
+        }
+
+        get('/DomainAndApp/' + type, function (data, status, xhr) {
+            if (xhr.status === 200) {
+                var index = layer.open({
+                    type: 1
+                    , title: '添加' + name
+                    , closeBtn: false
+                    , shade: 0
+                    , area: ['590px', '500px']
+                    , id: type  //设定一个id，防止重复弹出
+                    , btnAlign: 'c'
+                    , closeBtn: 1
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: data
+                    , shadeClose: false //点击遮罩区域是否关闭页面
+                    , zIndex: 1000
+                });
+                layuiWindow[type] = index;
+            }
+            else {
+                showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+            }
+        },
+            function () {
+                showGrowl('GET请求异常。', 'danger', 3000)
+            }
+        );
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+    function editDomainData() {
+        if (isEmpty(domainId)) {
+            showGrowl('请选择一行域名再编辑!', 'danger', 3000)
+            return;
+        }
+        else {
+            get('/DomainAndApp/EditDomain?domainId=' + domainId, function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    var index = layer.open({
+                        type: 1
+                        , title: '编辑域名'
+                        , closeBtn: false
+                        , shade: 0
+                        , area: ['590px', '500px']
+                        , id: 'editDomain' + domainId //设定一个id，防止重复弹出
+                        , btnAlign: 'c'
+                        , closeBtn: 1
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: data
+                        , shadeClose: false //点击遮罩区域是否关闭页面
+                        , zIndex: 1000
+                    });
+                    layuiWindow['editDomain' + domainId] = index;
+                }
+                else {
+                    showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+                }
+            },
+                function () {
+                    showGrowl('GET请求异常。', 'danger', 3000)
+                }
+            );
+        }
+    }
+
+    function editApplicationData() {
+        if (isEmpty(applicationId)) {
+            showGrowl('请选择一行应用再编辑!', 'danger', 3000)
+            return;
+        }
+        else {
+            get('/DomainAndApp/EditApplication?applicationId=' + applicationId, function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    var index = layer.open({
+                        type: 1
+                        , title: '编辑应用'
+                        , closeBtn: false
+                        , shade: 0
+                        , area: ['590px', '500px']
+                        , id: 'EditApplication' + applicationId //设定一个id，防止重复弹出
+                        , btnAlign: 'c'
+                        , closeBtn: 1
+                        , moveType: 1 //拖拽模式，0或者1
+                        , content: data
+                        , shadeClose: false //点击遮罩区域是否关闭页面
+                        , zIndex: 1000
+                    });
+                    layuiWindow['EditApplication' + applicationId] = index;
+                }
+                else {
+                    showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+                }
+            },
+                function () {
+                    showGrowl('GET请求异常。', 'danger', 3000)
+                }
+            );
+        }
+    }
+
+    
+
+
+
+    function deleteDomainData() {
+        var table = layui.table;
+        var checkStatus = table.checkStatus('domainList');
+        if (checkStatus.data.length == 0) {
+            showGrowl('请至少选择一行', 'danger', 3000);
+        }
+        else {
+            var ids = new Array();
+            for (var i = 0; i < checkStatus.data.length; i++) {
+                ids[i] = checkStatus.data[i].Id;
+            }
+
+            var index = layer.confirm('确定要删除' + ids.length + "条域名吗?", {
+                title: '警告', btn: ['确定', '取消']
+            }
+                , function () {
+                    showLoader('删除中....', 60);
+                    $.post("/DomainAndApp/DeleteDomain", { ids: ids }, function (result) {
+                        closeLoader();
+                        layer.close(index);
+                        if (result.Flag) {
+                            reloadDomain();
+                            layer.close(index);
+                            showGrowl('删除成功!', 'success', 3000);
+
+
+                        }
+                        else {
+                            showGrowl(result.Msg, 'danger', 4000);
+                        }
+                    }, "json");
+                }, function () {
+                    layer.close(index);
+                });
+        }
+    }
+
+
+
+ function deleteApplicationData() {
+        var table = layui.table;
+        var checkStatus = table.checkStatus('applicationList');
+        if (checkStatus.data.length == 0) {
+            showGrowl('请至少选择一行', 'danger', 3000);
+        }
+        else {
+            var ids = new Array();
+            for (var i = 0; i < checkStatus.data.length; i++) {
+                ids[i] = checkStatus.data[i].Id;
+            }
+
+            var index = layer.confirm('确定要删除' + ids.length + "条应用吗?", {
+                title: '警告', btn: ['确定', '取消']
+            }
+                , function () {
+                    showLoader('删除中....', 60);
+                    $.post("/DomainAndApp/DeleteApplication", { ids: ids }, function (result) {
+                        closeLoader();
+                        layer.close(index);
+                        if (result.Flag) {
+                            reloadApplication();
+                            layer.close(index);
+                            showGrowl('删除成功!', 'success', 3000);
+                        }
+                        else {
+                            showGrowl(result.Msg, 'danger', 4000);
+                        }
+                    }, "json");
+                }, function () {
+                    layer.close(index);
+                });
+        }
+    }
+
+
+    function reloadDomain() {
+        var table = layui.table;
+        var tree = layui.tree;
+        table.reload('domainList', {
+        });
+
+
+    }
+
+    function reloadApplication() {
+        var table = layui.table;
+        var tree = layui.tree;
+        table.reload('applicationList', {
+            where: {
+                Flag: false,
+                parentId: domainId
+            }
+        });
+
+
+    }
+
+
+
+
+
+
+
+</script>
+
+
+<script type="text/html" id="statusTemp">
+
+    {{#  if(d.State==200){ }}
+    <font color="#abe879">正常</font>
+    {{#  } else if(d.State==500) { }}
+    <font color="red">停用</font>
+    {{#  } }}
+
+
+</script>

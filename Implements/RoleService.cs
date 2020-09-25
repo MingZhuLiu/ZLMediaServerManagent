@@ -35,7 +35,6 @@ namespace ZLMediaServerManagent.Implements
             TableQueryModel<RoleDto> tableQueryModel = new TableQueryModel<RoleDto>();
             try
             {
-                List<RoleDto> roles = new List<RoleDto>();
                 var query = DataBaseCache.Roles.Where(p => p.State != (int)RoleStatus.Deleted).AsQueryable();
 
 
@@ -44,18 +43,15 @@ namespace ZLMediaServerManagent.Implements
                     query = query.Where(p => p.Name.Contains(queryModel.keyword)).AsQueryable();
                 }
                 tableQueryModel.count = query.Count();
-                query = query.Skip((queryModel.page - 1) * queryModel.limit);
                 if (!String.IsNullOrWhiteSpace(queryModel.field) && !String.IsNullOrWhiteSpace(queryModel.order))
                 {
                     query = query.SortBy(queryModel.field + " " + queryModel.order.ToUpper());
                 }
+                query = query.Skip((queryModel.page - 1) * queryModel.limit);
                 query = query.Take(queryModel.limit);
 
-                var list = query.ToList();
-                list.ForEach(p => roles.Add(mapper.Map<RoleDto>(p)));
-
                 tableQueryModel.code = 0;
-                tableQueryModel.data = roles;
+                tableQueryModel.data =  query.Select(p=>mapper.Map<RoleDto>(p)).ToList();
 
             }
             catch (Exception ex)

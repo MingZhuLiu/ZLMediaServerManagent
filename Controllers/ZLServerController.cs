@@ -53,8 +53,6 @@ namespace ZLMediaServerManagent.Controllers
         }
 
 
-        //EditConfig
-
         [HttpPost]
         public BaseModel<String> EditConfig(ConfigDto dto)
         {

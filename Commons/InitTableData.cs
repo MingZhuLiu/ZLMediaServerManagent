@@ -347,8 +347,121 @@ namespace ZLMediaServerManagent.Commons
             };
             menus.Add(zlserver_editConfig);
 
+            #region  域名和应用
+            var domainAndApp = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = zlserver.Id,
+                Name = "域名和应用",
+                Icon = "fa fa-bars",
+                Url = "/DomainAndApp/DomainAndApp",
+                Order = 2,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(domainAndApp);
+
+            var domainAndApp_addDomain = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = domainAndApp.Id,
+                Name = "添加域名",
+                Icon = null,
+                Url = "/DomainAndApp/AddDomain",
+                Order = 1,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(domainAndApp_addDomain);
+
+            var domainAndApp_editDomain = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = domainAndApp.Id,
+                Name = "编辑域名",
+                Icon = null,
+                Url = "/DomainAndApp/EditDomain",
+                Order = 2,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(domainAndApp_editDomain);
+
+            var domainAndApp_deleteDomain = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = domainAndApp.Id,
+                Name = "删除域名",
+                Icon = null,
+                Url = "/DomainAndApp/DeleteDomain",
+                Order = 3,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(domainAndApp_deleteDomain);
 
 
+            var domainAndApp_addApp = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = domainAndApp.Id,
+                Name = "添加应用",
+                Icon = null,
+                Url = "/DomainAndApp/AddApplication",
+                Order = 4,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(domainAndApp_addApp);
+
+            var domainAndApp_editApp = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = domainAndApp.Id,
+                Name = "编辑应用",
+                Icon = null,
+                Url = "/DomainAndApp/EditApplication",
+                Order = 5,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(domainAndApp_editApp);
+
+            var domainAndApp_deleteApp = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = domainAndApp.Id,
+                Name = "删除应用",
+                Icon = null,
+                Url = "/DomainAndApp/DeleteApplication",
+                Order = 6,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(domainAndApp_deleteApp);
+
+            #endregion
 
 
             return menus;

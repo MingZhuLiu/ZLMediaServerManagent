@@ -32,7 +32,8 @@ namespace ZLMediaServerManagent.DataBase
         public DbSet<TbUserRole> UserRoles { get; set; }
         public DbSet<TbMenuRole> MenuRoles { get; set; }
         public DbSet<TbConfig> Configs { get; set; }
-
+        public DbSet<TbDomain> Domains { get; set; }
+        public DbSet<TbApplication> Applications { get; set; }
 
     }
 }

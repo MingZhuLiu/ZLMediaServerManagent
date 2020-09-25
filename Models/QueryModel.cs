@@ -36,7 +36,7 @@ namespace  ZLMediaServerManagent.Models
         /// <summary>
         /// 父级id
         /// </summary>
-        public long parentId { get; set; }
+        public long? parentId { get; set; }
 
         /// <summary>
         /// 状态
