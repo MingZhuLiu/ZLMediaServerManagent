@@ -160,19 +160,16 @@
 
         //监听提交
         form.on('submit(submitForm)', function (data) {
-            var tip = layer.msg('保存中....', { icon: 16, shade: 0.3, time: 0 });
+            showLoader('保存中....',60);
             $.post("/User/Edit", data.field, function (result) {
-                layer.close(tip);
+                closeLoader();
                 if (result.Flag) {
-                    parent.successMsg('保存成功');
-                    parent.reload();
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭
+                    showGrowl('保存成功!', 'success', 3000);
+                    reload();
+                    layer.close(layuiWindow['editUser'+data.field.Id]); //再执行关闭
                 }
                 else {
-                    layer.msg(result.Msg, { icon: 5 }, function () {
-
-                    });
+                    showGrowl(result.Msg,'danger',4000);
                 }
             });
             return false;

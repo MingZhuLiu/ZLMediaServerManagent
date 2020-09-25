@@ -101,9 +101,10 @@ ViewData["Title"] = "角色管理";
         table.on('row(roleList)', function (obj) {
             var data = obj.data;
             roleId = data.Id;
-            var tip = layer.msg('加载中....', { icon: 16, shade: 0.3, time: 0 });
+
+            showLoader('加载中....',60);
             $.get("/Role/GetMenuTreeByRole?roleId=" + data.Id, function (result) {
-                layer.close(tip);
+                closeLoader();
 
 
                 //基本演示
