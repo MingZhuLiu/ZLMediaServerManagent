@@ -15,9 +15,7 @@ namespace ZLMediaServerManagent.Models.Dto
 
         public string Description { get; set; }
 
-
         public virtual DomainDto Domain { get; set; }
-
 
     }
 

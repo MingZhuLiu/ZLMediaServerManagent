@@ -110,12 +110,12 @@ namespace ZLMediaServerManagent.Commons
                     switch (loginPlatform)
                     {
                         case LoginPlatform.Web:
-                        //Todo 
+                            //Todo 
                             // dbToken = RedisHelper.Instance.GetHash<String>(RedisCacheTables.WebTokenDto, userTokenDto.UserId.ToString());
                             // if (token.Equals(dbToken))
-                                // result = true;
+                            // result = true;
                             // else
-                                // result = false;
+                            // result = false;
                             break;
                     }
                     return result;
@@ -300,7 +300,7 @@ namespace ZLMediaServerManagent.Commons
         {
             NameValueCollection values = new NameValueCollection();
 
-      
+
 
             string[] nameValues = url.Substring(0).Split('&');
 
@@ -319,6 +319,39 @@ namespace ZLMediaServerManagent.Commons
             return values;
         }
 
+
+        public static string FormatJsonString(string str)
+        {
+            //格式化json字符串
+            try
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                TextReader tr = new StringReader(str);
+                JsonTextReader jtr = new JsonTextReader(tr);
+                object obj = serializer.Deserialize(jtr);
+                if (obj != null)
+                {
+                    StringWriter textWriter = new StringWriter();
+                    JsonTextWriter jsonWriter = new JsonTextWriter(textWriter)
+                    {
+                        Formatting = Formatting.Indented,
+                        Indentation = 4,
+                        IndentChar = ' '
+                    };
+                    serializer.Serialize(jsonWriter, obj);
+                    return textWriter.ToString();
+                }
+                else
+                {
+                    return str;
+                }
+            }
+            catch
+            {
+                return string.Empty;
+            }
+
+        }
 
     }
 }

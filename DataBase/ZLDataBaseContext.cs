@@ -34,6 +34,9 @@ namespace ZLMediaServerManagent.DataBase
         public DbSet<TbConfig> Configs { get; set; }
         public DbSet<TbDomain> Domains { get; set; }
         public DbSet<TbApplication> Applications { get; set; }
+        public DbSet<TbStreamProxy> StreamProxies { get; set; }
+
+        
 
     }
 }

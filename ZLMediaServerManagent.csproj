@@ -19,7 +19,7 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="3.19.80" />
     <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
-    <PackageReference Include="ZLMediaKit.DotNetCoreLib" Version="1.0.1" />
+    <PackageReference Include="ZLMediaKit.DotNetCoreLib" Version="1.0.2" />
   </ItemGroup>
 
 </Project>

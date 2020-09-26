@@ -52,6 +52,9 @@
   * 域名和应用(对应拉流中的参数vHost和app)
   ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/域名和应用管理.jpg)
 
+  * 拉流代理
+  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/拉流代理.jpg)
+
   ## 问题反馈
   * QQ:583530128
   * Mail: starry_link@foxmail.com

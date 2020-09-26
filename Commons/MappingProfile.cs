@@ -16,6 +16,7 @@ namespace ZLMediaServerManagent.Commons
             CreateMap<TbConfig, ConfigDto>().ReverseMap();
             CreateMap<TbDomain, DomainDto>().ReverseMap();
             CreateMap<TbApplication, ApplicationDto>().ReverseMap();
+            CreateMap<TbStreamProxy, StreamProxyDto>().ReverseMap();
 
         }
     }

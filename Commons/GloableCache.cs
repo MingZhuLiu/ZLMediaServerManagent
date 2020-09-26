@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using STRealVideo.Lib.Models;
 using ZLMediaServerManagent.DataBase;
 using ZLMediaServerManagent.Models.Dto;
 using ZLMediaServerManagent.Models.ViewDto;
@@ -17,6 +19,12 @@ namespace ZLMediaServerManagent.Commons
         /// 访问全局客户端
         /// </summary>
         public static STRealVideo.Lib.ZLClient ZLClient = null;
+    
+        /// <summary>
+        /// ZLServer是否在线
+        /// </summary>
+        /// <value></value>
+        public static bool ZLServerOnline { get; set; }
 
         /// <summary>
         /// 在线用户
@@ -36,6 +44,10 @@ namespace ZLMediaServerManagent.Commons
         /// ZL服务器配置
         /// </summary>
         public static Dictionary<String, String> ZLMediaServerConfig = new Dictionary<string, string>();
+
+
+
+        public static System.Collections.Concurrent.ConcurrentBag<MediaStream> MediaStreams=new ConcurrentBag<STRealVideo.Lib.Models.MediaStream>();
 
     }
 }

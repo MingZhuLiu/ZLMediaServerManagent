@@ -76,6 +76,7 @@ namespace ZLMediaServerManagent
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<IDomainAndAppService, DomainAndAppService>();
+            services.AddScoped<IZLServerService, ZLServerService>();
 
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddSignalR();
@@ -83,9 +84,8 @@ namespace ZLMediaServerManagent
 
 
 
-
-
             initDataBase(ref services);
+             services.AddHostedService<ZLBackGroundTask>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -189,6 +189,7 @@ namespace ZLMediaServerManagent
             DataBaseCache.Users = dataBaseContext.Users.ToList();
             DataBaseCache.Domains = dataBaseContext.Domains.ToList();
             DataBaseCache.Applications = dataBaseContext.Applications.ToList();
+            DataBaseCache.StreamProxies = dataBaseContext.StreamProxies.ToList();
 
             if (GloableCache.IsInitServer)
             {
@@ -197,8 +198,17 @@ namespace ZLMediaServerManagent
                 var sec = DataBaseCache.Configs.Where(p => p.ConfigKey == ConfigKeys.ZLMediaServerSecret).FirstOrDefault().ConfigValue;
                 var client = new STRealVideo.Lib.ZLClient("http://" + ip + ":" + port, sec);
                 var configs = client.getServerConfig();
-                GloableCache.ZLClient = client;
-                GloableCache.ZLMediaServerConfig = configs.data.FirstOrDefault();
+                if (configs.code == -300)
+                {
+                    GloableCache.ZLServerOnline=false;
+                }
+                else
+                {
+                    GloableCache.ZLClient = client;
+                    GloableCache.ZLMediaServerConfig = configs.data.FirstOrDefault();
+                    GloableCache.ZLServerOnline=true;
+                }
+
             }
 
         }

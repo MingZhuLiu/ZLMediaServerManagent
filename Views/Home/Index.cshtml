@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/assets/js/vendor/summernote/css/summernote-bs3.css">
     <link rel="stylesheet" href="/assets/js/vendor/chosen/css/chosen.min.css">
     <link rel="stylesheet" href="/assets/js/vendor/chosen/css/chosen-bootstrap.css">
+    <link rel="stylesheet" href="/lib/mdui/mdui.min.css" />
 
     <link rel="stylesheet" href="/lib/bootstrap-table/dist/bootstrap-table.min.css">
 
@@ -199,10 +200,28 @@
             color: #FFF;
 
         }
-        
+
         /* layui table tip文字颜色 */
         .layui-table-tips-main {
             color: #000 !important;
+        }
+
+        /* layui select 高度 */
+        .layui-select,
+        .layui-input {
+            height: 40px !important;
+        }
+
+        /* 卡片中复选框样式 */
+        body #content div.checkbox label:after,
+        body #content .modal .modal-dialog .modal-content div.checkbox label:after {
+            color: #58bd6a !important;
+            width: 0px !important;
+        }
+
+        /*  layui 流加载底部文字颜色 */
+        .layui-flow-more {
+            color: #FFF;
         }
 
         /* .layui-layer-shade{
@@ -934,16 +953,7 @@
 
 
                 <!-- content main container -->
-                <div class="main" id="mainContainer" name="mainContainer">
-                    <!-- <iframe style="width:100%;height:100%;background-color:transparent;border: 0px;" id="main"
-                        name="main" src="/Menu/Index">
-                    </iframe> -->
-                    <!-- 
-                    <iframe style="width:100%;height:800px;background-color:#FFF;border: 0px;" id="main"
-                    name="main" src="/Home/Privacy">
-                </iframe> -->
-
-
+                <div class="main" id="mainContainer" name="mainContainer" style="height: 100%;">
 
 
 
@@ -1426,7 +1436,10 @@
     <script src="/lib/bootstrap-table/dist/bootstrap-table.min.js"></script>
 
     <script src="/assets/js/minimal.min.js"></script>
+    <script src="/lib/mdui/mdui.min.js"></script>
+
     <script src="/js/site.js"></script>
+
 
 
     <script src="/lib/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>

@@ -463,6 +463,76 @@ namespace ZLMediaServerManagent.Commons
 
             #endregion
 
+            #region  拉流代理
+            var zlserver_streamProxy = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = zlserver.Id,
+                Name = "拉流代理",
+                Icon = "fa fa-video-camera",
+                Url = "/ZLServer/StreamProxy",
+                Order = 3,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(zlserver_streamProxy);
+
+
+            var zlserver_addStreamProxy = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = zlserver_streamProxy.Id,
+                Name = "添加拉流代理",
+                Icon = null,
+                Url = "/ZLServer/AddStreamProxy",
+                Order = 1,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(zlserver_addStreamProxy);
+
+
+            var zlserver_editStreamProxy = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = zlserver_streamProxy.Id,
+                Name = "编辑拉流代理",
+                Icon = null,
+                Url = "/ZLServer/EditStreamProxy",
+                Order = 2,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(zlserver_editStreamProxy);
+
+            var zlserver_deleteStreamProxy = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = zlserver_streamProxy.Id,
+                Name = "删除拉流代理",
+                Icon = null,
+                Url = "/ZLServer/DeleteStreamProxy",
+                Order = 3,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(zlserver_deleteStreamProxy);
+
+
+
+            #endregion
 
             return menus;
         }

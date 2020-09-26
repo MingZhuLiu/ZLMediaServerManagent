@@ -11,6 +11,7 @@ using ZLMediaServerManagent.Interface;
 using ZLMediaServerManagent.Models;
 using ZLMediaServerManagent.Models.Dto;
 using ZLMediaServerManagent.Models.ViewDto;
+using static ZLMediaServerManagent.Models.Enums;
 
 namespace ZLMediaServerManagent.Controllers
 {
@@ -18,10 +19,12 @@ namespace ZLMediaServerManagent.Controllers
     public class ZLServerController : BaseController
     {
 
-        public ZLServerController(IMapper mapper, IUserService userService)
+        public ZLServerController(IMapper mapper, IUserService userService, IDomainAndAppService domainAndAppService, IZLServerService zLServerService)
         {
             this.mapper = mapper;
             this.userService = userService;
+            this.domainAndAppService = domainAndAppService;
+            this.zLServerService = zLServerService;
         }
 
 
@@ -86,6 +89,71 @@ namespace ZLMediaServerManagent.Controllers
         }
 
 
+
+        [HttpGet]
+        public IActionResult StreamProxy()
+        {
+            StreamProxyDataSourceDto dataSourceDto = new StreamProxyDataSourceDto();
+            dataSourceDto.Power = new PowerDto();
+            var menus = userService.FindUserMenus(GetUserDto(), false);
+            if (menus.Where(p => !string.IsNullOrWhiteSpace(p.Url) && p.Url.Contains("ZLServer") && p.Url.Contains("AddStreamProxy")).Any())
+                dataSourceDto.Power.Add = true;
+            if (menus.Where(p => !string.IsNullOrWhiteSpace(p.Url) && p.Url.Contains("ZLServer") && p.Url.Contains("EditStreamProxy")).Any())
+                dataSourceDto.Power.Edit = true;
+            if (menus.Where(p => !string.IsNullOrWhiteSpace(p.Url) && p.Url.Contains("ZLServer") && p.Url.Contains("DeleteStreamProxy")).Any())
+                dataSourceDto.Power.Delete = true;
+
+            //判断添加条件，必须存在域名和应用才允许添加
+            if (DataBaseCache.Applications.Where(p => p.State != (int)BaseStatus.Deleted && DataBaseCache.Domains.Where(q => q.Id == p.DomainId).First().State != (int)BaseStatus.Deleted).Any())
+            {
+                dataSourceDto.Power.Audit = true;
+            }
+
+
+            dataSourceDto.Domains = DataBaseCache.Domains.Where(p => p.State != (int)BaseStatus.Deleted).Select(p => mapper.Map<DomainDto>(p)).ToList();
+            dataSourceDto.Applications = DataBaseCache.Applications.Where(p => p.State != (int)BaseStatus.Deleted).Select(p => mapper.Map<ApplicationDto>(p)).ToList();
+            return View(dataSourceDto);
+        }
+
+        [HttpPost]
+        public TableQueryModel<StreamProxyDto> StreamProxy(QueryModel queryModel)
+        {
+            return zLServerService.StreamProxy(queryModel);
+        }
+
+
+        [HttpGet]
+        public IActionResult AddStreamProxy()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public BaseModel<String> AddStreamProxy(StreamProxyDto dto)
+        {
+            return zLServerService.AddStreamProxy(dto, GetUserDto());
+        }
+
+
+        [HttpGet]
+        public IActionResult EditStreamProxy(long streamProxyId)
+        {
+
+            return View(zLServerService.FindStreamProxy(streamProxyId));
+        }
+
+        [HttpPost]
+        public BaseModel<String> EditStreamProxy(StreamProxyDto dto)
+        {
+            return zLServerService.EditStreamProxy(dto, GetUserDto());
+        }
+
+
+        [HttpPost]
+        public BaseModel<String> DeleteStreamProxy(long[] ids)
+        {
+            return zLServerService.DeleteStreamProxy(ids, GetUserDto());
+        }
 
 
     }

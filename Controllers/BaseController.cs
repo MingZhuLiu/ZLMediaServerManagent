@@ -23,6 +23,7 @@ namespace ZLMediaServerManagent.Controllers
         protected IMenuService menuService;
         protected IRoleService roleService;
         protected IDomainAndAppService domainAndAppService;
+        protected IZLServerService zLServerService;
 
         protected IMapper mapper;
         public BaseController()

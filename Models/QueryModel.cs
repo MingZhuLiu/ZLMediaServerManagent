@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace  ZLMediaServerManagent.Models
+namespace ZLMediaServerManagent.Models
 {
     public class QueryModel
     {
@@ -47,6 +47,9 @@ namespace  ZLMediaServerManagent.Models
         /// 
         /// </summary>
         public bool Flag { get; set; }
+
+        public long? DomainId { get; set; }
+        public long? ApplicationId { get; set; }
 
     }
 }

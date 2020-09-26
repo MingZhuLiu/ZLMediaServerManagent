@@ -13,5 +13,6 @@ namespace ZLMediaServerManagent.Commons
         public static List<TbUserRole> UserRoles = new List<TbUserRole>();
         public static List<TbApplication> Applications = new List<TbApplication>();
         public static List<TbDomain> Domains = new List<TbDomain>();
+        public static List<TbStreamProxy> StreamProxies = new List<TbStreamProxy>();
     }
 }
