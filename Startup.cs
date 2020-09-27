@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +47,10 @@ namespace ZLMediaServerManagent
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            services.Configure<CookiePolicyOptions>(option =>
+            {
+                option.CheckConsentNeeded = context => false;
+            });
 
             services.AddControllersWithViews(option =>
             {
@@ -69,7 +74,8 @@ namespace ZLMediaServerManagent
             services.AddAuthentication(options =>
                  {
                      options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                 }).AddCookie();
+                     
+                 }).AddCookie(opt => { opt.LoginPath = new PathString("/Home/Login"); });
 
 
             services.AddScoped<IUserService, UserService>();
@@ -85,7 +91,7 @@ namespace ZLMediaServerManagent
 
 
             initDataBase(ref services);
-             services.AddHostedService<ZLBackGroundTask>();
+            services.AddHostedService<ZLBackGroundTask>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,9 +109,9 @@ namespace ZLMediaServerManagent
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            // app.UseCookiePolicy();
             app.UseRouting();
 
             //开启身份认证
@@ -200,13 +206,13 @@ namespace ZLMediaServerManagent
                 var configs = client.getServerConfig();
                 if (configs.code == -300)
                 {
-                    GloableCache.ZLServerOnline=false;
+                    GloableCache.ZLServerOnline = false;
                 }
                 else
                 {
                     GloableCache.ZLClient = client;
                     GloableCache.ZLMediaServerConfig = configs.data.FirstOrDefault();
-                    GloableCache.ZLServerOnline=true;
+                    GloableCache.ZLServerOnline = true;
                 }
 
             }

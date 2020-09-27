@@ -530,6 +530,22 @@ namespace ZLMediaServerManagent.Commons
             };
             menus.Add(zlserver_deleteStreamProxy);
 
+             var zlserver_playStreamProxy = new TbMenu()
+            {
+                Id = Tools.NewID,
+                ParentId = zlserver_streamProxy.Id,
+                Name = "视频播放",
+                Icon = null,
+                Url = "/ZLServer/Play",
+                Order = 4,
+                State = (int)Models.Enums.BaseStatus.Normal,
+                CreateTs = DateTime.Now,
+                UpdateTs = DateTime.Now,
+                CreateBy = userId,
+                UpdateBy = userId,
+            };
+            menus.Add(zlserver_playStreamProxy);
+
 
 
             #endregion

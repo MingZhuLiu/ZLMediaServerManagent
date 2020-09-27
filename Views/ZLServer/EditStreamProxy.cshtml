@@ -1,0 +1,282 @@
+@model ZLMediaServerManagent.Models.ViewDto.StreamProxyDataSourceDto
+
+@{
+ViewData["Title"] = "添加拉流代理";
+}
+
+<form class="layui-form" action="" lay-filter="component-form-element" style="margin:30px" id="form1" name="form1">
+
+ <div class="layui-form-item" hidden="hidden">
+            <label class="layui-form-label" style="width: 110px;color:#FFF;">Id：</label>
+            <div class="layui-input-block">
+                <input type="text" name="Id" lay-verify="required" placeholder="请输Id" autocomplete="off" class="layui-input" value="@Model.StreamProxy.Id">
+            </div>
+        </div>
+
+
+    <div class="layui-form-item row">
+        <div class="col-md-6">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 110px;color:#FFF;">域名：</label>
+                <div class="layui-input-block">
+                    <select name="DomainId" id="DomainId" lay-search lay-filter="DomainId">
+                        @* @foreach (var item in Model.Domains)
+                        {
+                            if(item.Id==Model.StreamProxy.DomainId)
+                            {
+                                <option value="@item.Id" selected="selected">@item.DomainName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.DomainName</option>
+                            }
+                        } *@
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 110px;color:#FFF;">应用：</label>
+                <div class="layui-input-block">
+
+                    <select name="ApplicationId" id="ApplicationId" lay-search>
+                        @* @foreach (var item in Model.Applications)
+                        {
+                            if(item.Id==Model.StreamProxy.ApplicationId)
+                            {
+                                <option value="@item.Id" selected="selected">@item.AppName</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.AppName</option>
+                            }
+                        } *@
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item row">
+        <div class="col-md-6">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 110px;color:#FFF;">流Id：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="StreamId" lay-verify="required" placeholder="请输入流Id" autocomplete="off"
+                        class="layui-input" style="color: #FFF;" value="@Model.StreamProxy.StreamId">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 110px;color:#FFF;">流名称：</label>
+                <div class="layui-input-block">
+                    <input type="text" name="StreamName" lay-verify="required" placeholder="请输入流名称" autocomplete="off"
+                        class="layui-input" style="color: #FFF;" value="@Model.StreamProxy.StreamName">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;color:#FFF;">拉流地址：</label>
+        <div class="layui-input-block">
+            <textarea name="PullStreamUrl" placeholder="请输入拉流地址" class="layui-textarea"
+                style="color: #FFF;min-height: 40px;">@Model.StreamProxy.PullStreamUrl</textarea>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item row">
+        <div class="col-md-6">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 110px;color:#FFF;">转HLS：</label>
+                <div class="layui-input-block">
+                    <select name="EnableHLS" id="EnableHLS" lay-filter="EnableHLS">
+                        @if(Model.StreamProxy.EnableHLS)
+                        {
+                             <option value="true" selected="selected">是</option>
+                             <option value="false">否</option>
+                        }
+                        else
+                        {
+                            <option value="true">是</option>
+                            <option value="false" selected="selected">否</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 110px;color:#FFF;">录制Mp4：</label>
+                <div class="layui-input-block">
+                    <select name="EnableMP4" id="EnableMP4" lay-filter="EnableMP4">
+                      @if(Model.StreamProxy.EnableMP4)
+                        {
+                             <option value="true" selected="selected">是</option>
+                             <option value="false">否</option>
+                        }
+                        else
+                        {
+                            <option value="true">是</option>
+                            <option value="false" selected="selected">否</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="layui-form-item row">
+
+        <div class="col-md-6">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 110px;color:#FFF;">拉流方式：</label>
+                <div class="layui-input-block">
+                    <select name="RtpType" id="RtpType" lay-filter="RtpType">
+                         @if(Model.StreamProxy.RtpType==@ZLMediaServerManagent.Models.Enums.RTPType.TCP)
+                        {
+                            <option value="0" selected="selected">TCP</option>
+                            <option value="1">UDP</option>
+                            <option value="2">组播</option>
+                        }
+                        else if(Model.StreamProxy.RtpType==@ZLMediaServerManagent.Models.Enums.RTPType.UDP)
+                        {
+                            <option value="0" >TCP</option>
+                            <option value="1" selected="selected">UDP</option>
+                            <option value="2">组播</option>
+                        }
+                        else
+                        {
+                            <option value="0" >TCP</option>
+                            <option value="1">UDP</option>
+                            <option value="2"  selected="selected">组播</option>
+                        }
+                       
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 110px;color:#FFF;">状态：</label>
+                <div class="layui-input-block">
+                    <select name="State" id="State" lay-filter="State">
+                        @if(Model.StreamProxy.State==200)
+                        {
+                           <option value="200" selected="selected">启用</option>
+                            <option value="400">停用</option>
+                        }
+                        else
+                        {
+                            <option value="200">启用</option>
+                            <option value="400" selected="selected">停用</option>
+                        }
+                     
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 110px;color:#FFF;">描述：</label>
+        <div class="layui-input-block">
+            <textarea name="Description" placeholder="请输入描述" class="layui-textarea" style="color: #FFF;">@Model.StreamProxy.Description</textarea>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item layui-layout-admin">
+        <div class="layui-input-block">
+            <div class="layui-input-block" style="left: 0;">
+                <button class="layui-btn" lay-submit="" lay-filter="submitForm">保存</button>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<script>
+
+    //从StreamProxy页面中取得的参数
+
+    domains.forEach(v => {
+        if(v.Id==='@Model.StreamProxy.DomainId')
+        {
+            $("#DomainId").append("<option value='" + v.Id + "' selected=\"selected\">" + v.Name + "</option>");
+        }
+        else
+        {
+            $("#DomainId").append("<option value='" + v.Id + "'>" + v.Name + "</option>");
+        }
+        });
+
+    applications.forEach(v => {
+        if (v.DomainId === $('#DomainId').val()) {
+
+            if(v.Id==='@Model.StreamProxy.ApplicationId')
+            {
+                $("#ApplicationId").append("<option value='" + v.Id + "' selected=\"selected\">" + v.Name + "</option>");
+            }
+            else
+            {
+                $("#ApplicationId").append("<option value='" + v.Id + "'>" + v.Name + "</option>");
+            }
+            
+        }
+    });
+
+
+
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate
+            , upload = layui.upload;
+        layui.form.render();
+
+        form.on('select(DomainId)', function (data) {
+            $("#ApplicationId").empty();
+            applications.forEach(v => {
+                if (v.DomainId === data.value) {
+                    $("#ApplicationId").append("<option value='" + v.Id + "'>" + v.Name + "</option>")
+                }
+            });
+            form.render();
+        });
+
+        //监听提交
+        form.on('submit(submitForm)', function (data) {
+            showLoader('保存中....', 60);
+            $.post("/ZLServer/EditStreamProxy", data.field, function (result) {
+                closeLoader();
+                if (result.Flag) {
+                    showGrowl('保存成功!', 'success', 3000);
+                    reload();
+                    layer.close(layuiWindow['editStreamProxy'+data.field.Id]); //再执行关闭
+                }
+                else {
+                    showGrowl(result.Msg, 'danger', 4000);
+                }
+            });
+            return false;
+
+        });
+    });
+
+
+
+</script>

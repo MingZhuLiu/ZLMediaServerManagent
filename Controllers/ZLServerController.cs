@@ -139,7 +139,8 @@ namespace ZLMediaServerManagent.Controllers
         public IActionResult EditStreamProxy(long streamProxyId)
         {
 
-            return View(zLServerService.FindStreamProxy(streamProxyId));
+            var dataSource = new StreamProxyDataSourceDto() { StreamProxy = zLServerService.FindStreamProxy(streamProxyId) };
+            return View(dataSource);
         }
 
         [HttpPost]
@@ -155,6 +156,17 @@ namespace ZLMediaServerManagent.Controllers
             return zLServerService.DeleteStreamProxy(ids, GetUserDto());
         }
 
+
+        [HttpGet]
+        public IActionResult Play(long id)
+        {
+            var streamProxy = zLServerService.FindStreamProxy(id);
+            var domain = domainAndAppService.FindDomain(streamProxy.DomainId);
+            var application = domainAndAppService.FindApplication(streamProxy.ApplicationId);
+            PlayStreamProxyDto playStreamProxy = new PlayStreamProxyDto(streamProxy, domain, application);
+
+            return View(playStreamProxy);
+        }
 
     }
 }

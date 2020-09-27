@@ -52,6 +52,7 @@ namespace ZLMediaServerManagent.Controllers
             // HttpContext.User.Claims.Append(userIdClaim);
             // HttpContext.User.Claims.Append(userLoginNameClaim);
             // HttpContext.User.Claims.Append(userNameClaim);
+
             var clientId = HttpContext?.User?.FindFirst(ClaimTypes.Sid)?.Value;
             if (GloableCache.OnlineClients.ContainsKey(clientId))
                 GloableCache.OnlineClients[clientId].User = user;
@@ -59,6 +60,8 @@ namespace ZLMediaServerManagent.Controllers
             {
                 GloableCache.OnlineClients.Add(clientId, new Models.ViewDto.OnlineClientTokenInfo() { User = user });
             }
+
+
         }
 
         public void LoginOutLogic()

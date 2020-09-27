@@ -23,7 +23,6 @@ using static ZLMediaServerManagent.Models.Enums;
 
 namespace ZLMediaServerManagent.Controllers
 {
-    [TypeFilter(typeof(GlobalFiler))]
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
@@ -36,7 +35,7 @@ namespace ZLMediaServerManagent.Controllers
             this.mapper = mapper;
             this.userService = userService;
         }
-
+        [TypeFilter(typeof(GlobalFiler))]
         public IActionResult Index()
         {
             var model = new LayoutViewDto() { Menus = userService.FindUserMenuTree(GetUserDto()) };
@@ -201,7 +200,7 @@ namespace ZLMediaServerManagent.Controllers
             {
                 //登录验证成功..
                 //如果登录成功要先看之前有没有同账号登录，如果有的话，让他下线
-                var lastLogin = GloableCache.OnlineClients.Values.Where(p =>p.ClientId!=null&& p.User != null && p.User.Id == loginValidate.Data.Id).FirstOrDefault();
+                var lastLogin = GloableCache.OnlineClients.Values.Where(p => p.ClientId != null && p.User != null && p.User.Id == loginValidate.Data.Id).FirstOrDefault();
                 if (lastLogin != null)
                 {
 
@@ -232,7 +231,7 @@ namespace ZLMediaServerManagent.Controllers
             return RedirectToAction("Login");
         }
 
-
+        [TypeFilter(typeof(GlobalFiler))]
         public IActionResult Dashboard()
         {
             return View();

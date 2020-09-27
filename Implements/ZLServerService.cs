@@ -73,10 +73,6 @@ namespace ZLMediaServerManagent.Implements
                     //开始拉流
                     StartPullStreamProxy(dto, domain, application);
                 }
-                else
-                {
-                    //停止拉流
-                }
             }
             return result.Success("添加成功!");
         }
@@ -101,6 +97,7 @@ namespace ZLMediaServerManagent.Implements
                 {
                     DataBaseCache.StreamProxies.Remove(DataBaseCache.StreamProxies.Where(p => p.Id == v.Id).First());
                     DataBaseCache.StreamProxies.Add(v);
+                    StopPullStreamProxy(mapper.Map<StreamProxyDto>(v));
                 });
                 result.Success("删除成功!");
             }
@@ -141,6 +138,7 @@ namespace ZLMediaServerManagent.Implements
             {
                 return result.Failed("参数错误,找不到该记录!");
             }
+            StopPullStreamProxy(mapper.Map<StreamProxyDto>(dbModel));//编辑以前先停止拉流
 
 
             dbModel.StreamId = dto.StreamId;
@@ -165,6 +163,7 @@ namespace ZLMediaServerManagent.Implements
                 else
                 {
                     //停止拉流
+                    StopPullStreamProxy(dto);
                 }
                 return result.Success("修改成功!");
             }
@@ -182,6 +181,8 @@ namespace ZLMediaServerManagent.Implements
         public STRealVideo.Lib.ZLResponse<STRealVideo.Lib.Models.BodyKey> StartPullStreamProxy(StreamProxyDto streamProxy, DomainDto domain = null, ApplicationDto application = null)
         {
             STRealVideo.Lib.ZLResponse<STRealVideo.Lib.Models.BodyKey> result = new STRealVideo.Lib.ZLResponse<STRealVideo.Lib.Models.BodyKey>();
+            if (!GloableCache.ZLServerOnline)
+                return result.Failed("服务器不在线!");
             if (domain == null)
             {
                 domain = DataBaseCache.Domains.Where(p => p.Id == streamProxy.DomainId).Select(p => mapper.Map<DomainDto>(p)).FirstOrDefault();
@@ -202,13 +203,29 @@ namespace ZLMediaServerManagent.Implements
             {
                 result.Failed("应用未启用!");
             }
+
             result = GloableCache.ZLClient.addStreamProxy(domain.DomainName, application.AppName, streamProxy.StreamId, streamProxy.PullStreamUrl, streamProxy.EnableHLS, streamProxy.EnableMP4, (STRealVideo.Lib.RTPPullType)((int)streamProxy.RtpType));
             return result;
         }
 
-        public void StopPullStreamProxy()
+        public void StopPullStreamProxy(StreamProxyDto dto)
         {
-            // return GloableCache.ZLClient.d()
+            var domain = DataBaseCache.Domains.Where(p => p.Id == dto.DomainId).First();
+            var application = DataBaseCache.Applications.Where(p => p.Id == dto.ApplicationId).First();
+            var vHost = domain.DomainName;
+            if (GloableCache.ZLMediaServerConfig.ContainsKey("general.enableVhost") && GloableCache.ZLMediaServerConfig["general.enableVhost"] != "1")
+            {
+                vHost = "__defaultVhost__";
+            }
+            if (domain.State != (int)BaseStatus.Normal || application.State != (int)BaseStatus.Normal || dto.State != (int)BaseStatus.Normal)
+            {
+                //当前流是否在线
+                var streamMiedasExist = GloableCache.MediaStreams.Where(p => p.vhost == vHost && p.app == application.AppName && p.stream == dto.StreamId).Any();
+                if (streamMiedasExist && GloableCache.ZLServerOnline) //当前流在线并且服务器在线
+                {
+                    GloableCache.ZLClient.delStreamProxy(vHost + "/" + application.AppName + "/" + dto.StreamId);
+                }
+            }
         }
 
         public TableQueryModel<StreamProxyDto> StreamProxy(QueryModel queryModel)
@@ -253,9 +270,9 @@ namespace ZLMediaServerManagent.Implements
                     item.ApplicationName = application.AppName;
 
                     var vHost = domain.DomainName;
-                    if (GloableCache.ZLMediaServerConfig.ContainsKey("general.enableVhost") && GloableCache.ZLMediaServerConfig["general.enableVhost"] == "1")
+                    if (GloableCache.ZLMediaServerConfig.ContainsKey("general.enableVhost") && GloableCache.ZLMediaServerConfig["general.enableVhost"] != "1")
                     {
-                        vHost="__defaultVhost__";
+                        vHost = "__defaultVhost__";
                     }
 
                     var streamMiedas = GloableCache.MediaStreams.Where(p => p.vhost == vHost && p.app == application.AppName && p.stream == item.StreamId).ToList();

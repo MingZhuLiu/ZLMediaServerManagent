@@ -18,13 +18,19 @@ namespace ZLMediaServerManagent.Filters
         public void OnActionExecuting(ActionExecutingContext context)
         {
 
+
             var claim_clientId = context.HttpContext?.User?.FindFirst(ClaimTypes.Sid)?.Value;
             if (String.IsNullOrWhiteSpace(claim_clientId))
             {
                 var claimsIdentity = new ClaimsIdentity("Cookie");
                 claimsIdentity.AddClaim(new Claim(ClaimTypes.Sid, Guid.NewGuid().ToString().Replace("-", "").ToLower()));
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-                context.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal).Wait();
+                context.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, 
+                new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                }).Wait();
+
             }
             else if (!GloableCache.OnlineClients.ContainsKey(claim_clientId))
             {

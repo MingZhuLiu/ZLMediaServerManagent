@@ -1,0 +1,168 @@
+@model ZLMediaServerManagent.Models.ViewDto.PlayStreamProxyDto
+
+@{
+ViewData["Title"] = "播放";
+}
+
+<link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+<link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+<script src="/layuiadmin/layui/layui.all.js"></script>
+
+<div style="height: 90%;width:100%;" id="mainContainer" style="background-color: #000;">
+
+	<video name="videoElement" class="centeredVideo" id="videoElement" playsinline="true"
+		style="width: 100%;height:100%;object-fit: fill;background-color: #000;" autoplay>
+		Your browser is too old which doesn't support HTML5 video.
+	</video>
+
+</div>
+<div style="height: 10%;width: 100%;">
+	<div class="layui-form layui-card-header layuiadmin-card-header-auto"
+		style="border-bottom:1px solid rgba(0, 0, 0, 0.2);background-color: #FFF;">
+
+
+		<div class="layui-form-item">
+			<div class="layui-inline layui-col-md11" style="margin-right:10px !important;">
+				<label class="layui-form-label" style="width: auto;">拉流地址:</label>
+				<div class="layui-input-block">
+					<input type="text" name="txt_keyword" id="txt_keyword" placeholder="拉流地址" class="layui-input"
+						style="height: 40px !important; " value="@Model.HTTP_MP4Url">
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-inline layui-col-md11" style="margin-right:10px !important;">
+				<label class="layui-form-label" style="width: auto;">拉流地址A:</label>
+				<div class="layui-input-block">
+					<input type="text" name="txt_keyword" id="txt_keyword" placeholder="拉流地址" class="layui-input"
+						style="height: 40px !important;">
+				</div>
+			</div>
+		</div>
+
+
+
+	</div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/vendor/bootstrap/bootstrap.min.js"></script>
+
+
+
+
+
+<script src="/lib/flv.js/flv.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script>
+
+	(function ($, h, c) {
+		var a = $([]),
+			e = $.resize = $.extend($.resize, {}),
+			i,
+			k = "setTimeout",
+			j = "resize",
+			d = j + "-special-event",
+			b = "delay",
+			f = "throttleWindow";
+		e[b] = 250;
+		e[f] = true;
+		$.event.special[j] = {
+			setup: function () {
+				if (!e[f] && this[k]) {
+					return false;
+				}
+				var l = $(this);
+				a = a.add(l);
+				$.data(this, d, {
+					w: l.width(),
+					h: l.height()
+				});
+				if (a.length === 1) {
+					g();
+				}
+			},
+			teardown: function () {
+				if (!e[f] && this[k]) {
+					return false;
+				}
+				var l = $(this);
+				a = a.not(l);
+				l.removeData(d);
+				if (!a.length) {
+					clearTimeout(i);
+				}
+			},
+			add: function (l) {
+				if (!e[f] && this[k]) {
+					return false;
+				}
+				var n;
+				function m(s, o, p) {
+					var q = $(this),
+						r = $.data(this, d);
+					r.w = o !== c ? o : q.width();
+					r.h = p !== c ? p : q.height();
+					n.apply(this, arguments);
+				}
+				if ($.isFunction(l)) {
+					n = l;
+					return m;
+				} else {
+					n = l.handler;
+					l.handler = m;
+				}
+			}
+		};
+		function g() {
+			i = h[k](function () {
+				a.each(function () {
+					var n = $(this),
+						m = n.width(),
+						l = n.height(),
+						o = $.data(this, d);
+					if (m !== o.w || l !== o.h) {
+						n.trigger(j, [o.w = m, o.h = l]);
+					}
+				});
+				g();
+			},
+				e[b]);
+		}
+	})(jQuery, this);
+
+
+	function playFlv() {
+		var height = $('#mainContainer').height();
+		$("#videoElement").height(height);
+		if (flvjs.isSupported()) {
+			var videoElement = document.getElementById('videoElement');
+			var flvPlayer = flvjs.createPlayer({
+				type: 'flv',
+				url: '@Model.WebSocketUrl',
+				// url: '@Model.HTTP_MP4Url',// 不支持mp4
+				//HTTP_MP4Url
+				isLive: true,
+				hasAudio: true,
+				hasVideo: true,
+				enableStashBuffer: true,
+			});
+			flvPlayer.attachMediaElement(videoElement);
+			flvPlayer.load();
+			flvPlayer.play();
+		}
+	}
+
+	$("#mainContainer").resize(function(){
+		var height = $('#mainContainer').height();
+		$("#videoElement").height(height);
+    //当id为main的div大小变化时的处理函数写在这里.....
+    //当然了#main只不过是id选择器，你也可以换成任何jquery的选择器......
+});
+
+
+	playFlv();
+</script>

@@ -17,6 +17,7 @@ namespace ZLMediaServerManagent.Models.ViewDto
         public List<ApplicationDto> Applications { get; set; }
 
         public PowerDto Power { get; set; }
+        public StreamProxyDto StreamProxy { get; set; }
 
     }
 }

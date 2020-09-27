@@ -55,6 +55,16 @@
   * 拉流代理
   ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/拉流代理.jpg)
 
+  * 视频播放
+  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/视频播放.jpg)
+
+  ## 下一步计划
+  * 完善首页，展示ZLMediaServer服务器性能指标。
+  * 添加断流重拉监控逻辑。
+  * 添加对H.265的支持。
+  * 添加支持MP4控件播放。
+
+
   ## 问题反馈
   * QQ:583530128
   * Mail: starry_link@foxmail.com

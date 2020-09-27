@@ -34,9 +34,10 @@ namespace ZLMediaServerManagent.Filters
             }
             if (isSkip) return;
 
+
             var clientId = context.HttpContext?.User?.FindFirst(ClaimTypes.Sid)?.Value;
             // context.HttpContext.Request.Cookies.TryGetValue(CookieKeys.WebToken + "", out string value);
-            if (!GloableCache.OnlineClients.ContainsKey(clientId) || GloableCache.OnlineClients[clientId] == null || GloableCache.OnlineClients[clientId].User == null)
+            if (clientId==null||!GloableCache.OnlineClients.ContainsKey(clientId) || GloableCache.OnlineClients[clientId] == null || GloableCache.OnlineClients[clientId].User == null)
             {
                 RedirectResult result = new RedirectResult("~/Home/Login");
                 context.Result = result;

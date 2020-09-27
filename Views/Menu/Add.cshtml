@@ -77,7 +77,7 @@ ViewData["Title"] = "添加菜单";
                 if (result.Flag) {
                     showGrowl('保存成功!', 'success', 3000);
                     reload();
-                    layer.close(layuiWindow['editMenu' + menuId]); //再执行关闭
+                    layer.close(layuiWindow['addMenu']); //再执行关闭
                 }
                 else {
                     showGrowl(result.Msg,'danger',4000);
