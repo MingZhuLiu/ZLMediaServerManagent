@@ -106,7 +106,7 @@ namespace ZLMediaServerManagent.Commons
                 else
                 {
                     bool result = false;
-                    string dbToken;
+                    // string dbToken;
                     switch (loginPlatform)
                     {
                         case LoginPlatform.Web:
@@ -352,6 +352,6 @@ namespace ZLMediaServerManagent.Commons
             }
 
         }
-
+   
     }
 }

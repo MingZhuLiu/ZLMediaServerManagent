@@ -117,7 +117,7 @@
 
 <script>
 
-    var videoTemplate = '<!-- 布局开始 --> <div class="col-sm-3"> <!-- tile --> <section class="tile transparent"> <!-- tile header --> <div class="tile-header nopadding"> <div class="controls"> <a id="a_setting_{id}" sourceId="{id}" onclick="editStreamProxy(\'{id}\')" class="refresh"><i class="fa fa-cog"></i></a> <a class="remove" style=" {isNeedRePullStreamProxy} " onclick=rePullStreamProxy(\'{id}\')><i class="fa fa-refresh"></i></a> <a class="remove" onclick=deleteStreamProxy(\'{id}\')><i class="fa fa-trash"></i></a> </div> </div> <!-- /tile header --> <!-- tile body --> <div class="tile-body color transparent-black rounded-corners nopadding"> <div id="owl{id}" class="owl-carousel"> <div class="text-center"> <div class="tile-widget color cyan rounded-top-corners" style="padding-top: 0px !important; padding-bottom: 0px !important;background-color: {backcolor};"> <div class="media social-feed"> <span class="pull-left"> <img name="{id}" src="/imgs/others/play.png" onclick="play(\'{id}\',\'{StreamName}\')" onmousemove="changePlayImg(this,\'play2\')" onmouseout="changePlayImg(this,\'play\')" alt class="img-circle"> </span> <div class="media-body"> <h3 class="media-heading"><strong>{StreamName}</strong></h4> <h4><a href="{PullStreamUrl}" style="color: #FFF;font-size: 15px;font-weight: 400;" target="_blank">{PullStreamUrl}</a> </h4> </div> </div> </div> <!-- tile body --> <div class="tile-body color transparent-black rounded-bottom-corners"> <ul class="inline divided social-feed"> <li> <h4>{Status}</h4> 状态 </li> <li> <h4>{WatchCount}</h4> 观看人数 </li> <li style="border-right: 0px;"> <h4>{WatchTotalCount}</h4> 观看总人数 </li> </ul> </div> <!-- /tile body --> </div> <div class="text-center" id="div_card{id}"> <div class="tile-widget color cyan rounded-top-corners" style="padding-top: 0px !important; padding-bottom: 0px !important;background-color: {backcolor};"> <div class="media social-feed" style="height: 100% !important;"> <span class="pull-left"> <img name="{id}" src="/imgs/others/play.png" onclick="play(\'{id}\',\'{StreamName}\')" onmousemove="changePlayImg(this,\'play2\')" onmouseout="changePlayImg(this,\'play\')" alt class="img-circle"> </span> <div class="media-body"> <!-- <h3 class="media-heading"><strong>东方卫视</strong></h4> --> <form> <div class="checkbox check-transparent" onclick="changeEnableHLS(this,\'{id}\')"> <input type="checkbox" value="1" id="enableHls_{id}" sourceId="{id}" {isEnable_Hls}> <label for="opt01">开启HLS</label> </div> <div class="checkbox check-transparent" onclick="changeEnableMp4(this,\'{id}\')"> <input type="checkbox" value="1" id="enableMp4Record_{id}" sourceId="{id}" {isEnable_Mp4}> <label for="opt02">录制MP4</label> </div> <div class="checkbox check-transparent" onclick="changeStreamPullState(this,\'{id}\')"> <input type="checkbox" value="0" id="enable_{id}" sourceId="{id}" {isEnable}> <label for="opt03">启用拉流</label> </div> </form> <h4>{Descprition}</h4> </div> </div> </div> <!-- tile body --> <div class="tile-body color transparent-black rounded-bottom-corners"> <ul class="inline divided social-feed"> <li> <h4>{DomainName}</h4> 域名 </li> <li> <h4>{ApplicationName}</h4> 应用 </li> <li style="border-right: 0px;"> <h4>{StreamId}</h4> 流Id </li> </ul> </div> <!-- /tile body --> </div> <div class="text-center"> <textarea style="width: 100%;height: 100%;" readonly="readonly" id="ta_{id}"> {mediaInfoJson} </textarea> </div> </div> </div> <!-- /tile body --> </section> <!-- /tile --> </div> <!-- 布局结束 -->';
+    var videoTemplate = '<!-- 布局开始 --> <div class="col-sm-3"> <!-- tile --> <section class="tile transparent"> <!-- tile header --> <div class="tile-header nopadding"> <div class="controls"> <a id="a_setting_{id}" sourceId="{id}" onclick="editStreamProxy(\'{id}\')" class="refresh"><i class="fa fa-cog"></i></a> <a class="remove" style=" {isNeedRePullStreamProxy} " onclick=rePullStreamProxy(\'{id}\')><i class="fa fa-refresh"></i></a> <a class="remove" onclick=deleteStreamProxy(\'{id}\')><i class="fa fa-trash"></i></a> </div> </div> <!-- /tile header --> <!-- tile body --> <div class="tile-body color transparent-black rounded-corners nopadding"> <div id="owl{id}" class="owl-carousel"> <div class="text-center"> <div class="tile-widget color cyan rounded-top-corners" style="padding-top: 0px !important; padding-bottom: 0px !important;background-color: {backcolor}; {hasSnapImage}"> <div class="media social-feed"> <span class="pull-left"> <img src="/imgs/others/play.png" style="visibility: hidden;" alt class="img-circle"> </span> <div class="media-body"> <!-- <h3 class="media-heading"><strong>{StreamName}</strong></h3> <h4><a href="{PullStreamUrl}" style="color: #FFF;font-size: 15px;font-weight: 400;" target="_blank">{PullStreamUrl}</a> </h4> --> </div> </div> </div> <!-- tile body --> <div class="tile-body color transparent-black rounded-bottom-corners"> <h3 class="media-heading" style="color: #FFF;cursor: pointer;" {addPlayEvent}> {showPlayIcon} <strong>{StreamName}</strong> </h3> <ul class="inline divided social-feed"> <li> <h4>{Status}</h4> 状态 </li> <li> <h4>{schemaCount}</h4> 媒体数 </li> <li style="border-right: 0px;"> <h4>{WatchTotalCount}</h4> 观看总人数 </li> </ul> </div> <!-- /tile body --> </div> <div class="text-center" id="div_card{id}"> <div class="tile-widget color cyan rounded-top-corners" style="padding-top: 0px !important; padding-bottom: 0px !important;background-color: {backcolor}; {hasSnapImage}"> <div class="media social-feed" style="height: 100% !important;"> <span class="pull-left"> <img src="/imgs/others/play.png" style="visibility: hidden;" alt class="img-circle"></span> <div class="media-body"> <!-- <h3 class="media-heading"><strong>东方卫视</strong></h4> --> <form> <div class="checkbox check-transparent" onclick="changeEnableHLS(this,\'{id}\')" style="background-color:  rgba(0, 0, 0, 0.2);"> <input type="checkbox" value="1" id="enableHls_{id}" sourceId="{id}" {isEnable_Hls}> <label for="opt01">开启HLS</label> </div> <div class="checkbox check-transparent" onclick="changeEnableMp4(this,\'{id}\')" style="background-color:  rgba(0, 0, 0, 0.2);"> <input type="checkbox" value="1" id="enableMp4Record_{id}" sourceId="{id}" {isEnable_Mp4}> <label for="opt02">录制MP4</label> </div> <div class="checkbox check-transparent" onclick="changeStreamPullState(this,\'{id}\')" style="background-color:  rgba(0, 0, 0, 0.2);"> <input type="checkbox" value="0" id="enable_{id}" sourceId="{id}" {isEnable}> <label for="opt03">启用拉流</label> </div> </form> <!-- <h4>{Descprition}</h4> --> </div> </div> </div> <!-- tile body --> <div class="tile-body color transparent-black rounded-bottom-corners"> <h3 class="media-heading" style="color: #FFF;cursor: pointer;" {addPlayEvent}> {showPlayIcon} <strong>{StreamName}</strong> </h3> <ul class="inline divided social-feed"> <li> <h4>{DomainName}</h4> 域名 </li> <li> <h4>{ApplicationName}</h4> 应用 </li> <li style="border-right: 0px;"> <h4>{StreamId}</h4> 流Id </li> </ul> </div> <!-- /tile body --> </div> <div class="text-center"> <textarea style="width: 100%;height: 100%;" readonly="readonly" id="ta_{id}"> {mediaInfoJson} </textarea> </div> </div> </div> <!-- /tile body --> </section> <!-- /tile --> </div> <!-- 布局结束 -->';
 
     var domains = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Domains.Select(p=>new {Id=p.Id+"",Name=p.DomainName}).ToList()))');
     var applications = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Applications.Select(p=>new {Id=p.Id+"",Name=p.AppName,DomainId=p.DomainId+""}).ToList()))');
@@ -192,9 +192,7 @@
 
                             data.data.forEach(v => {
                                 streamProxys.push(v);
-                                var htmlNode = videoTemplate.replace(/{id}/g, v.Id);
-                                htmlNode = htmlNode.replace(/{StreamName}/g, v.StreamName);
-                                htmlNode = htmlNode.replace(/{PullStreamUrl}/g, v.PullStreamUrl);
+                               var htmlNode = videoTemplate.replace(/{PullStreamUrl}/g, v.PullStreamUrl);
                                 htmlNode = htmlNode.replace(/{StreamId}/g, v.StreamId);
                                 htmlNode = htmlNode.replace(/{Status}/g, v.ShowStatus);
                                 htmlNode = htmlNode.replace(/{WatchCount}/g, v.WatchCount);
@@ -208,6 +206,18 @@
                                 htmlNode = htmlNode.replace(/{backcolor}/g, radomColors[Math.floor((Math.random() * radomColors.length))]);
                                 htmlNode = htmlNode.replace(/{mediaInfoJson}/g, v.ShowStreamMediaJson);
                                 htmlNode = htmlNode.replace(/{isNeedRePullStreamProxy}/g," display:none; ");
+                                htmlNode = htmlNode.replace(/{hasSnapImage}/g,v.hasSnapImage?" background: url(/ZLServer/GetSnap?id="+v.Id+") no-repeat;background-size: cover;":"");
+                                htmlNode = htmlNode.replace(/{addPlayEvent}/g,v.canPlay?' onclick="play(\'{id}\',\'{StreamName}\')"   onmousemove="changePlayImg(\'{id}\',\'play2\')"    onmouseout="changePlayImg(\'{id}\',\'play\')" ' :"");
+                                htmlNode = htmlNode.replace(/{showPlayIcon}/g,v.canPlay?' <i name="icon_play_{id}" class="fa fa-play-circle" style="margin-right: 10px;"></i> ' :"");
+                                htmlNode = htmlNode.replace(/{id}/g, v.Id);
+                                htmlNode = htmlNode.replace(/{StreamName}/g, v.StreamName);
+                                htmlNode = htmlNode.replace(/{schemaCount}/g, v.schemaCount);
+
+                                //
+
+                                //
+                                // {addPlayEvent}
+                                //
                                 // htmlNode = htmlNode.replace(/{isNeedRePullStreamProxy}/g, v.isNeedRePullStreamProxy ? " " : " display:none; ");
 
                                 $('#div_videoList').append($(htmlNode));
@@ -323,8 +333,23 @@
         flow.load(flowOptions);
     }
 
-    function changePlayImg(sender, image) {
-        sender.src = '/imgs/others/' + image + '.png';
+    function changePlayImg(id, type) {
+
+         var iList= $("i[name='icon_play_"+id+"']");
+
+        if(type==='play2')
+        {
+            $(iList[0]).css("color","#a9e97a");
+           $( iList[1]).css("color","#a9e97a");
+           // $('#icon_play_'+id).css("color","#a9e97a");
+        }
+        else
+        {
+             $( iList[0]).css("color","#fff");
+             $(iList[1]).css("color","#fff");
+           // $('#icon_play_'+id).css("color","#fff");
+        }
+        //sender.src = '/imgs/others/' + image + '.png';
     }
 
     function editStreamProxy(id) {

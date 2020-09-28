@@ -4,47 +4,33 @@
 ViewData["Title"] = "播放";
 }
 
+
 <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
 <link rel="stylesheet" href="/layuiadmin/style/admin.css" media="all">
+<link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <script src="/layuiadmin/layui/layui.all.js"></script>
 
-<div style="height: 90%;width:100%;" id="mainContainer" style="background-color: #000;">
+<div style="height: 100%;width:100%;" id="mainContainer">
 
-	<video name="videoElement" class="centeredVideo" id="videoElement" playsinline="true"
+
+	<video name="videoElement" class="centeredVideo" id="videoElement" playsinline="true" controls="controls"
 		style="width: 100%;height:100%;object-fit: fill;background-color: #000;" autoplay>
 		Your browser is too old which doesn't support HTML5 video.
 	</video>
 
 </div>
-<div style="height: 10%;width: 100%;">
+<div style="height: auto;width: 100%;margin: 10px;">
+	<a id="a_info" style="color: #FFF;" onclick="showInfo()"><i class="fa fa-info-circle"></i></a> </div>
+<!-- <div style=" width: 100%;">
 	<div class="layui-form layui-card-header layuiadmin-card-header-auto"
 		style="border-bottom:1px solid rgba(0, 0, 0, 0.2);background-color: #FFF;">
-
-
-		<div class="layui-form-item">
-			<div class="layui-inline layui-col-md11" style="margin-right:10px !important;">
-				<label class="layui-form-label" style="width: auto;">拉流地址:</label>
-				<div class="layui-input-block">
-					<input type="text" name="txt_keyword" id="txt_keyword" placeholder="拉流地址" class="layui-input"
-						style="height: 40px !important; " value="@Model.HTTP_MP4Url">
-				</div>
-			</div>
-		</div>
-
-		<div class="layui-form-item">
-			<div class="layui-inline layui-col-md11" style="margin-right:10px !important;">
-				<label class="layui-form-label" style="width: auto;">拉流地址A:</label>
-				<div class="layui-input-block">
-					<input type="text" name="txt_keyword" id="txt_keyword" placeholder="拉流地址" class="layui-input"
-						style="height: 40px !important;">
-				</div>
-			</div>
-		</div>
-
-
-
+		<div class="layui-btn-group">
+			<button type="button" class="layui-btn  layui-btn-sm">增加</button>
+			<button type="button" class="layui-btn  layui-btn-sm">编辑</button>
+			<button type="button" class="layui-btn layui-btn-sm">删除</button>
+		  </div>
 	</div>
-</div>
+</div> -->
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="/assets/js/jquery.js"></script>
@@ -143,12 +129,10 @@ ViewData["Title"] = "播放";
 			var flvPlayer = flvjs.createPlayer({
 				type: 'flv',
 				url: '@Model.WebSocketUrl',
-				// url: '@Model.HTTP_MP4Url',// 不支持mp4
-				//HTTP_MP4Url
 				isLive: true,
 				hasAudio: true,
 				hasVideo: true,
-				enableStashBuffer: true,
+				enableStashBuffer: false,
 			});
 			flvPlayer.attachMediaElement(videoElement);
 			flvPlayer.load();
@@ -156,13 +140,54 @@ ViewData["Title"] = "播放";
 		}
 	}
 
-	$("#mainContainer").resize(function(){
+	$("#mainContainer").resize(function () {
 		var height = $('#mainContainer').height();
 		$("#videoElement").height(height);
-    //当id为main的div大小变化时的处理函数写在这里.....
-    //当然了#main只不过是id选择器，你也可以换成任何jquery的选择器......
-});
+		//当id为main的div大小变化时的处理函数写在这里.....
+		//当然了#main只不过是id选择器，你也可以换成任何jquery的选择器......
+	});
 
 
 	playFlv();
+
+	function showInfo() {
+		var index = layer.open({
+			type: 1
+			, title: '视频信息'
+			, closeBtn: true
+			, shade: 0
+			, area: ['100%', '70%']
+			, id: 'streamInfo'  //设定一个id，防止重复弹出
+			, btnAlign: 'c'
+			, closeBtn: 1
+			, moveType: 1 //拖拽模式，0或者1
+			, content: '<div>\
+				WebSocket地址: @Model.WebSocketUrl <br/>\
+				WebSocket SSL地址: @Model.WebSocketSUrl <br/>\
+				<hr class="layui-bg-blue">\
+				RTMP地址: @Model.RTMPUrl <br/>\
+				RTMP SSL地址: @Model.RTMPSUrl <br/>\
+				<hr class="layui-bg-blue">\
+				RTSP: @Model.RTSPUrl <br/>\
+				RTSP SSL地址: @Model.RTSPSUrl <br/>\
+				<hr class="layui-bg-blue">\
+				HLS地址: @Model.HLSUrl <br/>\
+				HLS SSL地址: @Model.HLSSUrl <br/>\
+				<hr class="layui-bg-blue">\
+				HTTP-TS地址: @Model.HTTP_TSUrl <br/>\
+				HTTPS-TS SSL地址: @Model.HTTPS_TSUrl <br/>\
+				<hr class="layui-bg-blue">\
+				WebSocket-TS地址: @Model.WebSocket_TSUrl <br/>\
+				WebSocket-TS SSL地址: @Model.WebSocketS_TSUrl <br/>\
+				<hr class="layui-bg-blue">\
+				HTTP-MP4 地址: @Model.HTTP_MP4Url <br/>\
+				HTTPS-MP4 SSL地址: @Model.HTTPS_MP4Url <br/>\
+				<hr class="layui-bg-blue">\
+				WebSocket-MP4 地址: @Model.WebSocket_MP4Url <br/>\
+				WebSocket-MP4 SSL地址: @Model.WebSocketS_MP4Url <br/>\
+				<hr class="layui-bg-blue">\
+				</div>'
+			, shadeClose: true //点击遮罩区域是否关闭页面
+		});
+	}
 </script>

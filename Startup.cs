@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -39,6 +41,7 @@ namespace ZLMediaServerManagent
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _instance = this;
         }
 
 
@@ -74,7 +77,7 @@ namespace ZLMediaServerManagent
             services.AddAuthentication(options =>
                  {
                      options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                     
+
                  }).AddCookie(opt => { opt.LoginPath = new PathString("/Home/Login"); });
 
 
@@ -88,10 +91,10 @@ namespace ZLMediaServerManagent
             services.AddSignalR();
 
 
-
-
             initDataBase(ref services);
+            
             services.AddHostedService<ZLBackGroundTask>();
+            services.AddHostedService<ZLBackSnapGroundTask>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,8 +112,25 @@ namespace ZLMediaServerManagent
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            // app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
+            dynamic type = (new Program()).GetType();
+            string currentDirectory = Path.GetDirectoryName(type.Assembly.Location);
+            var wwwroot = Path.Combine(currentDirectory, "wwwroot");
+            Console.WriteLine("开始验证静态资源目录：" + wwwroot);
+            if (Directory.Exists(wwwroot))
+            {
+                Console.WriteLine("静态文件目录:" + wwwroot);
+                var staticfile = new StaticFileOptions();
+                staticfile.FileProvider = new PhysicalFileProvider(wwwroot);
+                // app.UseHttpsRedirection();
+                app.UseStaticFiles(staticfile);
+            }
+            else
+            {
+                Console.WriteLine("默认静态文件目录:" + Environment.CurrentDirectory);
+                app.UseStaticFiles();
+            }
+
             // app.UseCookiePolicy();
             app.UseRouting();
 
@@ -187,6 +207,7 @@ namespace ZLMediaServerManagent
 
         public static void ReadDataBase2Cache(ZLDataBaseContext dataBaseContext)
         {
+            Console.WriteLine("开始读取数据库缓存...");
             DataBaseCache.Configs = dataBaseContext.Configs.ToList();
             DataBaseCache.MenuRoles = dataBaseContext.MenuRoles.ToList();
             DataBaseCache.Menus = dataBaseContext.Menus.ToList();
@@ -201,6 +222,8 @@ namespace ZLMediaServerManagent
             {
                 var ip = DataBaseCache.Configs.Where(p => p.ConfigKey == ConfigKeys.ZLMediaServerIp).FirstOrDefault().ConfigValue;
                 var port = DataBaseCache.Configs.Where(p => p.ConfigKey == ConfigKeys.ZLMediaServerPort).FirstOrDefault().ConfigValue;
+                Console.WriteLine("开始连接ZLMediaKitServer,IP:" + ip + ",Port:" + port + "......");
+
                 var sec = DataBaseCache.Configs.Where(p => p.ConfigKey == ConfigKeys.ZLMediaServerSecret).FirstOrDefault().ConfigValue;
                 var client = new STRealVideo.Lib.ZLClient("http://" + ip + ":" + port, sec);
                 var configs = client.getServerConfig();

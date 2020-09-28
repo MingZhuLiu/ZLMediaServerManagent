@@ -168,5 +168,23 @@ namespace ZLMediaServerManagent.Controllers
             return View(playStreamProxy);
         }
 
+        [HttpGet]
+        [SkipGlobalActionFilter]
+        public IActionResult GetSnap(long id)
+        {
+            FileResult fileResult = null;
+
+            if (GloableCache.StreamProxyImages.ContainsKey(id))
+            {
+                fileResult = new FileContentResult(GloableCache.StreamProxyImages[id], "image/jpeg");
+            }
+            else
+            {
+
+            }
+
+            return fileResult;
+        }
+
     }
 }

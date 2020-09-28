@@ -17,7 +17,7 @@ namespace ZLMediaServerManagent.Interface
         BaseModel<String> DeleteStreamProxy(long[] ids, UserDto owner);
 
 
-
+        STRealVideo.Lib.ZLResponse<STRealVideo.Lib.Models.BodyKey> StartPullStreamProxy(StreamProxyDto streamProxy, DomainDto domain = null, ApplicationDto application = null);
 
 
     }

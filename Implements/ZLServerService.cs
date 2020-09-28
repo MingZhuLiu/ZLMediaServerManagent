@@ -150,6 +150,7 @@ namespace ZLMediaServerManagent.Implements
             dbModel.RtpType = (int)dto.RtpType;
             dbModel.UpdateBy = owner.Id;
             dbModel.UpdateTs = DateTime.Now;
+            dbModel.State = dto.State;
             var flag = dbContext.SaveChanges() > 0 ? true : false;
             if (flag)
             {
@@ -276,7 +277,7 @@ namespace ZLMediaServerManagent.Implements
                     }
 
                     var streamMiedas = GloableCache.MediaStreams.Where(p => p.vhost == vHost && p.app == application.AppName && p.stream == item.StreamId).ToList();
-
+                    item.schemaCount=streamMiedas.Count;
                     item.WatchCount = streamMiedas == null || streamMiedas.Count == 0 ? 0 : streamMiedas.Sum(q => q.readerCount);
                     item.WatchTotalCount = streamMiedas == null || streamMiedas.Count == 0 ? 0 : streamMiedas.Sum(q => q.totalReaderCount);
                     if ((streamMiedas == null || streamMiedas.Count == 0) && item.State == (int)BaseStatus.Forbid)
@@ -291,12 +292,17 @@ namespace ZLMediaServerManagent.Implements
                     else if (!(streamMiedas == null || streamMiedas.Count == 0) && item.State == (int)BaseStatus.Normal)
                     {
                         item.ShowStatus = "<font color=\"a9e879\">正常</font>";
+                        item.canPlay=true;
                     }
                     else if (!(streamMiedas == null || streamMiedas.Count == 0) && item.State == (int)BaseStatus.Forbid)
                     {
                         item.ShowStatus = "<font color=\"e1473c\">已停用,正在拉流</font>";
                     }
                     item.ShowStreamMediaJson = (streamMiedas == null || streamMiedas.Count == 0) ? "" : Tools.FormatJsonString(Newtonsoft.Json.JsonConvert.SerializeObject(streamMiedas));
+                    if (GloableCache.StreamProxyImages.ContainsKey(item.Id))
+                    {
+                        item.hasSnapImage = true;
+                    }
                 }
             }
             catch (Exception ex)

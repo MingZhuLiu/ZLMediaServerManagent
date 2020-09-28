@@ -19,7 +19,7 @@ namespace ZLMediaServerManagent.Commons
         /// 访问全局客户端
         /// </summary>
         public static STRealVideo.Lib.ZLClient ZLClient = null;
-    
+
         /// <summary>
         /// ZLServer是否在线
         /// </summary>
@@ -45,9 +45,16 @@ namespace ZLMediaServerManagent.Commons
         /// </summary>
         public static Dictionary<String, String> ZLMediaServerConfig = new Dictionary<string, string>();
 
+        /// <summary>
+        /// 拉流的截图缓存
+        /// </summary>
+        /// <typeparam name="long">流Id</typeparam>
+        /// <typeparam name="byte[]">jpeg格式图片</typeparam>
+        public static Dictionary<long, byte[]> StreamProxyImages = new Dictionary<long, byte[]>();
 
 
-        public static System.Collections.Concurrent.ConcurrentBag<MediaStream> MediaStreams=new ConcurrentBag<STRealVideo.Lib.Models.MediaStream>();
+
+        public static System.Collections.Concurrent.ConcurrentBag<MediaStream> MediaStreams = new ConcurrentBag<STRealVideo.Lib.Models.MediaStream>();
 
     }
 }

@@ -66,7 +66,23 @@ namespace ZLMediaServerManagent.Models.Dto
         /// </summary>
         public virtual bool isNeedRePullStreamProxy { get; set; }
 
-        
+        /// <summary>
+        /// 是否有缩略图
+        /// </summary>
+        public virtual bool hasSnapImage { get; set; }
+
+        /// <summary>
+        /// 当前能否播放
+        /// </summary>
+        public virtual bool canPlay { get; set; }
+
+        /// <summary>
+        /// 媒体数
+        /// </summary>
+        /// <value></value>
+        public virtual int schemaCount { get; set; }
+
+
 
     }
 
