@@ -15,13 +15,13 @@ namespace ZLMediaServerManagent.Commons
 {
     public class ZLBackSnapGroundTask : BackgroundService
     {
-        private IMapper mapper;
+        // private IMapper mapper;
 
         private static bool isRunning = false;
 
         private readonly ILogger _logger;
         private Timer _timer;
-        private readonly IServiceProvider _provider;
+        // private readonly IServiceProvider _provider;
 
         public ZLBackSnapGroundTask(ILogger<ZLBackGroundTask> logger)
         {

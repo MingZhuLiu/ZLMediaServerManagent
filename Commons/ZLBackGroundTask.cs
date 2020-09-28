@@ -79,11 +79,17 @@ namespace ZLMediaServerManagent.Commons
                 //比对我的拉流和服务器拉流的差异
                 diffStremPorxy();
 
-                
+
             }
             else
             {
+                if (!GloableCache.IsInitServer)
+                {
+                    //服务器还没初始化完毕的时候，不要重连服务器
+                    return;
+                }
                 GloableCache.ZLServerOnline = false;
+
                 //尝试重连服务器
                 var ip = DataBaseCache.Configs.Where(p => p.ConfigKey == ConfigKeys.ZLMediaServerIp).FirstOrDefault().ConfigValue;
                 var port = DataBaseCache.Configs.Where(p => p.ConfigKey == ConfigKeys.ZLMediaServerPort).FirstOrDefault().ConfigValue;
@@ -103,7 +109,7 @@ namespace ZLMediaServerManagent.Commons
                     GloableCache.ZLServerOnline = true;
                 }
             }
-            isRunning=false;
+            isRunning = false;
         }
 
         public override void Dispose()

@@ -24,8 +24,9 @@
   1. 根据平台安装[.Net Core SDK](https://dotnet.microsoft.com/download/dotnet-core/3.1)(已安装则忽略)
   2. 项目根目录执行命令 dotnet restore
   3. 配置文件参考 appsettings.json 数据库参数根据自身情况注释掉其他四种配置，保留自己期望的数据库。(SQLite数据库无须事先创建文件，只需要正确配置最终SQLite文件位置即可。其他类型数据库无须事先创建数据库，只需要确保连接字符串中的ip，端口，数据库用户密码正确即可)
-  4. 执行命令dotnet run 测试运行情况。
+  4. 执行命令dotnet run 测试运行情况(如果新手遇到问题，请跳过本条命令，直接执行下面的发布命令)。
   5. 发布运行命令范例 dotnet publish -r  --runtime win-x64 --self-contained true
+  6. 发布完毕，看一下输出最后一行'publish/'结尾的路径，跳转至改目录执行命令： ./ZLMediaServerManagent
   6. --runtime win-x64  表示运行时是windwos64位 Linux平台则为linux-64 Mac平台则为 osx.10.11-x64
   7. 发布命令参数解释 --self-contained true 表示是否自包含运行环境，如传false则目标计算机需先安装 .Net Core 运行时，优势是打包文件较小。
   8. 您也可以将整个系统打包成单个可执行程序文件 发布命令加上参数 /p:PublishSingleFile=true
