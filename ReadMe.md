@@ -10,6 +10,7 @@
 * 前端页面使用Bootstrap框架。
 * 数据库支持SQLite,Oracle,SQLServer,Mysql,Postgresql.
 * 只需要配置好数据库连接字符串，无须建库建表，系统启动判断无库无表会自动创建库表并引导至初始化页面连接ZLMediaKitServer。
+* 监控断流自动重新拉流。
 
 ***
 
@@ -56,11 +57,10 @@
   ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/拉流代理.jpg)
 
   * 视频播放
-  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/视频播放.jpg)
+  ![avatar](https://raw.githubusercontent.com/MingZhuLiu/ZLMediaServerManagent/master/wwwroot/imgs/template/视频播放v1.jpg)
 
   ## 下一步计划
-  * 完善首页，展示ZLMediaServer服务器性能指标。
-  * 添加断流重拉监控逻辑。
+  * 制作首页，展示ZLMediaServer服务器性能指标。
   * 添加对H.265的支持。
   * 添加支持MP4控件播放。
 
