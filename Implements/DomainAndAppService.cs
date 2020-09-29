@@ -168,6 +168,7 @@ namespace ZLMediaServerManagent.Implements
             {
                 dbModel.DomainName = dto.DomainName;
                 dbModel.Description = dto.Description;
+                dbModel.State = dto.State;
                 dbModel.UpdateBy = owner.Id;
                 dbModel.UpdateTs = DateTime.Now;
                 var flag = dbContext.SaveChanges() > 0 ? true : false;
@@ -256,6 +257,7 @@ namespace ZLMediaServerManagent.Implements
             {
                 dbModel.AppName = dto.AppName;
                 dbModel.Description = dto.Description;
+                dbModel.State = dto.State;
                 dbModel.UpdateBy = owner.Id;
                 dbModel.UpdateTs = DateTime.Now;
                 var flag = dbContext.SaveChanges() > 0 ? true : false;
