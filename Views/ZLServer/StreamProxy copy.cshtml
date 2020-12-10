@@ -1,0 +1,473 @@
+@model ZLMediaServerManagent.Models.ViewDto.StreamProxyDataSourceDto
+
+<link rel="stylesheet" href="/assets/js/vendor/owl-carousel/css/owl.carousel.css">
+<link rel="stylesheet" href="/assets/js/vendor/owl-carousel/css/owl.theme.css">
+
+<!-- tile -->
+<section class="tile color transparent-black">
+
+    <!-- tile header -->
+    <div class="tile-header">
+        <h1><strong>拉流</strong> 列表</h1>
+        <div class="controls">
+            <!-- <a href="#" class="refresh"><i class="fa fa-refresh"></i></a> -->
+            <!-- <a href="#" class="remove"><i class="fa fa-times"></i></a> -->
+        </div>
+    </div>
+    <!-- /tile header -->
+
+    <!-- tile body -->
+    <div class="tile-body">
+        <form class="layui-form" role="form" onsubmit="return false;">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label" style="color: #FFF;">域名:</label>
+                        <div class="layui-input-block">
+                            <select name="Sel_Domain" id="Sel_Domain" lay-search lay-filter="Sel_Domain"
+                                style="height: 40px !important;">
+                                <option value="">全部</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label" style="color: #FFF;">应用:</label>
+                        <div class="layui-input-block">
+                            <select name="Sel_Application" id="Sel_Application" lay-search lay-filter="Sel_Application"
+                                style="height: 40px !important;">
+                                <option value="">全部</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="layui-inline layui-col-md12">
+                        <label class="layui-form-label" style="color: #FFF;">Id/名称:</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="txt_keyword" id="txt_keyword" placeholder="请输入关键字"
+                                class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="layui-inline" style="line-height: 0px;margin-bottom: 12px; ">
+                        <button class="layui-btn layui-btn-normal" data-type="reload" lay-submit
+                            lay-filter="LAY-app-contlist-search" onclick="reload()">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </form>
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto"
+            style="border-bottom:1px solid rgba(0, 0, 0, 0.2)"></div>
+
+
+    </div>
+    <!-- /tile body -->
+
+    <!-- 主页内容 -->
+    <div class="row">
+
+
+
+        <ul class="flow-default" id="flow_videoList" style="padding-left:20px;padding-right:20px;">
+            <div class="col-md-12">
+                <div class="row" id="div_videoList">
+
+                </div>
+            </div>
+
+
+
+        </ul>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <!-- 主页内容 -->
+
+
+</section>
+
+<script src="/assets/js/vendor/owl-carousel/owl.carousel.min.js"></script>
+
+
+<!-- /tile -->
+@if(Model.Power.Add)
+{
+<button class="mdui-fab mdui-fab-fixed mdui-ripple" style="color:#FFF;background-color: #EC5281; margin-right: 30px;"
+    onclick="addStreamProxy()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+}
+
+
+
+<script>
+
+    var videoTemplate = '<!-- 布局开始 --> <div class="col-sm-3"> <!-- tile --> <section class="tile transparent"> <!-- tile header --> <div class="tile-header nopadding"> <div class="controls"> <a id="a_setting_{id}" sourceId="{id}" onclick="editStreamProxy(\'{id}\')" class="refresh"><i class="fa fa-cog"></i></a> <a class="remove" style=" {isNeedRePullStreamProxy} " onclick=rePullStreamProxy(\'{id}\')><i class="fa fa-refresh"></i></a> <a class="remove" onclick=deleteStreamProxy(\'{id}\')><i class="fa fa-trash"></i></a> </div> </div> <!-- /tile header --> <!-- tile body --> <div class="tile-body color transparent-black rounded-corners nopadding"> <div id="owl{id}" class="owl-carousel"> <div class="text-center"> <div class="tile-widget color cyan rounded-top-corners" style="padding-top: 0px !important; padding-bottom: 0px !important;background-color: {backcolor}; {hasSnapImage}"> <div class="media social-feed"> <span class="pull-left"> <img src="/imgs/others/play.png" style="visibility: hidden;" alt class="img-circle"> </span> <div class="media-body"> <!-- <h3 class="media-heading"><strong>{StreamName}</strong></h3> <h4><a href="{PullStreamUrl}" style="color: #FFF;font-size: 15px;font-weight: 400;" target="_blank">{PullStreamUrl}</a> </h4> --> </div> </div> </div> <!-- tile body --> <div class="tile-body color transparent-black rounded-bottom-corners"> <h3 class="media-heading" style="color: #FFF;cursor: pointer;" {addPlayEvent}> {showPlayIcon} <strong>{StreamName}</strong> </h3> <ul class="inline divided social-feed"> <li> <h4>{Status}</h4> 状态 </li> <li> <h4>{schemaCount}</h4> 媒体数 </li> <li style="border-right: 0px;"> <h4>{WatchTotalCount}</h4> 观看总人数 </li> </ul> </div> <!-- /tile body --> </div> <div class="text-center" id="div_card{id}"> <div class="tile-widget color cyan rounded-top-corners" style="padding-top: 0px !important; padding-bottom: 0px !important;background-color: {backcolor}; {hasSnapImage}"> <div class="media social-feed" style="height: 100% !important;"> <span class="pull-left"> <img src="/imgs/others/play.png" style="visibility: hidden;" alt class="img-circle"></span> <div class="media-body"> <!-- <h3 class="media-heading"><strong>东方卫视</strong></h4> --> <form> <div class="checkbox check-transparent" onclick="changeEnableHLS(this,\'{id}\')" style="background-color:  rgba(0, 0, 0, 0.2);"> <input type="checkbox" value="1" id="enableHls_{id}" sourceId="{id}" {isEnable_Hls}> <label for="opt01">开启HLS</label> </div> <div class="checkbox check-transparent" onclick="changeEnableMp4(this,\'{id}\')" style="background-color:  rgba(0, 0, 0, 0.2);"> <input type="checkbox" value="1" id="enableMp4Record_{id}" sourceId="{id}" {isEnable_Mp4}> <label for="opt02">录制MP4</label> </div> <div class="checkbox check-transparent" onclick="changeStreamPullState(this,\'{id}\')" style="background-color:  rgba(0, 0, 0, 0.2);"> <input type="checkbox" value="0" id="enable_{id}" sourceId="{id}" {isEnable}> <label for="opt03">启用拉流</label> </div> </form> <!-- <h4>{Descprition}</h4> --> </div> </div> </div> <!-- tile body --> <div class="tile-body color transparent-black rounded-bottom-corners"> <h3 class="media-heading" style="color: #FFF;cursor: pointer;" {addPlayEvent}> {showPlayIcon} <strong>{StreamName}</strong> </h3> <ul class="inline divided social-feed"> <li> <h4>{DomainName}</h4> 域名 </li> <li> <h4>{ApplicationName}</h4> 应用 </li> <li style="border-right: 0px;"> <h4>{StreamId}</h4> 流Id </li> </ul> </div> <!-- /tile body --> </div> <div class="text-center"> <textarea style="width: 100%;height: 100%;" readonly="readonly" id="ta_{id}"> {mediaInfoJson} </textarea> </div> </div> </div> <!-- /tile body --> </section> <!-- /tile --> </div> <!-- 布局结束 -->';
+
+    var domains = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Domains.Select(p=>new {Id=p.Id+"",Name=p.DomainName}).ToList()))');
+    var applications = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Applications.Select(p=>new {Id=p.Id+"",Name=p.AppName,DomainId=p.DomainId+""}).ToList()))');
+    var canAddDomainAndApp =@Model.Power.Audit.ToString().ToLower();
+    domains.forEach(v => $("#Sel_Domain").append("<option value='" + v.Id + "'>" + v.Name + "</option>"));
+    var flowOptions = {};
+    var flow;
+
+    var streamProxys = new Array();
+
+    var radomColors = new Array();
+    radomColors.push('{backcolor}')
+    radomColors.push('#d12d52')
+    radomColors.push('#2b2f34')
+    radomColors.push('#7c1e9c')
+    radomColors.push('#4b23a3')
+    radomColors.push('#2e38a3')
+    radomColors.push('#367eea')
+    radomColors.push('#4093ec')
+    radomColors.push('#4facc8')
+    radomColors.push('#3d8475')
+    radomColors.push('#59a049')
+    radomColors.push('#c7d74a')
+    radomColors.push('#fecb52')
+    radomColors.push('#f3b741')
+    radomColors.push('#ee8a36')
+    radomColors.push('#e94e29')
+    radomColors.push('#e94e29')
+    radomColors.push('#5f4338')
+    radomColors.push('#8b8b8b')
+    radomColors.push('#526875')
+
+
+    $(function () {
+        //owl carousel
+        // $("#owl-example").owlCarousel({
+        //     singleItem: true,
+        //     autoPlay: true,
+        //     navigation: true,
+        //     slideSpeed: 400,
+        //     paginationSpeed: 500,
+        //     navigationText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>']
+        // });
+        // console.log('heiiiii' + $('#div_card').height());
+        // $('#ta').height($('#div_card').height() - 5);
+    });
+
+
+    layui.use(['form', 'layedit', 'laydate', 'flow'], function () {
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+        flow = layui.flow;
+        form.render();
+
+        flowOptions = {
+            elem: '#flow_videoList' //流加载容器
+            , scrollElem: '#flow_videoList' //滚动条所在元素，一般不用填，此处只是演示需要。
+            , done: function (page, next) { //执行下一页的回调
+
+                post('/ZLServer/StreamProxy', {
+                    page: page,
+                    limit: 20,
+                    keyword: $('#txt_keyword').val(),
+                    DomainId: $('#Sel_Domain').val(),
+                    ApplicationId: $('#Sel_Application').val()
+                },
+                    function (data, status, xhr) {
+                        if (data.code === 0) {
+
+                            data.data.forEach(v => {
+                                streamProxys.push(v);
+                               var htmlNode = videoTemplate.replace(/{PullStreamUrl}/g, v.PullStreamUrl);
+                                htmlNode = htmlNode.replace(/{StreamId}/g, v.StreamId);
+                                htmlNode = htmlNode.replace(/{Status}/g, v.ShowStatus);
+                                htmlNode = htmlNode.replace(/{WatchCount}/g, v.WatchCount);
+                                htmlNode = htmlNode.replace(/{WatchTotalCount}/g, v.WatchTotalCount);
+                                htmlNode = htmlNode.replace(/{Descprition}/g, v.Description === undefined ? '暂无描述' : v.Description);
+                                htmlNode = htmlNode.replace(/{DomainName}/g, v.DomainName);
+                                htmlNode = htmlNode.replace(/{ApplicationName}/g, v.ApplicationName);
+                                htmlNode = htmlNode.replace(/{isEnable_Hls}/g, v.EnableHLS ? 'checked=""' : '');
+                                htmlNode = htmlNode.replace(/{isEnable_Mp4}/g, v.EnableMP4 ? 'checked=""' : '');
+                                htmlNode = htmlNode.replace(/{isEnable}/g, v.State === 200 ? 'checked=""' : '');
+                                htmlNode = htmlNode.replace(/{backcolor}/g, radomColors[Math.floor((Math.random() * radomColors.length))]);
+                                htmlNode = htmlNode.replace(/{mediaInfoJson}/g, v.ShowStreamMediaJson);
+                                htmlNode = htmlNode.replace(/{isNeedRePullStreamProxy}/g," display:none; ");
+                                htmlNode = htmlNode.replace(/{hasSnapImage}/g,v.hasSnapImage?" background: url(/ZLServer/GetSnap?id="+v.Id+") no-repeat;background-size: cover;":"");
+                                htmlNode = htmlNode.replace(/{addPlayEvent}/g,v.canPlay?' onclick="play(\'{id}\',\'{StreamName}\')"   onmousemove="changePlayImg(\'{id}\',\'play2\')"    onmouseout="changePlayImg(\'{id}\',\'play\')" ' :"");
+                                htmlNode = htmlNode.replace(/{showPlayIcon}/g,v.canPlay?' <i name="icon_play_{id}" class="fa fa-play-circle" style="margin-right: 10px;"></i> ' :"");
+                                htmlNode = htmlNode.replace(/{id}/g, v.Id);
+                                htmlNode = htmlNode.replace(/{StreamName}/g, v.StreamName);
+                                htmlNode = htmlNode.replace(/{schemaCount}/g, v.schemaCount);
+
+                                //
+
+                                //
+                                // {addPlayEvent}
+                                //
+                                // htmlNode = htmlNode.replace(/{isNeedRePullStreamProxy}/g, v.isNeedRePullStreamProxy ? " " : " display:none; ");
+
+                                $('#div_videoList').append($(htmlNode));
+                                // owl carousel
+                                $("#owl" + v.Id).owlCarousel({
+                                    singleItem: true,
+                                    autoPlay: true,
+                                    navigation: true,
+                                    slideSpeed: 1000,
+                                    paginationSpeed: 500,
+                                    navigationText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>']
+                                });
+                                $('#ta_' + v.Id).height($('#div_card' + v.Id).height() - 10);
+                            });
+                            form.render();
+
+                            next('', streamProxys.length < data.count);
+                        }
+                        else {
+                            //调用接口失败
+                            showGrowl(data.msg, 'danger', 3000)
+                            next('', false);
+                        }
+                    }
+                    , function (err) {
+                        showGrowl('获取拉流列表异常!', 'danger', 3000)
+                        next('', false);
+                    }
+                );
+            }
+        };
+
+        flow.load(flowOptions);
+
+        form.on('select(Sel_Domain)', function (data) {
+            if (isEmpty(data.value)) {
+                //清空应用选择框
+                $("#Sel_Application").empty();
+                $("#Sel_Application").append("<option value=''>全部</option>")
+                form.render();
+
+            }
+            else {
+                applications.forEach(v => {
+                    if (v.DomainId === data.value) {
+                        $("#Sel_Application").append("<option value='" + v.Id + "'>" + v.Name + "</option>")
+                    }
+                });
+                form.render();
+            }
+        });
+        //监听提交
+        form.on('submit(submitForm)', function (data) {
+            // showLoader('保存中....',60);
+            // $.post("/Menu/Add", data.field, function (result) {
+            //     closeLoader();
+            //     if (result.Flag) {
+            //         showGrowl('保存成功!', 'success', 3000);
+            //         reload();
+            //         layer.close(layuiWindow['editMenu' + menuId]); //再执行关闭
+            //     }
+            //     else {
+            //         showGrowl(result.Msg,'danger',4000);
+
+            //     }
+            // });
+            // return false;
+
+        });
+    });
+
+
+    function addStreamProxy() {
+        if (!canAddDomainAndApp) {
+            showGrowl('请先添加域名和应用再添加拉流代理!', 'danger', 4000);
+            return;
+        }
+
+
+
+        get('/ZLServer/AddStreamProxy', function (data, status, xhr) {
+            if (xhr.status === 200) {
+                var index = layer.open({
+                    type: 1
+                    , title: '添加拉流代理'
+                    , closeBtn: false
+                    , shade: 0
+                    , area: ['590px', '600px']
+                    , id: 'addAddStreamProxy'  //设定一个id，防止重复弹出
+                    , btnAlign: 'c'
+                    , closeBtn: 1
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: data
+                    , shadeClose: false //点击遮罩区域是否关闭页面
+                    , zIndex: 1000
+                });
+                layuiWindow['addAddStreamProxy'] = index;
+            }
+            else {
+                showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+            }
+        },
+            function () {
+                showGrowl('GET请求异常。', 'danger', 3000)
+            }
+        );
+
+
+    }
+
+    function reload() {
+        $('#div_videoList').empty();
+        flow.load(flowOptions);
+    }
+
+    function changePlayImg(id, type) {
+
+         var iList= $("i[name='icon_play_"+id+"']");
+
+        if(type==='play2')
+        {
+            $(iList[0]).css("color","#a9e97a");
+           $( iList[1]).css("color","#a9e97a");
+           // $('#icon_play_'+id).css("color","#a9e97a");
+        }
+        else
+        {
+             $( iList[0]).css("color","#fff");
+             $(iList[1]).css("color","#fff");
+           // $('#icon_play_'+id).css("color","#fff");
+        }
+        //sender.src = '/imgs/others/' + image + '.png';
+    }
+
+    function editStreamProxy(id) {
+        get('/ZLServer/EditStreamProxy?streamProxyId=' + id, function (data, status, xhr) {
+            if (xhr.status === 200) {
+                var index = layer.open({
+                    type: 1
+                    , title: '编辑拉流代理'
+                    , closeBtn: false
+                    , shade: 0
+                    , area: ['590px', '600px']
+                    , id: 'editStreamProxy' + id  //设定一个id，防止重复弹出
+                    , btnAlign: 'c'
+                    , closeBtn: 1
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: data
+                    , shadeClose: false //点击遮罩区域是否关闭页面
+                    , zIndex: 1000
+                });
+                layuiWindow['editStreamProxy' + id] = index;
+            }
+            else {
+                showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+            }
+        },
+            function () {
+                showGrowl('GET请求异常。', 'danger', 3000)
+            }
+        );
+    }
+
+
+    function rePullStreamProxy(id) {
+        //重新拉流
+        // alert('重新拉流:' + id);
+    }
+
+    function play(id,name) {
+        layer.open({
+                    type: 2
+                    , title: name
+                    , closeBtn: false
+                    , shade: 0
+                    , area: ['590px', '600px']
+                    , id: 'play'+id  //设定一个id，防止重复弹出
+                    , btnAlign: 'c'
+                    , closeBtn: 1
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: ['/ZLServer/Play?id='+id,'yes']
+                    , shadeClose: false //点击遮罩区域是否关闭页面
+                    , zIndex: 999999
+                });
+
+            return;//下面的代码停用    
+         get('/ZLServer/Play?id='+id, function (data, status, xhr) {
+            if (xhr.status === 200) {
+                var index = layer.open({
+                    type: 1
+                    , title: name
+                    , closeBtn: false
+                    , shade: 0
+                    , area: ['590px', '600px']
+                    , id: 'play'+id  //设定一个id，防止重复弹出
+                    , btnAlign: 'c'
+                    , closeBtn: 1
+                    , moveType: 1 //拖拽模式，0或者1
+                    , content: data
+                    , shadeClose: false //点击遮罩区域是否关闭页面
+                    , zIndex: 1000
+                });
+                layuiWindow['play'+id] = index;
+            }
+            else {
+                showGrowl('请求失败,错误码:' + xhr.status + "," + xhr.statusText, 'danger', 4000)
+            }
+        },
+            function () {
+                showGrowl('GET请求异常。', 'danger', 3000)
+            }
+        );
+    }
+
+    //启用停用
+    function changeStreamPullState(sender, id) {
+        alert('启用,停用');
+    }
+    //录制Mp4
+    function changeEnableMp4(sender, id) {
+        // alert('changeEnableMp4');
+    }
+    //转HLS
+    function changeEnableHLS(sender, id) {
+        // alert('changeEnableHLS');
+
+    }
+
+    function deleteStreamProxy(id) {
+        var index = layer.confirm('确定要删除吗?', {
+            title: '警告', btn: ['确定', '取消']
+        }
+            , function () {
+                showLoader('删除中....', 60);
+                $.post("/ZLServer/DeleteStreamProxy", { ids: [id] }, function (result) {
+                    layer.close(index);
+                    closeLoader();
+                    if (result.Flag) {
+                        reload();
+                        layer.close(index);
+                        showGrowl('删除成功!', 'success', 3000);
+                    }
+                    else {
+                        showGrowl(result.Msg, 'danger', 4000);
+                    }
+                }, "json");
+            }, function () {
+                closeLoader();
+                layer.close(index);
+            });
+    }
+
+</script>

@@ -46,6 +46,16 @@ namespace ZLMediaServerManagent.Models.ViewDto
             }
         }
 
+          public virtual string HttpFlvtUrl
+        {
+            get
+            {
+                var port = GloableCache.ZLMediaServerConfig.Where(p => p.Key == "http.port").First().Value;
+                return "http://" + ZLServerIp + ":" + port + "/" + Application.AppName + "/" + StreamProxy.StreamId + ".flv?vhost=" + vHost;
+            }
+        }
+
+
         public virtual string WebSocketSUrl
         {
             get

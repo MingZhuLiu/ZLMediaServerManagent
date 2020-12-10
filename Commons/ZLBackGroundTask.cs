@@ -74,12 +74,13 @@ namespace ZLMediaServerManagent.Commons
                             GloableCache.MediaStreams.Add(v);
                         });
                     }
+                    else
+                    {
+                        GloableCache.MediaStreams.Clear();
+                    }
                 }
-
                 //比对我的拉流和服务器拉流的差异
                 diffStremPorxy();
-
-
             }
             else
             {
