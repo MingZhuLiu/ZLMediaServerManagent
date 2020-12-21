@@ -17,11 +17,20 @@ namespace ZLMediaServerManagent
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+            //创建配置根对象
+            var configurationRoot = builder.Build();
+
+
+            var webPort = configurationRoot.GetSection("WebPort");
+            return Host.CreateDefaultBuilder(args)
+                            .ConfigureWebHostDefaults(webBuilder =>
+                            {
+                                webBuilder.UseUrls("http://*:"+webPort.Value).UseStartup<Startup>();
+                            });
+        }
+
     }
 }

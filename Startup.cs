@@ -94,7 +94,7 @@ namespace ZLMediaServerManagent
             initDataBase(ref services);
             
             services.AddHostedService<ZLBackGroundTask>();
-            services.AddHostedService<ZLBackSnapGroundTask>();
+            // services.AddHostedService<ZLBackSnapGroundTask>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

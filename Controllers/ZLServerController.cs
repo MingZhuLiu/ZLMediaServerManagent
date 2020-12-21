@@ -164,8 +164,30 @@ namespace ZLMediaServerManagent.Controllers
             var domain = domainAndAppService.FindDomain(streamProxy.DomainId);
             var application = domainAndAppService.FindApplication(streamProxy.ApplicationId);
             PlayStreamProxyDto playStreamProxy = new PlayStreamProxyDto(streamProxy, domain, application);
-
-            return View(playStreamProxy);
+            var mediaStream=GloableCache.MediaStreams.Where(p=>p.vhost==domain.DomainName&&p.app==application.AppName&&p.stream==streamProxy.StreamId).FirstOrDefault();
+            var track=mediaStream?.tracks?.Where(p=>p.codec_type== STRealVideo.Lib.CodecType.Video)?.FirstOrDefault();
+            if(mediaStream==null)
+            {
+                //告知不在线...
+                return View("Error");
+            }
+            else if(track==null)
+            {
+                //告知轨道不含有视频流
+                return View("Error");
+            }
+            else if(track.codec_id==STRealVideo.Lib.CodecStreamType.H264)
+            {
+                return View("PlayH264",playStreamProxy);
+            }
+            else if(track.codec_id==STRealVideo.Lib.CodecStreamType.H265)
+            {
+                return View("PlayH265",playStreamProxy);
+            }
+            else
+            {
+                return View("Error");
+            }
         }
 
         [HttpGet]
