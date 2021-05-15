@@ -87,6 +87,7 @@ namespace ZLMediaServerManagent.Commons
                 if (!GloableCache.IsInitServer)
                 {
                     //服务器还没初始化完毕的时候，不要重连服务器
+                    isRunning=false;
                     return;
                 }
                 GloableCache.ZLServerOnline = false;

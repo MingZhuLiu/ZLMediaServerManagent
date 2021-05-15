@@ -9,13 +9,14 @@ namespace ZLMediaServerManagent.Models.ViewDto
 {
     public class PlayStreamProxyDto
     {
-        public PlayStreamProxyDto()
+        public PlayStreamProxyDto(String zlServerIp)
         {
-            ZLServerIp = DataBaseCache.Configs.Where(p => p.ConfigKey == ConfigKeys.ZLMediaServerIp).FirstOrDefault().ConfigValue;
+            ZLServerIp=zlServerIp;
+            // ZLServerIp = DataBaseCache.Configs.Where(p => p.ConfigKey == ConfigKeys.ZLMediaServerIp).FirstOrDefault().ConfigValue;
         }
 
 
-        public PlayStreamProxyDto(StreamProxyDto streamProxy, DomainDto domain, ApplicationDto application) : this()
+        public PlayStreamProxyDto(String zlServerIp,StreamProxyDto streamProxy, DomainDto domain, ApplicationDto application) : this(zlServerIp)
         {
             this.StreamProxy = streamProxy;
             this.Domain = domain;

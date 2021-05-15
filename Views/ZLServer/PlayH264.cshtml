@@ -14,7 +14,7 @@ ViewData["Title"] = "播放";
 
 
 	<video name="videoElement" class="centeredVideo" id="videoElement" playsinline="true" controls="controls"
-		style="width: 100%;height:100%;object-fit: fill;background-color: #000;" autoplay>
+		style="width: 100%;height:100%;object-fit: fill;background-color: #000;" autoplay muted>
 		Your browser is too old which doesn't support HTML5 video.
 	</video>
 
@@ -118,17 +118,18 @@ ViewData["Title"] = "播放";
 		}
 	})(jQuery, this);
 
-
+var flvPlayer;
 	function playFlv() {
 		var height = $('#mainContainer').height();
 		$("#videoElement").height(height);
 		if (flvjs.isSupported()) {
+			debugger
 			var videoElement = document.getElementById('videoElement');
-			var flvPlayer = flvjs.createPlayer({
+			 flvPlayer = flvjs.createPlayer({
 				type: 'flv',
 				url: '@Model.WebSocketUrl',
 				isLive: true,
-				hasAudio: true,
+				hasAudio: false,
 				hasVideo: true,
 				enableStashBuffer: false,
 			});
@@ -188,4 +189,10 @@ ViewData["Title"] = "播放";
 			, shadeClose: true //点击遮罩区域是否关闭页面
 		});
 	}
+
+	
+
+	$(function(){
+	//		console.log('@Model.WebSocketUrl');
+	})
 </script>

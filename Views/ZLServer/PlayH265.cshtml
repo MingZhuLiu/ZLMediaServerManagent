@@ -128,10 +128,10 @@ ViewData["Title"] = "播放";
 
 	function playFlv() {
 		// 实例化播放器
-		var conf={ cbUserPtr: this, decodeType: "auto", openAudio: false, BigPlay: false, Height: true };
+		var conf={ cbUserPtr: this, decodeType: "auto", openAudio: false, BigPlay: false, Height: true ,autoplay:1};
 		var Player = new WasmPlayer(null,'mainContainer',callbackFun,conf );
 		// 调用播放
-		Player.play('@Model.HttpFlvtUrl', 1);
+		Player.play('@Model.WebSocketUrl', 1);
 	}
 
 
@@ -142,7 +142,9 @@ ViewData["Title"] = "播放";
 		console.log(data);
 	}
 
+	
 
+	console.log('@Model.WebSocketUrl');
 
 
 </script>

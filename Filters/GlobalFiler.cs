@@ -33,18 +33,24 @@ namespace ZLMediaServerManagent.Filters
                   .Any(a => a.GetType().Equals(typeof(SkipGlobalActionFilterAttribute)));
             }
             if (isSkip) return;
+            var reqPath = context.HttpContext.Request.Path.ToString();
+            var hse = context.HttpContext.Request.Query.Where(p => p.Key == "ticket")?.FirstOrDefault();
+            if (reqPath.ToLower() == "/zlserver/play"  &&context.HttpContext.Request.Query.ContainsKey("ticket")&&"hse"==context.HttpContext.Request.Query["ticket"].ToString())
+            {
+                return;
+            }
 
+ 
 
             var clientId = context.HttpContext?.User?.FindFirst(ClaimTypes.Sid)?.Value;
             // context.HttpContext.Request.Cookies.TryGetValue(CookieKeys.WebToken + "", out string value);
-            if (clientId==null||!GloableCache.OnlineClients.ContainsKey(clientId) || GloableCache.OnlineClients[clientId] == null || GloableCache.OnlineClients[clientId].User == null)
+            if (clientId == null || !GloableCache.OnlineClients.ContainsKey(clientId) || GloableCache.OnlineClients[clientId] == null || GloableCache.OnlineClients[clientId].User == null)
             {
                 RedirectResult result = new RedirectResult("~/Home/Login");
                 context.Result = result;
                 return;
             }
             //再判断是否有菜单操作权限
-            var reqPath = context.HttpContext.Request.Path.ToString();
             if (reqPath != null && reqPath.EndsWith("/"))
                 reqPath = reqPath.Substring(0, reqPath.Length - 1);
             if (reqPath == "/Home/Index" || reqPath == "/Home/Dashboard")
